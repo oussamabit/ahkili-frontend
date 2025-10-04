@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, Image as ImageIcon } from 'lucide-react';
+import { X, Image as ImageIcon, Loader } from 'lucide-react';
+import { uploadImage } from '../../services/api';
 
 const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,11 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
     content: '',
     community: defaultCommunity || 'Anxiety Support'
   });
+  
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
   const communities = [
     'Anxiety Support',
     'Depression Support',
@@ -23,12 +29,48 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleImageSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.title.trim() && formData.content.trim()) {
-      onSubmit(formData);
-      setFormData({ title: '', content: '', community: 'Anxiety Support' });
+    setUploading(true);
+
+    try {
+      let imageUrl = null;
+
+      // Upload image if selected
+      if (imageFile) {
+        const uploadResult = await uploadImage(imageFile);
+        imageUrl = uploadResult.url;
+      }
+
+      // Submit post with image URL
+      await onSubmit({
+        ...formData,
+        imageUrl
+      });
+
+      // Reset form
+      setFormData({ title: '', content: '', community: defaultCommunity || 'Anxiety Support' });
+      setImageFile(null);
+      setImagePreview(null);
       onClose();
+    } catch (error) {
+      console.error('Error creating post:', error);
+      alert('Failed to create post. Please try again.');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -101,15 +143,40 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
             />
           </div>
 
-          {/* Image Upload (placeholder) */}
+          {/* Image Preview */}
+          {imagePreview && (
+            <div className="mb-4 relative">
+              <img 
+                src={imagePreview} 
+                alt="Preview" 
+                className="w-full h-64 object-cover rounded-lg"
+              />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Image Upload */}
           <div className="mb-6">
-            <button
-              type="button"
-              className="flex items-center space-x-2 text-gray-600 hover:text-primary transition"
+            <input
+              type="file"
+              id="image-upload"
+              accept="image/*"
+              onChange={handleImageSelect}
+              className="hidden"
+            />
+            <label
+              htmlFor="image-upload"
+              className="flex items-center space-x-2 text-gray-600 hover:text-primary transition cursor-pointer"
             >
               <ImageIcon className="w-5 h-5" />
-              <span>Add Image (Coming Soon)</span>
-            </button>
+              <span>{imageFile ? 'Change Image' : 'Add Image'}</span>
+            </label>
           </div>
 
           {/* Guidelines */}
@@ -128,15 +195,24 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold"
+              disabled={uploading}
+              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold"
+              disabled={uploading}
+              className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold disabled:opacity-50 flex items-center justify-center space-x-2"
             >
-              Post
+              {uploading ? (
+                <>
+                  <Loader className="w-5 h-5 animate-spin" />
+                  <span>Posting...</span>
+                </>
+              ) : (
+                <span>Post</span>
+              )}
             </button>
           </div>
         </form>

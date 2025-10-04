@@ -4,6 +4,7 @@ import PostCard from '../components/post/PostCard';
 import { useAuth } from '../context/AuthContext';
 import { useUserSync } from '../hooks/useUserSync';
 import { getUserPosts } from '../services/api';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const { currentUser, logout } = useAuth();
@@ -112,18 +113,12 @@ const Profile = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-2">
+          <Link to="/profile/edit">
             <button className="flex items-center space-x-2 px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">
               <Edit2 className="w-4 h-4" />
               <span>Edit Profile</span>
             </button>
-            <button 
-              onClick={logout}
-              className="p-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition"
-            >
-              <Settings className="w-5 h-5" />
-            </button>
-          </div>
+          </Link>
         </div>
 
         {/* Bio */}

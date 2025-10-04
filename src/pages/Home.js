@@ -48,6 +48,7 @@ const Home = () => {
           title: newPostData.title,
           content: newPostData.content,
           community_id: null,
+          image_url: newPostData.imageUrl || null  // Add this line
         },
         backendUser.id
       );

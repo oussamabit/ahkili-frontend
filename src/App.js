@@ -12,6 +12,7 @@ import { useAuth } from './context/AuthContext';
 import CommunityDetail from './pages/CommunityDetail';
 import Search from './pages/Search';
 import InstallPrompt from './components/common/InstallPrompt';
+import EditProfile from './pages/EditProfile';
 
 function App() {
   const { currentUser } = useAuth();
@@ -77,6 +78,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Search />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile/edit" 
+              element={
+                <ProtectedRoute>
+                  <EditProfile />
                 </ProtectedRoute>
               } 
             />
