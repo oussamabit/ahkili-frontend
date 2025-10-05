@@ -134,6 +134,16 @@ const PostDetail = () => {
 
         {/* Post Content */}
         <h1 className="text-2xl font-bold text-gray-800 mb-4">{post.title}</h1>
+
+        {/* Post Image (if exists) */}
+        {post.image_url && (
+          <img 
+            src={post.image_url} 
+            alt={post.title}
+            className="w-full h-auto max-h-96 object-cover rounded-lg mb-6"
+          />
+        )}
+
         <div className="text-gray-700 leading-relaxed mb-6 whitespace-pre-line">
           {post.content}
         </div>
