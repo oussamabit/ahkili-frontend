@@ -18,19 +18,22 @@ const Home = () => {
   const { backendUser } = useUserSync();
   const { showSuccess, showError } = useToast();
 
+  
   const fetchPosts = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getPosts();
-      setPosts(data);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      setError('Failed to load posts. Please check your connection.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  setError(null);
+  try {
+    const data = await getPosts();
+    console.log('Fetched posts:', data); // Check if image_url is in the response
+    setPosts(data);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    setError('Failed to load posts. Please check your connection.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchPosts();
