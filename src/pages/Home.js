@@ -24,7 +24,9 @@ const Home = () => {
   setError(null);
   try {
     const data = await getPosts();
-    console.log('Fetched posts:', data); // Check if image_url is in the response
+    console.log('Fetched posts:', data);
+    console.log('First post image_url:', data[0]?.image_url); // Check first post
+    console.log('First post full data:', JSON.stringify(data[0], null, 2)); // See all fields
     setPosts(data);
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -67,6 +69,10 @@ const Home = () => {
       
       setPosts([createdPost, ...posts]);
       showSuccess('Post created successfully!');
+      console.log('Created post response:', createdPost);
+      console.log('Created post image_url:', createdPost.image_url);
+      console.log('Created post full:', JSON.stringify(createdPost, null, 2));
+      
     } catch (error) {
       console.error('Error creating post:', error);
       console.error('Error details:', error.response?.data);
