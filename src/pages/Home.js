@@ -38,23 +38,35 @@ const Home = () => {
 
   const handleCreatePost = async (newPostData) => {
     if (!backendUser) {
-      showSuccess('Please wait, syncing user data...');
+      alert('Please wait, syncing user data...');
       return;
     }
 
+    console.log('Creating post with data:', newPostData); // Debug
+
     try {
-      const createdPost = await createPostAPI(
-        {
-          title: newPostData.title,
-          content: newPostData.content,
-          community_id: null,
-          image_url: newPostData.imageUrl || null  // Add this line
-        },
-        backendUser.id
-      );
+      const postPayload = {
+        title: newPostData.title,
+        content: newPostData.content,
+        community_id: null,
+      };
+
+      // Only add image_url if it exists
+      if (newPostData.imageUrl) {
+        postPayload.image_url = newPostData.imageUrl;
+      }
+
+      console.log('Sending to API:', postPayload); // Debug
+
+      const createdPost = await createPostAPI(postPayload, backendUser.id);
+      
+      console.log('Created post response:', createdPost); // Debug
+      
       setPosts([createdPost, ...posts]);
+      showSuccess('Post created successfully!');
     } catch (error) {
       console.error('Error creating post:', error);
+      console.error('Error details:', error.response?.data);
       showError('Failed to create post. Please try again.');
     }
   };
