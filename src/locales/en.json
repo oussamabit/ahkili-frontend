@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "home": "Home",
+    "communities": "Communities",
+    "hotlines": "Hotlines",
+    "search": "Search",
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "home": {
+    "title": "Welcome to Ahkili",
+    "subtitle": "A safe space for psychological support and community",
+    "createPost": "Share your thoughts...",
+    "noPosts": "No posts yet. Be the first to share!",
+    "createFirstPost": "Create First Post"
+  },
+  "post": {
+    "likes": "Likes",
+    "comments": "Comments",
+    "share": "Share",
+    "delete": "Delete Post",
+    "deleteConfirm": "Are you sure you want to delete this post?",
+    "deleted": "Post deleted successfully!",
+    "createPost": "Create Post",
+    "title": "Title",
+    "content": "Content",
+    "chooseComm": "Choose Community",
+    "addImage": "Add Image",
+    "changeImage": "Change Image",
+    "post": "Post",
+    "cancel": "Cancel",
+    "posting": "Posting..."
+  },
+  "community": {
+    "title": "Communities",
+    "subtitle": "Find your support community. Join, share, and grow together.",
+    "members": "members",
+    "viewCommunity": "View Community",
+    "join": "Join",
+    "joined": "Joined"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "posts": "Posts",
+    "communities": "Communities",
+    "saved": "Saved",
+    "noPosts": "No posts yet",
+    "noSaved": "No saved posts yet"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "selectLanguage": "Select Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "notifications": "Notifications",
+    "emailNotif": "Email Notifications",
+    "pushNotif": "Push Notifications",
+    "privacy": "Privacy",
+    "publicProfile": "Public Profile",
+    "showEmail": "Show Email",
+    "account": "Account",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account",
+    "saveChanges": "Save Changes",
+    "saved": "Settings saved successfully!"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "continueWithGoogle": "Continue with Google",
+    "welcomeBack": "Welcome Back",
+    "createAccount": "Create Account",
+    "joinCommunity": "Join our supportive community"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "tryAgain": "Try Again",
+    "save": "Save",
+    "back": "Back",
+    "justNow": "Just now"
+  }
+}

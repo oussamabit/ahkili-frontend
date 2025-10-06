@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "communities": "Communautés",
+    "hotlines": "Lignes d'urgence",
+    "search": "Rechercher",
+    "profile": "Profil",
+    "login": "Connexion",
+    "logout": "Déconnexion"
+  },
+  "home": {
+    "title": "Bienvenue sur Ahkili",
+    "subtitle": "Un espace sûr pour le soutien psychologique et la communauté",
+    "createPost": "Partagez vos pensées...",
+    "noPosts": "Aucune publication pour le moment. Soyez le premier à partager !",
+    "createFirstPost": "Créer la première publication"
+  },
+  "post": {
+    "likes": "J'aime",
+    "comments": "Commentaires",
+    "share": "Partager",
+    "delete": "Supprimer la publication",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette publication ?",
+    "deleted": "Publication supprimée avec succès !",
+    "createPost": "Créer une publication",
+    "title": "Titre",
+    "content": "Contenu",
+    "chooseComm": "Choisir une communauté",
+    "addImage": "Ajouter une image",
+    "changeImage": "Changer l'image",
+    "post": "Publier",
+    "cancel": "Annuler",
+    "posting": "Publication en cours..."
+  },
+  "community": {
+    "title": "Communautés",
+    "subtitle": "Trouvez votre communauté de soutien. Rejoignez, partagez et grandissez ensemble.",
+    "members": "membres",
+    "viewCommunity": "Voir la communauté",
+    "join": "Rejoindre",
+    "joined": "Membre"
+  },
+  "profile": {
+    "title": "Profil",
+    "editProfile": "Modifier le profil",
+    "posts": "Publications",
+    "communities": "Communautés",
+    "saved": "Enregistrés",
+    "noPosts": "Aucune publication pour le moment",
+    "noSaved": "Aucune publication enregistrée"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "selectLanguage": "Sélectionner la langue",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "notifications": "Notifications",
+    "emailNotif": "Notifications par e-mail",
+    "pushNotif": "Notifications push",
+    "privacy": "Confidentialité",
+    "publicProfile": "Profil public",
+    "showEmail": "Afficher l'e-mail",
+    "account": "Compte",
+    "changePassword": "Changer le mot de passe",
+    "deleteAccount": "Supprimer le compte",
+    "saveChanges": "Enregistrer les modifications",
+    "saved": "Paramètres enregistrés avec succès !"
+  },
+  "auth": {
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "username": "Nom d'utilisateur",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "continueWithGoogle": "Continuer avec Google",
+    "welcomeBack": "Bienvenue",
+    "createAccount": "Créer un compte",
+    "joinCommunity": "Rejoignez notre communauté de soutien"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "tryAgain": "Réessayer",
+    "save": "Enregistrer",
+    "back": "Retour",
+    "justNow": "À l'instant"
+  }
+}

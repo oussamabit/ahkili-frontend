@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "communities": "المجتمعات",
+    "hotlines": "خطوط الطوارئ",
+    "search": "البحث",
+    "profile": "الملف الشخصي",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
+  },
+  "home": {
+    "title": "مرحباً بك في أحكيلي",
+    "subtitle": "مساحة آمنة للدعم النفسي والمجتمع",
+    "createPost": "شارك أفكارك...",
+    "noPosts": "لا توجد منشورات حتى الآن. كن أول من يشارك!",
+    "createFirstPost": "إنشاء أول منشور"
+  },
+  "post": {
+    "likes": "الإعجابات",
+    "comments": "التعليقات",
+    "share": "مشاركة",
+    "delete": "حذف المنشور",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا المنشور؟",
+    "deleted": "تم حذف المنشور بنجاح!",
+    "createPost": "إنشاء منشور",
+    "title": "العنوان",
+    "content": "المحتوى",
+    "chooseComm": "اختر المجتمع",
+    "addImage": "إضافة صورة",
+    "changeImage": "تغيير الصورة",
+    "post": "نشر",
+    "cancel": "إلغاء",
+    "posting": "جاري النشر..."
+  },
+  "community": {
+    "title": "المجتمعات",
+    "subtitle": "ابحث عن مجتمعك الداعم. انضم، شارك، واكبر معاً.",
+    "members": "أعضاء",
+    "viewCommunity": "عرض المجتمع",
+    "join": "انضم",
+    "joined": "منضم"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "editProfile": "تعديل الملف",
+    "posts": "المنشورات",
+    "communities": "المجتمعات",
+    "saved": "المحفوظات",
+    "noPosts": "لا توجد منشورات بعد",
+    "noSaved": "لا توجد منشورات محفوظة"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "selectLanguage": "اختر اللغة",
+    "theme": "المظهر",
+    "light": "فاتح",
+    "dark": "داكن",
+    "notifications": "الإشعارات",
+    "emailNotif": "إشعارات البريد الإلكتروني",
+    "pushNotif": "الإشعارات الفورية",
+    "privacy": "الخصوصية",
+    "publicProfile": "ملف عام",
+    "showEmail": "إظهار البريد الإلكتروني",
+    "account": "الحساب",
+    "changePassword": "تغيير كلمة المرور",
+    "deleteAccount": "حذف الحساب",
+    "saveChanges": "حفظ التغييرات",
+    "saved": "تم حفظ الإعدادات بنجاح!"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "username": "اسم المستخدم",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "continueWithGoogle": "متابعة مع جوجل",
+    "welcomeBack": "مرحباً بعودتك",
+    "createAccount": "إنشاء حساب",
+    "joinCommunity": "انضم لمجتمعنا الداعم"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى",
+    "save": "حفظ",
+    "back": "رجوع",
+    "justNow": "الآن"
+  }
+}

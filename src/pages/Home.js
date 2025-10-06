@@ -9,8 +9,10 @@ import ErrorMessage from '../components/common/ErrorMessage';
 import EmptyState from '../components/common/EmptyState';
 import { MessageCircle } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,10 +91,10 @@ const Home = () => {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Welcome to Ahkili
+          {t('home.title')}
         </h1>
         <p className="text-gray-600">
-          A safe space for psychological support and community.
+          {t('home.subtitle')}
         </p>
       </div>
 
@@ -101,7 +103,7 @@ const Home = () => {
         onClick={() => setIsModalOpen(true)}
         className="w-full bg-white rounded-lg shadow-md p-4 mb-6 text-left text-gray-500 hover:shadow-lg transition flex items-center justify-between group"
       >
-        <span>Share your thoughts...</span>
+        <span>{t('home.createPost')}</span>
         <Plus className="w-5 h-5 text-primary group-hover:scale-110 transition" />
       </button>
 
