@@ -24,21 +24,38 @@
     "deleted": "Publication supprimée avec succès !",
     "createPost": "Créer une publication",
     "title": "Titre",
+    "titlePlaceholder": "À quoi pensez-vous ?",
     "content": "Contenu",
+    "contentPlaceholder": "Partagez vos pensées, expériences ou demandez du soutien...",
     "chooseComm": "Choisir une communauté",
     "addImage": "Ajouter une image",
     "changeImage": "Changer l'image",
     "post": "Publier",
     "cancel": "Annuler",
-    "posting": "Publication en cours..."
+    "posting": "Publication en cours...",
+    "guidelines": "Directives de la communauté",
+    "guidelineRespect": "Soyez respectueux et solidaire",
+    "guidelineNoHarm": "Pas de contenu nuisible ou déclencheur",
+    "guidelinePrivacy": "Protégez votre vie privée - évitez de partager des informations personnelles",
+    "guidelineCrisis": "Demandez de l'aide professionnelle en cas de crise",
+    "reply": "Répondre",
+    "replies": "réponses",
+    "showReplies": "Afficher les réponses",
+    "hideReplies": "Masquer les réponses",
+    "replyTo": "Répondre à",
+    "writeReply": "Écrivez une réponse...",
+    "dislike": "Je n'aime pas"
   },
   "community": {
     "title": "Communautés",
     "subtitle": "Trouvez votre communauté de soutien. Rejoignez, partagez et grandissez ensemble.",
     "members": "membres",
+    "posts": "publications",
     "viewCommunity": "Voir la communauté",
     "join": "Rejoindre",
-    "joined": "Membre"
+    "joined": "Membre",
+    "backToCommunities": "Retour aux communautés",
+    "shareThoughts": "Partagez vos pensées dans"
   },
   "profile": {
     "title": "Profil",
@@ -47,7 +64,9 @@
     "communities": "Communautés",
     "saved": "Enregistrés",
     "noPosts": "Aucune publication pour le moment",
-    "noSaved": "Aucune publication enregistrée"
+    "noSaved": "Aucune publication enregistrée",
+    "joined": "Membre depuis",
+    "helpfulVotes": "Votes utiles"
   },
   "settings": {
     "title": "Paramètres",
@@ -88,6 +107,7 @@
     "tryAgain": "Réessayer",
     "save": "Enregistrer",
     "back": "Retour",
-    "justNow": "À l'instant"
+    "justNow": "À l'instant",
+    "send": "Envoyer"
   }
 }

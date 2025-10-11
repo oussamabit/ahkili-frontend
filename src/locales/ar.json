@@ -24,21 +24,38 @@
     "deleted": "تم حذف المنشور بنجاح!",
     "createPost": "إنشاء منشور",
     "title": "العنوان",
+    "titlePlaceholder": "ماذا يدور في ذهنك؟",
     "content": "المحتوى",
+    "contentPlaceholder": "شارك أفكارك، تجاربك، أو اطلب الدعم...",
     "chooseComm": "اختر المجتمع",
     "addImage": "إضافة صورة",
     "changeImage": "تغيير الصورة",
     "post": "نشر",
     "cancel": "إلغاء",
-    "posting": "جاري النشر..."
+    "posting": "جاري النشر...",
+    "guidelines": "إرشادات المجتمع",
+    "guidelineRespect": "كن محترماً وداعماً",
+    "guidelineNoHarm": "لا للمحتوى الضار أو المحفز",
+    "guidelinePrivacy": "احمِ خصوصيتك - تجنب مشاركة المعلومات الشخصية",
+    "guidelineCrisis": "اطلب مساعدة مهنية في الأزمات",
+    "reply": "رد",
+    "replies": "ردود",
+    "showReplies": "عرض الردود",
+    "hideReplies": "إخفاء الردود",
+    "replyTo": "الرد على",
+    "writeReply": "اكتب رداً...",
+    "dislike": "لا يعجبني"
   },
   "community": {
     "title": "المجتمعات",
     "subtitle": "ابحث عن مجتمعك الداعم. انضم، شارك، واكبر معاً.",
     "members": "أعضاء",
+    "posts": "منشورات",
     "viewCommunity": "عرض المجتمع",
     "join": "انضم",
-    "joined": "منضم"
+    "joined": "منضم",
+    "backToCommunities": "العودة إلى المجتمعات",
+    "shareThoughts": "شارك أفكارك في"
   },
   "profile": {
     "title": "الملف الشخصي",
@@ -47,7 +64,9 @@
     "communities": "المجتمعات",
     "saved": "المحفوظات",
     "noPosts": "لا توجد منشورات بعد",
-    "noSaved": "لا توجد منشورات محفوظة"
+    "noSaved": "لا توجد منشورات محفوظة",
+    "joined": "انضم في",
+    "helpfulVotes": "تصويتات مفيدة"
   },
   "settings": {
     "title": "الإعدادات",
@@ -88,6 +107,7 @@
     "tryAgain": "حاول مرة أخرى",
     "save": "حفظ",
     "back": "رجوع",
-    "justNow": "الآن"
+    "justNow": "الآن",
+    "send": "إرسال"
   }
 }

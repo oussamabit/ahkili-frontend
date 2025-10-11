@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Users, Phone, User, Heart, Search as SearchIcon, Settings as SettingsIcon } from 'lucide-react';
+import { Home, Users, Phone, User, Heart, Search as SearchIcon, Settings as SettingsIcon, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useUserSync } from '../../hooks/useUserSync';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
+  const { backendUser } = useUserSync();
   const { t } = useTranslation();
 
   return (
@@ -43,6 +45,17 @@ const Navbar = () => {
               <SearchIcon className="w-5 h-5" />
               <span>{t('nav.search')}</span>
             </Link>
+            
+            {/* Admin Link for Admin/Moderator Users */}
+            {currentUser && backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
+              <Link 
+                to="/admin" 
+                className="flex items-center space-x-2 text-purple-600 hover:text-purple-700 transition font-semibold"
+              >
+                <Shield className="w-5 h-5" />
+                <span>Admin</span>
+              </Link>
+            )}
             
             <Link 
               to="/hotlines" 
@@ -103,6 +116,13 @@ const Navbar = () => {
             <SearchIcon className="w-5 h-5" />
             <span className="text-xs mt-1">{t('nav.search')}</span>
           </Link>
+          {/* Admin Link for Mobile */}
+          {currentUser && backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
+            <Link to="/admin" className="flex flex-col items-center text-purple-600">
+              <Shield className="w-5 h-5" />
+              <span className="text-xs mt-1">Admin</span>
+            </Link>
+          )}
           <Link to="/hotlines" className="flex flex-col items-center text-red-600">
             <Phone className="w-5 h-5" />
             <span className="text-xs mt-1">{t('nav.hotlines')}</span>

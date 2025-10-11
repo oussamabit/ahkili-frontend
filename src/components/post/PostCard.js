@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, MoreVertical, Trash2 } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag } from 'lucide-react';
 import { useUserSync } from '../../hooks/useUserSync';
 import { deletePost as deletePostAPI, toggleReaction } from '../../services/api';
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
 const PostCard = ({ post, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -26,6 +29,29 @@ const PostCard = ({ post, onDelete }) => {
       setLiked(result.user_has_reacted);
     } catch (error) {
       console.error('Error toggling like:', error);
+    }
+  };
+
+  const handleReport = async () => {
+    if (!backendUser) {
+      alert('Please log in to report posts.');
+      return;
+    }
+
+    const reason = prompt('Why are you reporting this post?');
+    if (!reason) return;
+
+    try {
+      await axios.post(`${API_URL}/admin/reports?user_id=${backendUser.id}`, {
+        target_type: 'post',
+        target_id: post.id,
+        reason: reason
+      });
+      alert('Report submitted. Thank you!');
+      setShowMenu(false);
+    } catch (error) {
+      console.error('Error reporting post:', error);
+      alert('Failed to submit report.');
     }
   };
 
@@ -74,18 +100,18 @@ const PostCard = ({ post, onDelete }) => {
           </div>
         </div>
         
-        {/* Menu Button (only for owner) */}
-        {isOwner && (
-          <div className="relative">
-            <button 
-              onClick={() => setShowMenu(!showMenu)}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <MoreVertical className="w-5 h-5" />
-            </button>
-            
-            {showMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10 border">
+        {/* Menu Button (visible for all users) */}
+        <div className="relative">
+          <button 
+            onClick={() => setShowMenu(!showMenu)}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <MoreVertical className="w-5 h-5" />
+          </button>
+          
+          {showMenu && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10 border">
+              {isOwner ? (
                 <button
                   onClick={handleDelete}
                   className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-lg flex items-center space-x-2"
@@ -93,10 +119,18 @@ const PostCard = ({ post, onDelete }) => {
                   <Trash2 className="w-4 h-4" />
                   <span>Delete Post</span>
                 </button>
-              </div>
-            )}
-          </div>
-        )}
+              ) : (
+                <button
+                  onClick={handleReport}
+                  className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-lg flex items-center space-x-2"
+                >
+                  <Flag className="w-4 h-4" />
+                  <span>Report Post</span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Post Content */}

@@ -14,6 +14,7 @@ import Search from './pages/Search';
 import InstallPrompt from './components/common/InstallPrompt';
 import EditProfile from './pages/EditProfile';
 import Settings from './pages/Settings';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   const { currentUser } = useAuth();
@@ -95,6 +96,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
                 </ProtectedRoute>
               } 
             />
