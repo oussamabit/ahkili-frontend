@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag, Award } from 'lucide-react';
 import { useUserSync } from '../../hooks/useUserSync';
 import { deletePost as deletePostAPI, toggleReaction } from '../../services/api';
 import axios from 'axios';
@@ -95,7 +95,15 @@ const PostCard = ({ post, onDelete }) => {
             {authorName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="font-semibold text-gray-800">{authorName}</p>
+            <div className="flex items-center space-x-2">
+              <p className="font-semibold text-gray-800">{authorName}</p>
+              {post.author?.role === 'doctor' && post.author?.verified && (
+                <span className="inline-flex items-center px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full font-semibold">
+                  <Award className="w-3 h-3 mr-1" />
+                  Verified Doctor
+                </span>
+              )}
+            </div>
             <p className="text-xs text-gray-500">{communityName} • {timeAgo}</p>
           </div>
         </div>

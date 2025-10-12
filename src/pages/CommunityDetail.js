@@ -6,6 +6,7 @@ import CreatePostModal from '../components/post/CreatePostModal';
 import { getCommunity, getPosts, createPost as createPostAPI } from '../services/api';
 import { useUserSync } from '../hooks/useUserSync';
 import { useToast } from '../context/ToastContext';
+import { Link } from 'react-router-dom';
 
 const CommunityDetail = () => {
   const { id } = useParams();
@@ -107,6 +108,14 @@ const CommunityDetail = () => {
           <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold">
             Join
           </button>
+          {backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
+            <Link to={`/community/${id}/moderators`}>
+              <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold flex items-center space-x-2">
+                <Shield className="w-5 h-5" />
+                <span>Manage Moderators</span>
+              </button>
+            </Link>
+          )}
         </div>
       </div>
 

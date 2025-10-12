@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { User, Mail, MapPin, Calendar, Edit2, Settings, Loader } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Edit2, Settings, Loader,Award } from 'lucide-react';
 import PostCard from '../components/post/PostCard';
 import { useAuth } from '../context/AuthContext';
 import { useUserSync } from '../hooks/useUserSync';
 import { getUserPosts } from '../services/api';
 import { Link } from 'react-router-dom';
+
 
 const Profile = () => {
   const { currentUser, logout } = useAuth();
@@ -120,6 +121,14 @@ const Profile = () => {
             </button>
           </Link>
         </div>
+        {backendUser.role !== 'doctor' && (
+          <Link to="/doctor-verification">
+            <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              <Award className="w-4 h-4" />
+              <span>Become Verified Doctor</span>
+            </button>
+          </Link>
+        )}
 
         {/* Bio */}
         <p className="text-gray-700 mt-4 leading-relaxed">{user.bio}</p>

@@ -15,6 +15,8 @@ import InstallPrompt from './components/common/InstallPrompt';
 import EditProfile from './pages/EditProfile';
 import Settings from './pages/Settings';
 import AdminDashboard from './pages/AdminDashboard';
+import DoctorVerification from './pages/DoctorVerification';
+import CommunityModeration from './pages/CommunityModeration';
 
 function App() {
   const { currentUser } = useAuth();
@@ -108,6 +110,23 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path="/doctor-verification" 
+              element={
+                <ProtectedRoute>
+                  <DoctorVerification />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/community/:id/moderators" 
+              element={
+                <ProtectedRoute>
+                  <CommunityModeration />
+                </ProtectedRoute>
+              } 
+            />
+
 
             {/* Catch all - redirect to home */}
             <Route path="*" element={<Navigate to="/" replace />} />

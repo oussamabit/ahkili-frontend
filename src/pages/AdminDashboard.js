@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Users, Flag, Trash2, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Shield, Users, Flag, Trash2, CheckCircle, AlertTriangle, Award, FileText, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useUserSync } from '../hooks/useUserSync';
 import { useToast } from '../context/ToastContext';
@@ -12,10 +12,12 @@ const AdminDashboard = () => {
   const { backendUser } = useUserSync();
   const { showSuccess, showError } = useToast();
   
-  const [activeTab, setActiveTab] = useState('reports');
+  const [activeTab, setActiveTab] = useState('verifications');
   const [reports, setReports] = useState([]);
   const [users, setUsers] = useState([]);
+  const [verifications, setVerifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDoc, setSelectedDoc] = useState(null);
 
   useEffect(() => {
     if (backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator')) {
@@ -25,17 +27,46 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [reportsRes, usersRes] = await Promise.all([
+      const [reportsRes, usersRes, verificationsRes] = await Promise.all([
         axios.get(`${API_URL}/admin/reports?admin_id=${backendUser.id}`),
-        axios.get(`${API_URL}/admin/users?admin_id=${backendUser.id}`)
+        axios.get(`${API_URL}/admin/users?admin_id=${backendUser.id}`),
+        backendUser.role === 'admin' 
+          ? axios.get(`${API_URL}/admin/doctor-verifications?admin_id=${backendUser.id}&status=pending`)
+          : Promise.resolve({ data: [] })
       ]);
       setReports(reportsRes.data);
       setUsers(usersRes.data);
+      setVerifications(verificationsRes.data);
     } catch (error) {
       console.error('Error fetching admin data:', error);
       showError('Failed to load admin data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleApproveDoctor = async (verificationId) => {
+    if (!window.confirm('Approve this doctor verification?')) return;
+
+    try {
+      await axios.post(`${API_URL}/admin/doctor-verifications/${verificationId}/approve?admin_id=${backendUser.id}`);
+      showSuccess('Doctor verification approved! User is now a verified doctor.');
+      fetchData();
+    } catch (error) {
+      showError('Failed to approve verification');
+    }
+  };
+
+  const handleRejectDoctor = async (verificationId) => {
+    const reason = prompt('Reason for rejection:');
+    if (!reason) return;
+
+    try {
+      await axios.post(`${API_URL}/admin/doctor-verifications/${verificationId}/reject?admin_id=${backendUser.id}&reason=${encodeURIComponent(reason)}`);
+      showSuccess('Doctor verification rejected');
+      fetchData();
+    } catch (error) {
+      showError('Failed to reject verification');
     }
   };
 
@@ -126,10 +157,23 @@ const AdminDashboard = () => {
 
       {/* Tabs */}
       <div className="bg-white rounded-lg shadow-md mb-6">
-        <div className="flex border-b">
+        <div className="flex border-b overflow-x-auto">
+          {backendUser.role === 'admin' && (
+            <button
+              onClick={() => setActiveTab('verifications')}
+              className={`flex-1 py-4 px-6 text-center font-semibold transition whitespace-nowrap ${
+                activeTab === 'verifications'
+                  ? 'text-primary border-b-2 border-primary'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              <Award className="w-5 h-5 inline mr-2" />
+              Doctor Verifications ({verifications.length})
+            </button>
+          )}
           <button
             onClick={() => setActiveTab('reports')}
-            className={`flex-1 py-4 px-6 text-center font-semibold transition ${
+            className={`flex-1 py-4 px-6 text-center font-semibold transition whitespace-nowrap ${
               activeTab === 'reports'
                 ? 'text-primary border-b-2 border-primary'
                 : 'text-gray-600 hover:text-gray-800'
@@ -140,7 +184,7 @@ const AdminDashboard = () => {
           </button>
           <button
             onClick={() => setActiveTab('users')}
-            className={`flex-1 py-4 px-6 text-center font-semibold transition ${
+            className={`flex-1 py-4 px-6 text-center font-semibold transition whitespace-nowrap ${
               activeTab === 'users'
                 ? 'text-primary border-b-2 border-primary'
                 : 'text-gray-600 hover:text-gray-800'
@@ -151,6 +195,104 @@ const AdminDashboard = () => {
           </button>
         </div>
       </div>
+
+      {/* Doctor Verifications Tab */}
+      {activeTab === 'verifications' && backendUser.role === 'admin' && (
+        <div className="space-y-4">
+          {verifications.length === 0 ? (
+            <div className="bg-white rounded-lg shadow-md p-8 text-center">
+              <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+              <p className="text-gray-600">No pending verifications!</p>
+            </div>
+          ) : (
+            verifications.map(verification => (
+              <div key={verification.id} className="bg-white rounded-lg shadow-md p-6">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Award className="w-6 h-6 text-primary" />
+                      <h3 className="text-xl font-bold text-gray-800">{verification.full_name}</h3>
+                      <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                        {verification.specialization}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-500">License Number</p>
+                        <p className="font-semibold text-gray-800">{verification.license_number}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Phone</p>
+                        <p className="font-semibold text-gray-800">{verification.phone_number}</p>
+                      </div>
+                      <div className="md:col-span-2">
+                        <p className="text-sm text-gray-500">Clinic Address</p>
+                        <p className="font-semibold text-gray-800">{verification.clinic_address}</p>
+                      </div>
+                      <div className="md:col-span-2">
+                        <p className="text-sm text-gray-500">Bio</p>
+                        <p className="text-gray-700">{verification.bio}</p>
+                      </div>
+                    </div>
+
+                    {verification.license_document_url && (
+                      <button
+                        onClick={() => setSelectedDoc(verification.license_document_url)}
+                        className="flex items-center space-x-2 text-primary hover:text-green-600 transition"
+                      >
+                        <FileText className="w-5 h-5" />
+                        <span>View License Document</span>
+                      </button>
+                    )}
+
+                    <p className="text-sm text-gray-500 mt-4">
+                      Submitted: {new Date(verification.submitted_at).toLocaleString()}
+                    </p>
+                  </div>
+
+                  <div className="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2">
+                    <button
+                      onClick={() => handleApproveDoctor(verification.id)}
+                      className="flex-1 lg:flex-none px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2"
+                    >
+                      <CheckCircle className="w-5 h-5" />
+                      <span>Approve</span>
+                    </button>
+                    <button
+                      onClick={() => handleRejectDoctor(verification.id)}
+                      className="flex-1 lg:flex-none px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center justify-center space-x-2"
+                    >
+                      <X className="w-5 h-5" />
+                      <span>Reject</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* Document Viewer Modal */}
+      {selectedDoc && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="text-xl font-bold">License Document</h3>
+              <button
+                onClick={() => setSelectedDoc(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="p-4">
+              <img src={selectedDoc} alt="License Document" className="w-full" />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Reports Tab */}
       {activeTab === 'reports' && (
