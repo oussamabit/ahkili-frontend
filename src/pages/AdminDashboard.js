@@ -20,8 +20,6 @@ const AdminDashboard = () => {
   const [selectedDoc, setSelectedDoc] = useState(null);
 
   useEffect(() => {
-    console.log('🔧 ADMIN DEBUG - Backend User:', backendUser);
-    
     if (backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator')) {
       fetchData();
     }
@@ -29,34 +27,25 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      console.log('🔄 Fetching admin data...');
-      console.log('📝 API URLs:', {
-        reports: `${API_URL}/admin/reports?admin_id=${backendUser.id}`,
-        users: `${API_URL}/admin/users?admin_id=${backendUser.id}`,
-        verifications: `${API_URL}/admin/doctor-verifications?admin_id=${backendUser.id}&status=pending`
-      });
-
-      const [reportsRes, usersRes, verificationsRes] = await Promise.all([
+      const requests = [
         axios.get(`${API_URL}/admin/reports?admin_id=${backendUser.id}`),
-        axios.get(`${API_URL}/admin/users?admin_id=${backendUser.id}`),
-        backendUser.role === 'admin' 
-          ? axios.get(`${API_URL}/admin/doctor-verifications?admin_id=${backendUser.id}&status=pending`)
-          : Promise.resolve({ data: [] })
-      ]);
-      
-      console.log('✅ API Responses:', {
-        reports: reportsRes.data,
-        users: usersRes.data,
-        verifications: verificationsRes.data
-      });
+        axios.get(`${API_URL}/admin/users?admin_id=${backendUser.id}`)
+      ];
 
-      setReports(reportsRes.data);
-      setUsers(usersRes.data);
-      setVerifications(verificationsRes.data);
+      // Only fetch verifications if admin
+      if (backendUser.role === 'admin') {
+        requests.push(axios.get(`${API_URL}/admin/doctor-verifications?admin_id=${backendUser.id}&status=pending`));
+      }
+
+      const responses = await Promise.all(requests);
+      
+      setReports(responses[0].data);
+      setUsers(responses[1].data);
+      if (backendUser.role === 'admin') {
+        setVerifications(responses[2].data);
+      }
     } catch (error) {
-      console.error('❌ Error fetching admin data:', error);
-      console.error('🔍 Error details:', error.response?.data);
-      console.error('🚨 Error status:', error.response?.status);
+      console.error('Error fetching admin data:', error);
       showError('Failed to load admin data');
     } finally {
       setLoading(false);
@@ -71,7 +60,7 @@ const AdminDashboard = () => {
       showSuccess('Doctor verification approved! User is now a verified doctor.');
       fetchData();
     } catch (error) {
-      console.error('❌ Approve error:', error.response?.data);
+      console.error('Error:', error);
       showError('Failed to approve verification');
     }
   };
@@ -85,7 +74,7 @@ const AdminDashboard = () => {
       showSuccess('Doctor verification rejected');
       fetchData();
     } catch (error) {
-      console.error('❌ Reject error:', error.response?.data);
+      console.error('Error:', error);
       showError('Failed to reject verification');
     }
   };
@@ -107,7 +96,7 @@ const AdminDashboard = () => {
     if (!reason) return;
 
     try {
-      await axios.post(`${API_URL}/admin/ban-user?admin_id=${backendUser.id}&user_id=${userId}&reason=${reason}`);
+      await axios.post(`${API_URL}/admin/ban-user?admin_id=${backendUser.id}&user_id=${userId}&reason=${encodeURIComponent(reason)}`);
       showSuccess('User banned');
       fetchData();
     } catch (error) {
@@ -134,7 +123,7 @@ const AdminDashboard = () => {
     if (!reason) return;
 
     try {
-      await axios.delete(`${API_URL}/admin/posts/${postId}/moderate?admin_id=${backendUser.id}&reason=${reason}`);
+      await axios.delete(`${API_URL}/admin/posts/${postId}/moderate?admin_id=${backendUser.id}&reason=${encodeURIComponent(reason)}`);
       await handleResolveReport(reportId);
       showSuccess('Post deleted');
     } catch (error) {
@@ -216,7 +205,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Verifications */}
+      {/* Doctor Verifications Tab */}
       {activeTab === 'verifications' && backendUser.role === 'admin' && (
         <div className="space-y-4">
           {verifications.length === 0 ? (
@@ -225,62 +214,62 @@ const AdminDashboard = () => {
               <p className="text-gray-600">No pending verifications!</p>
             </div>
           ) : (
-            verifications.map(v => (
-              <div key={v.id} className="bg-white rounded-lg shadow-md p-6">
+            verifications.map(verification => (
+              <div key={verification.id} className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-4">
                       <Award className="w-6 h-6 text-primary" />
-                      <h3 className="text-xl font-bold text-gray-800">{v.full_name}</h3>
+                      <h3 className="text-xl font-bold text-gray-800">{verification.full_name}</h3>
                       <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-                        {v.specialization}
+                        {verification.specialization}
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-gray-500">License Number</p>
-                        <p className="font-semibold text-gray-800">{v.license_number}</p>
+                        <p className="font-semibold text-gray-800">{verification.license_number}</p>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Phone</p>
-                        <p className="font-semibold text-gray-800">{v.phone_number}</p>
+                        <p className="font-semibold text-gray-800">{verification.phone_number}</p>
                       </div>
                       <div className="md:col-span-2">
                         <p className="text-sm text-gray-500">Clinic Address</p>
-                        <p className="font-semibold text-gray-800">{v.clinic_address}</p>
+                        <p className="font-semibold text-gray-800">{verification.clinic_address}</p>
                       </div>
                       <div className="md:col-span-2">
                         <p className="text-sm text-gray-500">Bio</p>
-                        <p className="text-gray-700">{v.bio}</p>
+                        <p className="text-gray-700">{verification.bio}</p>
                       </div>
                     </div>
 
-                    {v.license_document_url && (
+                    {verification.license_document_url && (
                       <button
-                        onClick={() => setSelectedDoc(v.license_document_url)}
-                        className="flex items-center space-x-2 text-primary hover:text-green-600 transition"
+                        onClick={() => setSelectedDoc(verification.license_document_url)}
+                        className="flex items-center space-x-2 text-primary hover:text-green-600 transition mb-4"
                       >
                         <FileText className="w-5 h-5" />
                         <span>View License Document</span>
                       </button>
                     )}
 
-                    <p className="text-sm text-gray-500 mt-4">
-                      Submitted: {new Date(v.submitted_at).toLocaleString()}
+                    <p className="text-sm text-gray-500">
+                      Submitted: {new Date(verification.submitted_at).toLocaleString()}
                     </p>
                   </div>
 
                   <div className="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2">
                     <button
-                      onClick={() => handleApproveDoctor(v.id)}
+                      onClick={() => handleApproveDoctor(verification.id)}
                       className="flex-1 lg:flex-none px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2"
                     >
                       <CheckCircle className="w-5 h-5" />
                       <span>Approve</span>
                     </button>
                     <button
-                      onClick={() => handleRejectDoctor(v.id)}
+                      onClick={() => handleRejectDoctor(verification.id)}
                       className="flex-1 lg:flex-none px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center justify-center space-x-2"
                     >
                       <X className="w-5 h-5" />
@@ -294,13 +283,16 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Document Viewer */}
+      {/* Document Viewer Modal */}
       {selectedDoc && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
-            <div className="flex items-center justify-between p-4 border-b">
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4" onClick={() => setSelectedDoc(null)}>
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white">
               <h3 className="text-xl font-bold">License Document</h3>
-              <button onClick={() => setSelectedDoc(null)} className="text-gray-400 hover:text-gray-600">
+              <button
+                onClick={() => setSelectedDoc(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -311,7 +303,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Reports */}
+      {/* Reports Tab */}
       {activeTab === 'reports' && (
         <div className="space-y-4">
           {reports.filter(r => r.status === 'pending').length === 0 ? (
@@ -320,24 +312,28 @@ const AdminDashboard = () => {
               <p className="text-gray-600">No pending reports!</p>
             </div>
           ) : (
-            reports.filter(r => r.status === 'pending').map(r => (
-              <div key={r.id} className="bg-white rounded-lg shadow-md p-6">
+            reports.filter(r => r.status === 'pending').map(report => (
+              <div key={report.id} className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
-                        {r.target_type}
+                        {report.target_type}
                       </span>
-                      <span className="text-gray-500 text-sm">ID: {r.target_id}</span>
+                      <span className="text-gray-500 text-sm">
+                        ID: {report.target_id}
+                      </span>
                     </div>
-                    <p className="text-gray-700 mb-4"><strong>Reason:</strong> {r.reason}</p>
-                    <p className="text-sm text-gray-500">Reported: {new Date(r.created_at).toLocaleString()}</p>
+                    <p className="text-gray-700 mb-4"><strong>Reason:</strong> {report.reason}</p>
+                    <p className="text-sm text-gray-500">
+                      Reported: {new Date(report.created_at).toLocaleString()}
+                    </p>
                   </div>
-
+                  
                   <div className="flex flex-col space-y-2">
-                    {r.target_type === 'post' && (
+                    {report.target_type === 'post' && (
                       <button
-                        onClick={() => handleDeletePost(r.id, r.target_id)}
+                        onClick={() => handleDeletePost(report.id, report.target_id)}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center space-x-2"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -345,7 +341,7 @@ const AdminDashboard = () => {
                       </button>
                     )}
                     <button
-                      onClick={() => handleResolveReport(r.id)}
+                      onClick={() => handleResolveReport(report.id)}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center space-x-2"
                     >
                       <CheckCircle className="w-4 h-4" />
@@ -359,9 +355,9 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Users */}
+      {/* Users Tab */}
       {activeTab === 'users' && (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
@@ -373,53 +369,49 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {users.map(u => (
-                <tr key={u.id}>
+              {users.map(user => (
+                <tr key={user.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                        {u.username.charAt(0).toUpperCase()}
+                        {user.username.charAt(0).toUpperCase()}
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{u.username}</div>
+                        <div className="text-sm font-medium text-gray-900">{user.username}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{u.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.email}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        u.role === 'admin'
-                          ? 'bg-purple-100 text-purple-800'
-                          : u.role === 'moderator'
-                          ? 'bg-blue-100 text-blue-800'
-                          : u.role === 'doctor'
-                          ? 'bg-green-100 text-green-800'
-                          : u.role === 'banned'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {u.role}
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      user.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                      user.role === 'moderator' ? 'bg-blue-100 text-blue-800' :
+                      user.role === 'doctor' ? 'bg-green-100 text-green-800' :
+                      user.role === 'banned' ? 'bg-red-100 text-red-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {user.role}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(u.created_at).toLocaleDateString()}
+                    {new Date(user.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {backendUser.role === 'admin' && u.role !== 'admin' && (
+                    {backendUser.role === 'admin' && user.role !== 'admin' && user.id !== backendUser.id && (
                       <div className="flex space-x-2">
-                        {u.role !== 'moderator' && (
+                        {user.role !== 'moderator' && user.role !== 'banned' && (
                           <button
-                            onClick={() => handlePromoteUser(u.id, u.username, 'moderator')}
+                            onClick={() => handlePromoteUser(user.id, user.username, 'moderator')}
                             className="text-blue-600 hover:text-blue-800"
                           >
                             Make Mod
                           </button>
                         )}
-                        {u.role !== 'banned' && (
+                        {user.role !== 'banned' && (
                           <button
-                            onClick={() => handleBanUser(u.id, u.username)}
+                            onClick={() => handleBanUser(user.id, user.username)}
                             className="text-red-600 hover:text-red-800 ml-2"
                           >
                             Ban
