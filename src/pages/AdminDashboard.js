@@ -20,6 +20,8 @@ const AdminDashboard = () => {
   const [selectedDoc, setSelectedDoc] = useState(null);
 
   useEffect(() => {
+    console.log('🔧 ADMIN DEBUG - Backend User:', backendUser);
+    
     if (backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator')) {
       fetchData();
     }
@@ -27,6 +29,13 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
+      console.log('🔄 Fetching admin data...');
+      console.log('📝 API URLs:', {
+        reports: `${API_URL}/admin/reports?admin_id=${backendUser.id}`,
+        users: `${API_URL}/admin/users?admin_id=${backendUser.id}`,
+        verifications: `${API_URL}/admin/doctor-verifications?admin_id=${backendUser.id}&status=pending`
+      });
+
       const [reportsRes, usersRes, verificationsRes] = await Promise.all([
         axios.get(`${API_URL}/admin/reports?admin_id=${backendUser.id}`),
         axios.get(`${API_URL}/admin/users?admin_id=${backendUser.id}`),
@@ -34,11 +43,20 @@ const AdminDashboard = () => {
           ? axios.get(`${API_URL}/admin/doctor-verifications?admin_id=${backendUser.id}&status=pending`)
           : Promise.resolve({ data: [] })
       ]);
+      
+      console.log('✅ API Responses:', {
+        reports: reportsRes.data,
+        users: usersRes.data,
+        verifications: verificationsRes.data
+      });
+
       setReports(reportsRes.data);
       setUsers(usersRes.data);
       setVerifications(verificationsRes.data);
     } catch (error) {
-      console.error('Error fetching admin data:', error);
+      console.error('❌ Error fetching admin data:', error);
+      console.error('🔍 Error details:', error.response?.data);
+      console.error('🚨 Error status:', error.response?.status);
       showError('Failed to load admin data');
     } finally {
       setLoading(false);
@@ -53,6 +71,7 @@ const AdminDashboard = () => {
       showSuccess('Doctor verification approved! User is now a verified doctor.');
       fetchData();
     } catch (error) {
+      console.error('❌ Approve error:', error.response?.data);
       showError('Failed to approve verification');
     }
   };
@@ -66,6 +85,7 @@ const AdminDashboard = () => {
       showSuccess('Doctor verification rejected');
       fetchData();
     } catch (error) {
+      console.error('❌ Reject error:', error.response?.data);
       showError('Failed to reject verification');
     }
   };
@@ -196,7 +216,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Doctor Verifications Tab */}
+      {/* Verifications */}
       {activeTab === 'verifications' && backendUser.role === 'admin' && (
         <div className="space-y-4">
           {verifications.length === 0 ? (
@@ -205,40 +225,40 @@ const AdminDashboard = () => {
               <p className="text-gray-600">No pending verifications!</p>
             </div>
           ) : (
-            verifications.map(verification => (
-              <div key={verification.id} className="bg-white rounded-lg shadow-md p-6">
+            verifications.map(v => (
+              <div key={v.id} className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-4">
                       <Award className="w-6 h-6 text-primary" />
-                      <h3 className="text-xl font-bold text-gray-800">{verification.full_name}</h3>
+                      <h3 className="text-xl font-bold text-gray-800">{v.full_name}</h3>
                       <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-                        {verification.specialization}
+                        {v.specialization}
                       </span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-gray-500">License Number</p>
-                        <p className="font-semibold text-gray-800">{verification.license_number}</p>
+                        <p className="font-semibold text-gray-800">{v.license_number}</p>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Phone</p>
-                        <p className="font-semibold text-gray-800">{verification.phone_number}</p>
+                        <p className="font-semibold text-gray-800">{v.phone_number}</p>
                       </div>
                       <div className="md:col-span-2">
                         <p className="text-sm text-gray-500">Clinic Address</p>
-                        <p className="font-semibold text-gray-800">{verification.clinic_address}</p>
+                        <p className="font-semibold text-gray-800">{v.clinic_address}</p>
                       </div>
                       <div className="md:col-span-2">
                         <p className="text-sm text-gray-500">Bio</p>
-                        <p className="text-gray-700">{verification.bio}</p>
+                        <p className="text-gray-700">{v.bio}</p>
                       </div>
                     </div>
 
-                    {verification.license_document_url && (
+                    {v.license_document_url && (
                       <button
-                        onClick={() => setSelectedDoc(verification.license_document_url)}
+                        onClick={() => setSelectedDoc(v.license_document_url)}
                         className="flex items-center space-x-2 text-primary hover:text-green-600 transition"
                       >
                         <FileText className="w-5 h-5" />
@@ -247,20 +267,20 @@ const AdminDashboard = () => {
                     )}
 
                     <p className="text-sm text-gray-500 mt-4">
-                      Submitted: {new Date(verification.submitted_at).toLocaleString()}
+                      Submitted: {new Date(v.submitted_at).toLocaleString()}
                     </p>
                   </div>
 
                   <div className="flex lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2">
                     <button
-                      onClick={() => handleApproveDoctor(verification.id)}
+                      onClick={() => handleApproveDoctor(v.id)}
                       className="flex-1 lg:flex-none px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center justify-center space-x-2"
                     >
                       <CheckCircle className="w-5 h-5" />
                       <span>Approve</span>
                     </button>
                     <button
-                      onClick={() => handleRejectDoctor(verification.id)}
+                      onClick={() => handleRejectDoctor(v.id)}
                       className="flex-1 lg:flex-none px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center justify-center space-x-2"
                     >
                       <X className="w-5 h-5" />
@@ -274,16 +294,13 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Document Viewer Modal */}
+      {/* Document Viewer */}
       {selectedDoc && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="text-xl font-bold">License Document</h3>
-              <button
-                onClick={() => setSelectedDoc(null)}
-                className="text-gray-400 hover:text-gray-600"
-              >
+              <button onClick={() => setSelectedDoc(null)} className="text-gray-400 hover:text-gray-600">
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -294,7 +311,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Reports Tab */}
+      {/* Reports */}
       {activeTab === 'reports' && (
         <div className="space-y-4">
           {reports.filter(r => r.status === 'pending').length === 0 ? (
@@ -303,28 +320,24 @@ const AdminDashboard = () => {
               <p className="text-gray-600">No pending reports!</p>
             </div>
           ) : (
-            reports.filter(r => r.status === 'pending').map(report => (
-              <div key={report.id} className="bg-white rounded-lg shadow-md p-6">
+            reports.filter(r => r.status === 'pending').map(r => (
+              <div key={r.id} className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
-                        {report.target_type}
+                        {r.target_type}
                       </span>
-                      <span className="text-gray-500 text-sm">
-                        ID: {report.target_id}
-                      </span>
+                      <span className="text-gray-500 text-sm">ID: {r.target_id}</span>
                     </div>
-                    <p className="text-gray-700 mb-4"><strong>Reason:</strong> {report.reason}</p>
-                    <p className="text-sm text-gray-500">
-                      Reported: {new Date(report.created_at).toLocaleString()}
-                    </p>
+                    <p className="text-gray-700 mb-4"><strong>Reason:</strong> {r.reason}</p>
+                    <p className="text-sm text-gray-500">Reported: {new Date(r.created_at).toLocaleString()}</p>
                   </div>
-                  
+
                   <div className="flex flex-col space-y-2">
-                    {report.target_type === 'post' && (
+                    {r.target_type === 'post' && (
                       <button
-                        onClick={() => handleDeletePost(report.id, report.target_id)}
+                        onClick={() => handleDeletePost(r.id, r.target_id)}
                         className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center space-x-2"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -332,7 +345,7 @@ const AdminDashboard = () => {
                       </button>
                     )}
                     <button
-                      onClick={() => handleResolveReport(report.id)}
+                      onClick={() => handleResolveReport(r.id)}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center space-x-2"
                     >
                       <CheckCircle className="w-4 h-4" />
@@ -346,7 +359,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* Users Tab */}
+      {/* Users */}
       {activeTab === 'users' && (
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <table className="w-full">
@@ -360,49 +373,53 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {users.map(user => (
-                <tr key={user.id}>
+              {users.map(u => (
+                <tr key={u.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                        {user.username.charAt(0).toUpperCase()}
+                        {u.username.charAt(0).toUpperCase()}
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{user.username}</div>
+                        <div className="text-sm font-medium text-gray-900">{u.username}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {user.email}
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{u.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      user.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                      user.role === 'moderator' ? 'bg-blue-100 text-blue-800' :
-                      user.role === 'doctor' ? 'bg-green-100 text-green-800' :
-                      user.role === 'banned' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {user.role}
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        u.role === 'admin'
+                          ? 'bg-purple-100 text-purple-800'
+                          : u.role === 'moderator'
+                          ? 'bg-blue-100 text-blue-800'
+                          : u.role === 'doctor'
+                          ? 'bg-green-100 text-green-800'
+                          : u.role === 'banned'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      {u.role}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(user.created_at).toLocaleDateString()}
+                    {new Date(u.created_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {backendUser.role === 'admin' && user.role !== 'admin' && (
+                    {backendUser.role === 'admin' && u.role !== 'admin' && (
                       <div className="flex space-x-2">
-                        {user.role !== 'moderator' && (
+                        {u.role !== 'moderator' && (
                           <button
-                            onClick={() => handlePromoteUser(user.id, user.username, 'moderator')}
+                            onClick={() => handlePromoteUser(u.id, u.username, 'moderator')}
                             className="text-blue-600 hover:text-blue-800"
                           >
                             Make Mod
                           </button>
                         )}
-                        {user.role !== 'banned' && (
+                        {u.role !== 'banned' && (
                           <button
-                            onClick={() => handleBanUser(user.id, user.username)}
+                            onClick={() => handleBanUser(u.id, u.username)}
                             className="text-red-600 hover:text-red-800 ml-2"
                           >
                             Ban

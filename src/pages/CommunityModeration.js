@@ -29,7 +29,7 @@ const CommunityModeration = () => {
     try {
       const [communityRes, moderatorsRes, usersRes] = await Promise.all([
         axios.get(`${API_URL}/communities/${id}`),
-        axios.get(`${API_URL}/admin/communities/${id}/moderators`),
+        axios.get(`${API_URL}/admin/communities/${id}/moderators?admin_id=${backendUser.id}`),
         axios.get(`${API_URL}/admin/users?admin_id=${backendUser.id}`)
       ]);
       
@@ -46,7 +46,9 @@ const CommunityModeration = () => {
 
   const handleAddModerator = async (userId) => {
     try {
-      await axios.post(`${API_URL}/admin/communities/${id}/moderators?admin_id=${backendUser.id}&user_id=${userId}`);
+      await axios.post(
+        `${API_URL}/admin/communities/${id}/moderators?admin_id=${backendUser.id}&user_id=${userId}`
+      );
       showSuccess('Moderator added successfully');
       setShowAddModal(false);
       fetchData();
@@ -59,7 +61,9 @@ const CommunityModeration = () => {
     if (!window.confirm(`Remove ${username} as moderator?`)) return;
 
     try {
-      await axios.delete(`${API_URL}/admin/communities/${id}/moderators/${userId}?admin_id=${backendUser.id}`);
+      await axios.delete(
+        `${API_URL}/admin/communities/${id}/moderators/${userId}?admin_id=${backendUser.id}`
+      );
       showSuccess('Moderator removed');
       fetchData();
     } catch (error) {

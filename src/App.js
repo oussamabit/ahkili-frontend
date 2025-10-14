@@ -123,7 +123,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CommunityModeration />
-                </ProtectedRoute>
+                </ProtectedRoute> 
               } 
             />
 
