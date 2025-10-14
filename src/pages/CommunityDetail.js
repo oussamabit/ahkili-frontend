@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Users, Plus } from 'lucide-react';
+import { ArrowLeft, Users, Plus, Shield } from 'lucide-react';
 import PostCard from '../components/post/PostCard';
 import CreatePostModal from '../components/post/CreatePostModal';
 import { getCommunity, getPosts, createPost as createPostAPI } from '../services/api';
@@ -105,17 +105,19 @@ const CommunityDetail = () => {
               </p>
             </div>
           </div>
-          <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold">
-            Join
-          </button>
-          {backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
-            <Link to={`/community/${id}/moderators`}>
-              <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold flex items-center space-x-2">
-                <Shield className="w-5 h-5" />
-                <span>Manage Moderators</span>
-              </button>
-            </Link>
-          )}
+          <div className="flex flex-col space-y-2">
+            <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold">
+              Join
+            </button>
+            {backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
+              <Link to={`/community/${id}/moderators`}>
+                <button className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold flex items-center space-x-2">
+                  <Shield className="w-5 h-5" />
+                  <span>Manage Moderators</span>
+                </button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 
