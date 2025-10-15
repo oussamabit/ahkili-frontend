@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag, Award } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag } from 'lucide-react';
 import { useUserSync } from '../../hooks/useUserSync';
 import { deletePost as deletePostAPI, toggleReaction } from '../../services/api';
 import axios from 'axios';
@@ -11,33 +11,55 @@ const PostCard = ({ post, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [loadingReaction, setLoadingReaction] = useState(false);
   const { backendUser } = useUserSync();
 
-  useEffect(() => {
-    // Initialize likes from post data or default to 0
+  React.useEffect(() => {
     setLikesCount(post.reactions_count || post.likes || 0);
     setLiked(post.user_has_reacted || false);
   }, [post]);
 
+  const getTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    return `${Math.floor(seconds / 86400)}d ago`;
+  };
+
   const handleLike = async (e) => {
-    e.stopPropagation(); // Prevent navigation when clicking like
+    e.stopPropagation();
     if (!backendUser) return;
 
+    setLoadingReaction(true);
     try {
       const result = await toggleReaction(post.id, backendUser.id);
       setLikesCount(result.reactions_count);
       setLiked(result.user_has_reacted);
     } catch (error) {
       console.error('Error toggling like:', error);
+    } finally {
+      setLoadingReaction(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this post?')) return;
+
+    try {
+      await deletePostAPI(post.id, backendUser.id);
+      if (onDelete) onDelete(post.id);
+      alert('Post deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert('Failed to delete post. You can only delete your own posts.');
     }
   };
 
   const handleReport = async () => {
-    if (!backendUser) {
-      alert('Please log in to report posts.');
-      return;
-    }
-
     const reason = prompt('Why are you reporting this post?');
     if (!reason) return;
 
@@ -55,36 +77,11 @@ const PostCard = ({ post, onDelete }) => {
     }
   };
 
-  // Format time ago
-  const getTimeAgo = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now - date) / 1000);
-    
-    if (seconds < 60) return 'Just now';
-    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-    return `${Math.floor(seconds / 86400)}d ago`;
-  };
-
-  const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this post?')) return;
-
-    try {
-      await deletePostAPI(post.id, backendUser.id);
-      if (onDelete) onDelete(post.id);
-      alert('Post deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      alert('Failed to delete post. You can only delete your own posts.');
-    }
-  };
-
-  // Get author name (from backend or default)
   const authorName = post.author?.username || 'Anonymous';
   const communityName = post.community?.name || 'General';
   const timeAgo = post.created_at ? getTimeAgo(post.created_at) : 'Recently';
   const isOwner = backendUser && post.user_id === backendUser.id;
+  const commentCount = post.comments?.length || 0;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition">
@@ -95,20 +92,12 @@ const PostCard = ({ post, onDelete }) => {
             {authorName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <div className="flex items-center space-x-2">
-              <p className="font-semibold text-gray-800">{authorName}</p>
-              {post.author?.role === 'doctor' && post.author?.verified && (
-                <span className="inline-flex items-center px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full font-semibold">
-                  <Award className="w-3 h-3 mr-1" />
-                  Verified Doctor
-                </span>
-              )}
-            </div>
+            <p className="font-semibold text-gray-800">{authorName}</p>
             <p className="text-xs text-gray-500">{communityName} • {timeAgo}</p>
           </div>
         </div>
         
-        {/* Menu Button (visible for all users) */}
+        {/* Menu Button */}
         <div className="relative">
           <button 
             onClick={() => setShowMenu(!showMenu)}
@@ -149,10 +138,10 @@ const PostCard = ({ post, onDelete }) => {
       </Link>
       <p className="text-gray-600 mb-4 line-clamp-3">{post.content}</p>
 
-      {/* Post Image (if exists) */}
-      {post.image_url && (
+      {/* Post Image */}
+      {(post.image_url || post.imageUrl) && (
         <img 
-          src={post.image_url} 
+          src={post.image_url || post.imageUrl} 
           alt={post.title}
           className="w-full h-64 object-cover rounded-lg mb-4"
         />
@@ -162,19 +151,24 @@ const PostCard = ({ post, onDelete }) => {
       <div className="flex items-center space-x-6 pt-4 border-t">
         <button 
           onClick={handleLike}
+          disabled={loadingReaction}
           className={`flex items-center space-x-2 transition ${
             liked 
-              ? 'text-red-500' 
-              : 'text-gray-600 hover:text-red-500'
-          }`}
+              ? 'text-red-600' 
+              : 'text-gray-600 hover:text-red-600'
+          } disabled:opacity-50`}
         >
           <Heart className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} />
           <span className="text-sm font-semibold">{likesCount}</span>
         </button>
-        <button className="flex items-center space-x-2 text-gray-600 hover:text-primary transition">
-          <MessageCircle className="w-5 h-5" />
-          <span className="text-sm">{post.comments?.length || 0}</span>
-        </button>
+
+        <Link to={`/post/${post.id}`}>
+          <button className="flex items-center space-x-2 text-gray-600 hover:text-primary transition">
+            <MessageCircle className="w-5 h-5" />
+            <span className="text-sm">{commentCount}</span>
+          </button>
+        </Link>
+
         <button className="flex items-center space-x-2 text-gray-600 hover:text-primary transition">
           <Share2 className="w-5 h-5" />
           <span className="text-sm">Share</span>

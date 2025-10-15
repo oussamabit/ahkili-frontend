@@ -11,7 +11,7 @@ const PostDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { showSuccess } = useToast();
+  const { showSuccess, showError } = useToast();
   
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -32,16 +32,26 @@ const PostDetail = () => {
 
   const fetchData = async () => {
     try {
+      console.log('Fetching post with ID:', id);
       const [postData, commentsData] = await Promise.all([
         getPost(id),
         getComments(id)
       ]);
+      
+      console.log('Post data:', postData);
+      console.log('Comments data:', commentsData);
+      
+      if (!postData || !postData.id) {
+        throw new Error('Invalid post data');
+      }
+      
       setPost(postData);
-      setComments(commentsData);
+      setComments(commentsData || []);
       setLikesCount(postData.reactions_count || postData.likes || 0);
       setLiked(postData.user_has_reacted || false);
     } catch (error) {
       console.error('Error fetching post:', error);
+      showError('Failed to load post. Please try again.');
     } finally {
       setLoading(false);
     }
