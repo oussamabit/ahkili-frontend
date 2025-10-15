@@ -53,8 +53,11 @@ export const getComments = async (postId) => {
   return response.data;
 };
 
-export const createComment = async (postId, commentData, userId) => {
-  const response = await api.post(`/comments/post/${postId}?user_id=${userId}`, commentData);
+export const createComment = async (postId, commentData, userId, parentId = null) => {
+  const url = parentId 
+    ? `/comments/post/${postId}?user_id=${userId}&parent_id=${parentId}`
+    : `/comments/post/${postId}?user_id=${userId}`;
+  const response = await api.post(url, commentData);
   return response.data;
 };
 
@@ -118,5 +121,17 @@ export const uploadImage = async (file) => {
   });
   return response.data;
 };
+
+// ============= COMMENT REACTION API =============
+export const toggleCommentReaction = async (commentId, userId, reactionType = 'like') => {
+  const response = await api.post(`/comment-reactions/comment/${commentId}?user_id=${userId}&reaction_type=${reactionType}`);
+  return response.data;
+};
+
+export const getCommentReactions = async (commentId, userId) => {
+  const response = await api.get(`/comment-reactions/comment/${commentId}?user_id=${userId}`);
+  return response.data;
+};
+
 
 export default api;
