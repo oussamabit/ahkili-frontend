@@ -1,22 +1,23 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
+import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Communities from './pages/Communities';
+import CommunityDetail from './pages/CommunityDetail';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import Hotlines from './pages/Hotlines';
 import PostDetail from './pages/PostDetail';
-import ProtectedRoute from './components/common/ProtectedRoute';
-import { useAuth } from './context/AuthContext';
-import CommunityDetail from './pages/CommunityDetail';
 import Search from './pages/Search';
-import InstallPrompt from './components/common/InstallPrompt';
-import EditProfile from './pages/EditProfile';
-import Settings from './pages/Settings';
 import AdminDashboard from './pages/AdminDashboard';
 import DoctorVerification from './pages/DoctorVerification';
 import CommunityModeration from './pages/CommunityModeration';
+import Settings from './pages/Settings';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import InstallPrompt from './components/common/InstallPrompt';
+import { useAuth } from './context/AuthContext';
 
 function App() {
   const { currentUser } = useAuth();
@@ -24,116 +25,38 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <main className="container mx-auto px-4 py-6 max-w-7xl">
+        {currentUser && <Navbar />}
+        <main className={currentUser ? "container mx-auto px-4 py-6 max-w-7xl" : ""}>
           <Routes>
-            {/* Public Route - Login */}
-            <Route 
-              path="/login" 
-              element={currentUser ? <Navigate to="/" replace /> : <Login />} 
-            />
-
-            {/* Public Route - Hotlines (always accessible for crisis support) */}
-            <Route path="/hotlines" element={<Hotlines />} />
-
-            {/* Protected Routes */}
-            <Route 
-              path="/" 
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/communities" 
-              element={
-                <ProtectedRoute>
-                  <Communities />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/post/:id" 
-              element={
-                <ProtectedRoute>
-                  <PostDetail />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/community/:id" 
-              element={
-                <ProtectedRoute>
-                  <CommunityDetail />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/search" 
-              element={
-                <ProtectedRoute>
-                  <Search />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/profile/edit" 
-              element={
-                <ProtectedRoute>
-                  <EditProfile />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/settings" 
-              element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              } 
-            />
-
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/doctor-verification" 
-              element={
-                <ProtectedRoute>
-                  <DoctorVerification />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/community/:id/moderators" 
-              element={
-                <ProtectedRoute>
-                  <CommunityModeration />
-                </ProtectedRoute> 
-              } 
-            />
-
-
-            {/* Catch all - redirect to home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* Landing page for non-logged-in users */}
+            {!currentUser ? (
+              <>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            ) : (
+              <>
+                {/* Protected Routes for logged-in users */}
+                <Route path="/" element={<Home />} />
+                <Route path="/communities" element={<Communities />} />
+                <Route path="/community/:id" element={<CommunityDetail />} />
+                <Route path="/community/:id/moderators" element={<CommunityModeration />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/post/:id" element={<PostDetail />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/edit" element={<EditProfile />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/hotlines" element={<Hotlines />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/doctor-verification" element={<DoctorVerification />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            )}
           </Routes>
         </main>
+        {currentUser && <InstallPrompt />}
       </div>
-      <InstallPrompt />
     </Router>
   );
 }

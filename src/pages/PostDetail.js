@@ -32,26 +32,32 @@ const PostDetail = () => {
 
   const fetchData = async () => {
     try {
-      console.log('Fetching post with ID:', id);
-      const [postData, commentsData] = await Promise.all([
-        getPost(id),
-        getComments(id)
-      ]);
+      console.log('=== Fetching post with ID:', id);
       
-      console.log('Post data:', postData);
-      console.log('Comments data:', commentsData);
+      const postData = await getPost(id);
+      console.log('=== Post data received:', postData);
+      
+      const commentsData = await getComments(id);
+      console.log('=== Comments data received:', commentsData);
+      console.log('=== Comments type:', typeof commentsData);
+      console.log('=== Is array?:', Array.isArray(commentsData));
       
       if (!postData || !postData.id) {
-        throw new Error('Invalid post data');
+        throw new Error('Invalid post data returned');
       }
       
+      // Ensure comments is always an array
+      const validComments = Array.isArray(commentsData) ? commentsData : [];
+      console.log('=== Valid comments:', validComments);
+      
       setPost(postData);
-      setComments(commentsData || []);
+      setComments(validComments);
       setLikesCount(postData.reactions_count || postData.likes || 0);
       setLiked(postData.user_has_reacted || false);
     } catch (error) {
-      console.error('Error fetching post:', error);
-      showError('Failed to load post. Please try again.');
+      console.error('=== Error fetching post:', error);
+      console.error('=== Error details:', error.response?.data || error.message);
+      showError('Failed to load post. Check console for details.');
     } finally {
       setLoading(false);
     }
