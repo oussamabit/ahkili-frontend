@@ -8,8 +8,7 @@ const Landing = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-10 h-10" />
-            <span className="text-2xl font-bold text-[#ff7f50]">Ahkili</span>
+            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-30 h-30" />
           </div>
           <div className="flex items-center space-x-4">
             <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
