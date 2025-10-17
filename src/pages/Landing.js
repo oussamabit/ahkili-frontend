@@ -8,16 +8,16 @@ const Landing = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-lg flex items-center justify-center">
               <Heart className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Ahkili</span>
+            <span className="text-2xl font-bold bg-gradient-to-r from-[#ff7f50] to-[#10b981] bg-clip-text text-transparent">Ahkili</span>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="px-5 py-2 text-emerald-600 border-2 border-emerald-600 rounded-full hover:bg-emerald-50 transition font-medium">
+            <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
               Login
             </button>
-            <button className="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium">
+            <button className="px-5 py-2 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium">
               Get Started
             </button>
           </div>
@@ -28,37 +28,37 @@ const Landing = () => {
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="inline-block px-4 py-2 bg-emerald-50 rounded-full mb-6">
-              <span className="text-emerald-600 font-semibold text-sm">🌟 Join 10,000+ members</span>
+            <div className="inline-block px-4 py-2 bg-orange-50 rounded-full mb-6">
+              <span className="text-[#ff7f50] font-semibold text-sm">🌟 Join 10,000+ members</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Mental Health Support,
-              <span className="text-emerald-600"> Right Here</span>
+              <span className="text-[#ff7f50]"> Right Here</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               Connect with supportive communities, access verified mental health professionals, 
               and find crisis support all in one safe space.
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-              <button className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full hover:shadow-xl hover:scale-105 transition font-semibold flex items-center space-x-2 text-lg">
+              <button className="px-8 py-4 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-semibold flex items-center space-x-2 text-lg">
                 <span>Start Your Journey</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-full hover:border-emerald-500 hover:text-emerald-600 transition font-semibold">
+              <button className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-full hover:border-[#ff7f50] hover:text-[#ff7f50] transition font-semibold">
                 Learn More
               </button>
             </div>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-emerald-500 flex-shrink-0" />
+                <CheckCircle className="w-6 h-6 text-[#10b981] flex-shrink-0" />
                 <span className="text-gray-700">Free to join and easy to use</span>
               </div>
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-emerald-500 flex-shrink-0" />
+                <CheckCircle className="w-6 h-6 text-[#10b981] flex-shrink-0" />
                 <span className="text-gray-700">24/7 crisis support available</span>
               </div>
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-emerald-500 flex-shrink-0" />
+                <CheckCircle className="w-6 h-6 text-[#10b981] flex-shrink-0" />
                 <span className="text-gray-700">Verified mental health professionals</span>
               </div>
             </div>
@@ -66,13 +66,13 @@ const Landing = () => {
           
           {/* Hero Image */}
           <div className="relative">
-            <div className="absolute -top-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-50"></div>
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-teal-200 rounded-full opacity-50"></div>
-            <div className="relative bg-gradient-to-br from-emerald-100 to-teal-100 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
+            <div className="absolute -top-4 -right-4 w-32 h-32 bg-orange-200 rounded-full opacity-50 animate-pulse"></div>
+            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-emerald-200 rounded-full opacity-50 animate-pulse" style={{animationDelay: '1s'}}></div>
+            <div className="relative bg-gradient-to-br from-orange-100 to-emerald-100 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center p-8">
                   <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Brain className="w-16 h-16 text-emerald-600" />
+                    <Brain className="w-16 h-16 text-[#ff7f50]" />
                   </div>
                   <p className="text-2xl font-bold text-gray-800">Your Mental Wellness</p>
                   <p className="text-lg text-gray-600 mt-2">Journey Starts Here</p>
@@ -89,13 +89,13 @@ const Landing = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             {/* Image Left */}
             <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-purple-200 rounded-full opacity-50"></div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-pink-200 rounded-full opacity-50"></div>
-              <div className="relative bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-50 animate-pulse"></div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-50 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              <div className="relative bg-gradient-to-br from-orange-100 to-emerald-100 rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-8">
                     <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <Users className="w-16 h-16 text-purple-600" />
+                      <Users className="w-16 h-16 text-[#10b981]" />
                     </div>
                     <p className="text-2xl font-bold text-gray-800">50+ Communities</p>
                     <p className="text-lg text-gray-600 mt-2">Find Your Tribe</p>
@@ -111,8 +111,8 @@ const Landing = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Supportive Communities</h4>
@@ -120,8 +120,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Peer-to-Peer Support</h4>
@@ -129,8 +129,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Open Conversations</h4>
@@ -149,8 +149,8 @@ const Landing = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Licensed Professionals</h4>
@@ -158,8 +158,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Expert Guidance</h4>
@@ -167,8 +167,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Heart className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Heart className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Compassionate Care</h4>
@@ -180,13 +180,13 @@ const Landing = () => {
 
             {/* Image Right */}
             <div className="relative order-1 lg:order-2">
-              <div className="absolute -top-4 -right-4 w-32 h-32 bg-blue-200 rounded-full opacity-50"></div>
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-cyan-200 rounded-full opacity-50"></div>
-              <div className="relative bg-gradient-to-br from-blue-100 to-cyan-100 rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
+              <div className="absolute -top-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-50 animate-pulse"></div>
+              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-50 animate-pulse" style={{animationDelay: '0.7s'}}></div>
+              <div className="relative bg-gradient-to-br from-emerald-100 to-orange-100 rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-8">
                     <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <Shield className="w-16 h-16 text-blue-600" />
+                      <Shield className="w-16 h-16 text-[#ff7f50]" />
                     </div>
                     <p className="text-2xl font-bold text-gray-800">Verified Experts</p>
                     <p className="text-lg text-gray-600 mt-2">Always Here For You</p>
@@ -212,8 +212,8 @@ const Landing = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Service 1 */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-2xl flex items-center justify-center mb-6">
                 <Users className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -225,8 +225,8 @@ const Landing = () => {
             </div>
 
             {/* Service 2 */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#10b981] to-[#ff7f50] rounded-2xl flex items-center justify-center mb-6">
                 <Shield className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -238,8 +238,8 @@ const Landing = () => {
             </div>
 
             {/* Service 3 */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-2xl flex items-center justify-center mb-6">
                 <Phone className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -254,7 +254,7 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-gradient-to-r from-emerald-500 to-teal-600 py-16">
+      <section className="bg-gradient-to-r from-[#ff7f50] to-[#10b981] py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
             <div>
@@ -284,7 +284,7 @@ const Landing = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300">
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -295,7 +295,7 @@ const Landing = () => {
                 to professionals have helped me navigate my anxiety."
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-full flex items-center justify-center text-white font-bold">
                   SM
                 </div>
                 <div>
@@ -305,7 +305,7 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300">
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -316,7 +316,7 @@ const Landing = () => {
                 all the difference in my mental health journey."
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#10b981] to-[#ff7f50] rounded-full flex items-center justify-center text-white font-bold">
                   JD
                 </div>
                 <div>
@@ -326,7 +326,7 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300">
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -337,7 +337,7 @@ const Landing = () => {
                 support with peer support. It's creating real impact."
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-400 rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-full flex items-center justify-center text-white font-bold">
                   MK
                 </div>
                 <div>
@@ -359,7 +359,7 @@ const Landing = () => {
           <p className="text-xl mb-8 text-gray-600">
             Join thousands of people who are finding support, community, and hope on Ahkili.
           </p>
-          <button className="px-10 py-5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full hover:shadow-xl hover:scale-105 transition font-bold text-lg">
+          <button className="px-10 py-5 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-bold text-lg">
             Join Ahkili Today
           </button>
         </div>
@@ -371,7 +371,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-lg flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">Ahkili</span>
@@ -382,27 +382,27 @@ const Landing = () => {
             <div>
               <h4 className="text-white font-semibold mb-4">Platform</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition">Communities</a></li>
-                <li><a href="#" className="hover:text-white transition">Crisis Support</a></li>
-                <li><a href="#" className="hover:text-white transition">For Professionals</a></li>
+                <li><a href="#" className="hover:text-[#ff7f50] transition">Communities</a></li>
+                <li><a href="#" className="hover:text-[#ff7f50] transition">Crisis Support</a></li>
+                <li><a href="#" className="hover:text-[#ff7f50] transition">For Professionals</a></li>
               </ul>
             </div>
             
             <div>
               <h4 className="text-white font-semibold mb-4">Support</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition">Report Issue</a></li>
+                <li><a href="#" className="hover:text-[#10b981] transition">Help Center</a></li>
+                <li><a href="#" className="hover:text-[#10b981] transition">Contact Us</a></li>
+                <li><a href="#" className="hover:text-[#10b981] transition">Report Issue</a></li>
               </ul>
             </div>
             
             <div>
               <h4 className="text-white font-semibold mb-4">Legal</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-white transition">Community Guidelines</a></li>
+                <li><a href="#" className="hover:text-[#ff7f50] transition">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-[#ff7f50] transition">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-[#10b981] transition">Community Guidelines</a></li>
               </ul>
             </div>
           </div>
