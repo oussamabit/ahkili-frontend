@@ -8,16 +8,14 @@ const Landing = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-lg flex items-center justify-center">
-              <Heart className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-[#ff7f50] to-[#10b981] bg-clip-text text-transparent">Ahkili</span>
+            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-10 h-10" />
+            <span className="text-2xl font-bold text-[#ff7f50]">Ahkili</span>
           </div>
           <div className="flex items-center space-x-4">
             <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
               Login
             </button>
-            <button className="px-5 py-2 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium">
+            <button className="px-5 py-2 bg-[#ff7f50] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium">
               Get Started
             </button>
           </div>
@@ -40,11 +38,11 @@ const Landing = () => {
               and find crisis support all in one safe space.
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-              <button className="px-8 py-4 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-semibold flex items-center space-x-2 text-lg">
+              <button className="px-8 py-4 bg-[#ff7f50] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-semibold flex items-center space-x-2 text-lg">
                 <span>Start Your Journey</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-full hover:border-[#ff7f50] hover:text-[#ff7f50] transition font-semibold">
+              <button className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-full hover:border-[#10b981] hover:text-[#10b981] transition font-semibold">
                 Learn More
               </button>
             </div>
@@ -66,17 +64,11 @@ const Landing = () => {
           
           {/* Hero Image */}
           <div className="relative">
-            <div className="absolute -top-4 -right-4 w-32 h-32 bg-orange-200 rounded-full opacity-50 animate-pulse"></div>
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-emerald-200 rounded-full opacity-50 animate-pulse" style={{animationDelay: '1s'}}></div>
-            <div className="relative bg-gradient-to-br from-orange-100 to-emerald-100 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
+            <div className="absolute -top-4 -right-4 w-32 h-32 bg-orange-200 rounded-full opacity-30 animate-pulse"></div>
+            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-emerald-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '1s'}}></div>
+            <div className="relative bg-gradient-to-br from-orange-50 to-emerald-50 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Brain className="w-16 h-16 text-[#ff7f50]" />
-                  </div>
-                  <p className="text-2xl font-bold text-gray-800">Your Mental Wellness</p>
-                  <p className="text-lg text-gray-600 mt-2">Journey Starts Here</p>
-                </div>
+                <img src="/photos/doctor consultation.webp" alt="Mental Health Support" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -89,18 +81,10 @@ const Landing = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             {/* Image Left */}
             <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-50 animate-pulse"></div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-50 animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              <div className="relative bg-gradient-to-br from-orange-100 to-emerald-100 rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <Users className="w-16 h-16 text-[#10b981]" />
-                    </div>
-                    <p className="text-2xl font-bold text-gray-800">50+ Communities</p>
-                    <p className="text-lg text-gray-600 mt-2">Find Your Tribe</p>
-                  </div>
-                </div>
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-30 animate-pulse"></div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
+                <img src="/photos/shear experiances.jpg" alt="Community Support" className="w-full h-full object-cover" />
               </div>
             </div>
 
@@ -180,18 +164,10 @@ const Landing = () => {
 
             {/* Image Right */}
             <div className="relative order-1 lg:order-2">
-              <div className="absolute -top-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-50 animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-50 animate-pulse" style={{animationDelay: '0.7s'}}></div>
-              <div className="relative bg-gradient-to-br from-emerald-100 to-orange-100 rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                      <Shield className="w-16 h-16 text-[#ff7f50]" />
-                    </div>
-                    <p className="text-2xl font-bold text-gray-800">Verified Experts</p>
-                    <p className="text-lg text-gray-600 mt-2">Always Here For You</p>
-                  </div>
-                </div>
+              <div className="absolute -top-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-30 animate-pulse"></div>
+              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.7s'}}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
+                <img src="/photos/privecy.jpg" alt="Professional Support" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -211,41 +187,41 @@ const Landing = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Service 1 */}
+            {/* Service 1 - Community Support */}
             <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-2xl flex items-center justify-center mb-6">
-                <Users className="w-8 h-8 text-white" />
+              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-orange-50">
+                <img src="/logo/ahkili-01.png" alt="Community" className="w-20 h-20 object-contain" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
                 Community Support
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed text-center">
                 Join supportive communities and connect with others who understand your journey. Share, learn, and grow together.
               </p>
             </div>
 
-            {/* Service 2 */}
+            {/* Service 2 - Professional Help */}
             <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#10b981] to-[#ff7f50] rounded-2xl flex items-center justify-center mb-6">
-                <Shield className="w-8 h-8 text-white" />
+              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-emerald-50">
+                <img src="/logo/ahkili-01.png" alt="Professional" className="w-20 h-20 object-contain" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
                 Professional Help
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed text-center">
                 Access verified mental health professionals including psychiatrists, psychologists, and licensed therapists.
               </p>
             </div>
 
-            {/* Service 3 */}
+            {/* Service 3 - Crisis Support */}
             <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-2xl flex items-center justify-center mb-6">
-                <Phone className="w-8 h-8 text-white" />
+              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-orange-50">
+                <img src="/logo/ahkili-01.png" alt="Crisis" className="w-20 h-20 object-contain" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
                 Crisis Support
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed text-center">
                 Immediate access to emergency hotlines and crisis resources available 24/7 when you need help most.
               </p>
             </div>
@@ -254,7 +230,7 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-gradient-to-r from-[#ff7f50] to-[#10b981] py-16">
+      <section className="bg-[#ff7f50] py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
             <div>
@@ -295,7 +271,7 @@ const Landing = () => {
                 to professionals have helped me navigate my anxiety."
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-[#ff7f50] rounded-full flex items-center justify-center text-white font-bold">
                   SM
                 </div>
                 <div>
@@ -316,7 +292,7 @@ const Landing = () => {
                 all the difference in my mental health journey."
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#10b981] to-[#ff7f50] rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-[#10b981] rounded-full flex items-center justify-center text-white font-bold">
                   JD
                 </div>
                 <div>
@@ -337,7 +313,7 @@ const Landing = () => {
                 support with peer support. It's creating real impact."
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-12 h-12 bg-[#ff7f50] rounded-full flex items-center justify-center text-white font-bold">
                   MK
                 </div>
                 <div>
@@ -350,8 +326,51 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Crisis Support Section with Hotline Image */}
       <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="relative">
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-30 animate-pulse"></div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl">
+                <img src="/photos/hotline.webp" alt="Crisis Support" className="w-full h-full object-cover" />
+              </div>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                Crisis Support When You Need It Most
+              </h2>
+              <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+                Our 24/7 crisis support line connects you immediately with trained professionals who can help during difficult moments.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-[#ff7f50]" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-900 mb-1">Immediate Response</h4>
+                    <p className="text-gray-600">Get connected to a crisis counselor within minutes, any time of day or night.</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-6 h-6 text-[#10b981]" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg text-gray-900 mb-1">Confidential & Safe</h4>
+                    <p className="text-gray-600">All conversations are completely confidential and handled with care.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-orange-50 to-emerald-50">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-5xl font-bold mb-6 text-gray-900">
             Ready to Start Your Mental Health Journey?
@@ -359,7 +378,7 @@ const Landing = () => {
           <p className="text-xl mb-8 text-gray-600">
             Join thousands of people who are finding support, community, and hope on Ahkili.
           </p>
-          <button className="px-10 py-5 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-bold text-lg">
+          <button className="px-10 py-5 bg-[#ff7f50] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-bold text-lg">
             Join Ahkili Today
           </button>
         </div>
@@ -371,9 +390,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-[#ff7f50] to-[#10b981] rounded-lg flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-white" />
-                </div>
+                <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-8 h-8" />
                 <span className="text-xl font-bold text-white">Ahkili</span>
               </div>
               <p>Mental health support for everyone.</p>
