@@ -186,45 +186,58 @@ const Landing = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Service 1 - Community Support */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-[#ff7f50]/10 group-hover:bg-[#ff7f50]/20 transition">
-                <img src="/logo/ahkili-01.png" alt="Community" className="w-16 h-16 object-contain" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-                Community Support
-              </h3>
-              <p className="text-gray-600 leading-relaxed text-center">
-                Join supportive communities and connect with others who understand your journey. Share, learn, and grow together.
-              </p>
-            </div>
-
-            {/* Service 2 - Professional Help */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-[#10b981]/10 group-hover:bg-[#10b981]/20 transition">
-                <img src="/logo/ahkili-01.png" alt="Professional" className="w-16 h-16 object-contain" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-                Professional Help
-              </h3>
-              <p className="text-gray-600 leading-relaxed text-center">
-                Access verified mental health professionals including psychiatrists, psychologists, and licensed therapists.
-              </p>
-            </div>
-
-            {/* Service 3 - Crisis Support */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-[#ff7f50]/10 group-hover:bg-[#ff7f50]/20 transition">
-                <img src="/logo/ahkili-01.png" alt="Crisis" className="w-16 h-16 object-contain" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-                Crisis Support
-              </h3>
-              <p className="text-gray-600 leading-relaxed text-center">
-                Immediate access to emergency hotlines and crisis resources available 24/7 when you need help most.
-              </p>
-            </div>
+        {/* Service 1 - Community Support */}
+        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
+          <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 overflow-hidden rounded-full">
+            <img
+              src="/photos/Community Support.jpg"
+              alt="Community"
+              className="w-full h-full object-cover"
+            />
           </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
+            Community Support
+          </h3>
+          <p className="text-gray-600 leading-relaxed text-center">
+            Join supportive communities and connect with others who understand your journey. Share, learn, and grow together.
+          </p>
+        </div>
+
+        {/* Service 2 - Professional Help */}
+        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
+          <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 overflow-hidden rounded-full">
+            <img
+              src="/photos/Professional Help.jpg"
+              alt="Professional"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
+            Professional Help
+          </h3>
+          <p className="text-gray-600 leading-relaxed text-center">
+            Access verified mental health professionals including psychiatrists, psychologists, and licensed therapists.
+          </p>
+        </div>
+
+        {/* Service 3 - Crisis Support */}
+        <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
+          <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 overflow-hidden rounded-full">
+            <img
+              src="/photos/Crisis Support.jpg"
+              alt="Crisis"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
+            Crisis Support
+          </h3>
+          <p className="text-gray-600 leading-relaxed text-center">
+            Immediate access to emergency hotlines and crisis resources available 24/7 when you need help most.
+          </p>
+        </div>
+      </div>
+
         </div>
       </section>
 
