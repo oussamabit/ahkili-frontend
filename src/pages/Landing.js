@@ -190,7 +190,7 @@ const Landing = () => {
         <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
           <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 overflow-hidden rounded-full">
             <img
-              src="/photos/Community Support.jpg"
+              src="/photos/Community Support.webp"
               alt="Community"
               className="w-full h-full object-cover"
             />
@@ -207,7 +207,7 @@ const Landing = () => {
         <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
           <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 overflow-hidden rounded-full">
             <img
-              src="/photos/Professional Help.jpg"
+              src="/photos/Professional Help.jpeg"
               alt="Professional"
               className="w-full h-full object-cover"
             />
@@ -224,7 +224,7 @@ const Landing = () => {
         <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
           <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 overflow-hidden rounded-full">
             <img
-              src="/photos/Crisis Support.jpg"
+              src="/photos/Crisis Support.avif"
               alt="Crisis"
               className="w-full h-full object-cover"
             />
