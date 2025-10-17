@@ -8,7 +8,7 @@ const Landing = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-15 h-15" />
+            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-12 h-12" />
           </div>
           <div className="flex items-center space-x-4">
             <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
@@ -25,7 +25,6 @@ const Landing = () => {
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-          
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Mental Health Support,
               <span className="text-[#ff7f50]"> Right Here</span>
@@ -61,9 +60,10 @@ const Landing = () => {
           
           {/* Hero Image */}
           <div className="relative">
-            <div className="absolute -top-4 -right-4 w-32 h-32 bg-orange-200 rounded-full opacity-30 animate-pulse"></div>
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-emerald-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '1s'}}></div>
-            <div className="relative bg-gradient-to-br from-orange-50 to-emerald-50 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
+            <div className="absolute -top-6 -right-6 w-28 h-28 bg-[#ff7f50]/20 rounded-full opacity-70 animate-pulse"></div>
+            <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-[#10b981]/20 rounded-full opacity-70 animate-pulse" style={{animationDelay: '1.5s'}}></div>
+            <div className="absolute top-1/2 -right-8 w-16 h-16 bg-[#ff7f50]/15 rounded-full opacity-60 animate-pulse" style={{animationDelay: '0.8s'}}></div>
+            <div className="relative bg-gradient-to-br from-orange-50 to-emerald-50 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] border border-gray-100">
               <div className="absolute inset-0 flex items-center justify-center">
                 <img src="/photos/doctor consultation.webp" alt="Mental Health Support" className="w-full h-full object-cover" />
               </div>
@@ -78,9 +78,10 @@ const Landing = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             {/* Image Left */}
             <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-30 animate-pulse"></div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
+              <div className="absolute -top-6 -left-6 w-20 h-20 bg-[#ff7f50]/20 rounded-full opacity-70 animate-pulse"></div>
+              <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-[#10b981]/20 rounded-full opacity-70 animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="absolute top-1/3 -left-4 w-12 h-12 bg-[#ff7f50]/15 rounded-full opacity-60 animate-pulse" style={{animationDelay: '2s'}}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3] border border-gray-100">
                 <img src="/photos/shear experiances.jpg" alt="Community Support" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -92,8 +93,8 @@ const Landing = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-[#ff7f50]" />
+                  <div className="w-12 h-12 bg-[#ff7f50]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Users className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Supportive Communities</h4>
@@ -101,8 +102,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-[#ff7f50]" />
+                  <div className="w-12 h-12 bg-[#ff7f50]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Heart className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Peer-to-Peer Support</h4>
@@ -110,8 +111,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-[#ff7f50]" />
+                  <div className="w-12 h-12 bg-[#ff7f50]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Open Conversations</h4>
@@ -130,7 +131,7 @@ const Landing = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-[#10b981]/10 rounded-full flex items-center justify-center flex-shrink-0">
                     <Shield className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
@@ -139,8 +140,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-6 h-6 text-[#10b981]" />
+                  <div className="w-12 h-12 bg-[#10b981]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Brain className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Expert Guidance</h4>
@@ -148,8 +149,8 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Heart className="w-6 h-6 text-[#10b981]" />
+                  <div className="w-12 h-12 bg-[#10b981]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
                     <h4 className="font-bold text-lg text-gray-900 mb-1">Compassionate Care</h4>
@@ -161,9 +162,10 @@ const Landing = () => {
 
             {/* Image Right */}
             <div className="relative order-1 lg:order-2">
-              <div className="absolute -top-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-30 animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.7s'}}></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3]">
+              <div className="absolute -top-6 -right-6 w-28 h-28 bg-[#10b981]/20 rounded-full opacity-70 animate-pulse"></div>
+              <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-[#ff7f50]/20 rounded-full opacity-70 animate-pulse" style={{animationDelay: '1.2s'}}></div>
+              <div className="absolute bottom-1/3 -right-4 w-14 h-14 bg-[#10b981]/15 rounded-full opacity-60 animate-pulse" style={{animationDelay: '2.5s'}}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/3] border border-gray-100">
                 <img src="/photos/privecy.jpg" alt="Professional Support" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -185,9 +187,9 @@ const Landing = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Service 1 - Community Support */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
-              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-orange-50">
-                <img src="/logo/ahkili-01.png" alt="Community" className="w-20 h-20 object-contain" />
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-[#ff7f50]/10 group-hover:bg-[#ff7f50]/20 transition">
+                <img src="/logo/ahkili-01.png" alt="Community" className="w-16 h-16 object-contain" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
                 Community Support
@@ -198,9 +200,9 @@ const Landing = () => {
             </div>
 
             {/* Service 2 - Professional Help */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
-              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-emerald-50">
-                <img src="/logo/ahkili-01.png" alt="Professional" className="w-20 h-20 object-contain" />
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-[#10b981]/10 group-hover:bg-[#10b981]/20 transition">
+                <img src="/logo/ahkili-01.png" alt="Professional" className="w-16 h-16 object-contain" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
                 Professional Help
@@ -211,9 +213,9 @@ const Landing = () => {
             </div>
 
             {/* Service 3 - Crisis Support */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300">
-              <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-orange-50">
-                <img src="/logo/ahkili-01.png" alt="Crisis" className="w-20 h-20 object-contain" />
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition border border-gray-100 hover:scale-105 transform duration-300 group">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden bg-[#ff7f50]/10 group-hover:bg-[#ff7f50]/20 transition">
+                <img src="/logo/ahkili-01.png" alt="Crisis" className="w-16 h-16 object-contain" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
                 Crisis Support
@@ -227,7 +229,7 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-[#ff7f50] py-16">
+      <section className="bg-gradient-to-r from-[#ff7f50] to-[#10b981] py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
             <div>
@@ -257,7 +259,7 @@ const Landing = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300 border border-gray-100">
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -278,7 +280,7 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300 border border-gray-100">
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -299,7 +301,7 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300">
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition hover:scale-105 transform duration-300 border border-gray-100">
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -328,9 +330,10 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-200 rounded-full opacity-30 animate-pulse"></div>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-emerald-200 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              <div className="relative rounded-3xl overflow-hidden shadow-xl">
+              <div className="absolute -top-6 -left-6 w-20 h-20 bg-[#ff7f50]/20 rounded-full opacity-70 animate-pulse"></div>
+              <div className="absolute -bottom-6 -right-6 w-28 h-28 bg-[#10b981]/20 rounded-full opacity-70 animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="absolute top-1/4 -left-4 w-16 h-16 bg-[#ff7f50]/15 rounded-full opacity-60 animate-pulse" style={{animationDelay: '2.2s'}}></div>
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100">
                 <img src="/photos/hotline.webp" alt="Crisis Support" className="w-full h-full object-cover" />
               </div>
             </div>
@@ -343,7 +346,7 @@ const Landing = () => {
               </p>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-[#ff7f50]/10 rounded-full flex items-center justify-center flex-shrink-0">
                     <Phone className="w-6 h-6 text-[#ff7f50]" />
                   </div>
                   <div>
@@ -352,7 +355,7 @@ const Landing = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-[#10b981]/10 rounded-full flex items-center justify-center flex-shrink-0">
                     <Shield className="w-6 h-6 text-[#10b981]" />
                   </div>
                   <div>
@@ -367,7 +370,7 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-orange-50 to-emerald-50">
+      <section className="py-20 bg-gradient-to-br from-[#ff7f50]/10 to-[#10b981]/10">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-5xl font-bold mb-6 text-gray-900">
             Ready to Start Your Mental Health Journey?
@@ -375,7 +378,7 @@ const Landing = () => {
           <p className="text-xl mb-8 text-gray-600">
             Join thousands of people who are finding support, community, and hope on Ahkili.
           </p>
-          <button className="px-10 py-5 bg-[#ff7f50] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-bold text-lg">
+          <button className="px-10 py-5 bg-gradient-to-r from-[#ff7f50] to-[#10b981] text-white rounded-full hover:shadow-xl hover:scale-105 transition font-bold text-lg">
             Join Ahkili Today
           </button>
         </div>
