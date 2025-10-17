@@ -8,7 +8,7 @@ const Landing = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-12 h-12" />
+            <img src="/logo/ahkili-01.png" alt="Ahkili" className="h-12 w-auto" />
           </div>
           <div className="flex items-center space-x-4">
             <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
@@ -390,7 +390,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/logo/ahkili-02.png" alt="Ahkili" className="w-10 h-10" />
+                <img src="/logo/ahkili-02.png" alt="Ahkili" className="h-10 w-auto" />
               </div>
               <p>Mental health support for everyone.</p>
             </div>
