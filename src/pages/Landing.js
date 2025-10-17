@@ -8,7 +8,7 @@ const Landing = () => {
       <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-30 h-30" />
+            <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-15 h-15" />
           </div>
           <div className="flex items-center space-x-4">
             <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
@@ -25,9 +25,7 @@ const Landing = () => {
       <section className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="inline-block px-4 py-2 bg-orange-50 rounded-full mb-6">
-              <span className="text-[#ff7f50] font-semibold text-sm">🌟 Join 10,000+ members</span>
-            </div>
+          
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Mental Health Support,
               <span className="text-[#ff7f50]"> Right Here</span>
@@ -389,8 +387,7 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/logo/ahkili-01.png" alt="Ahkili" className="w-8 h-8" />
-                <span className="text-xl font-bold text-white">Ahkili</span>
+                <img src="/logo/ahkili-02.png" alt="Ahkili" className="w-10 h-10" />
               </div>
               <p>Mental health support for everyone.</p>
             </div>
