@@ -41,9 +41,9 @@ const Navbar = () => {
             <img
               src="/logo/ahkili-01.png"
               alt="Ahkili Logo"
-              className="w-16 h-16 object-contain transition-transform duration-300 group-hover:scale-110"
+              className="w-24 h-24 object-contain transition-transform duration-300 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-primary/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
         </Link>
 
