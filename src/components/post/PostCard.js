@@ -140,10 +140,10 @@ const PostCard = ({ post, onDelete }) => {
 
       {/* Post Image */}
       {(post.image_url || post.imageUrl) && (
-        <img 
-          src={post.image_url || post.imageUrl} 
+        <img
+          src={post.image_url || post.imageUrl}
           alt={post.title}
-          className="w-full h-64 object-cover rounded-lg mb-4"
+          className="w-full max-h-96 object-contain rounded-lg mb-4 border border-gray-200"
         />
       )}
 

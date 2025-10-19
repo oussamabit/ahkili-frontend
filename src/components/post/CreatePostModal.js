@@ -149,11 +149,12 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
           {/* Image Preview */}
           {imagePreview && (
             <div className="mb-4 relative">
-              <img 
-                src={imagePreview} 
-                alt="Preview" 
-                className="w-full h-64 object-cover rounded-lg"
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-full max-h-96 object-contain rounded-lg border border-gray-200"
               />
+
               <button
                 type="button"
                 onClick={handleRemoveImage}
