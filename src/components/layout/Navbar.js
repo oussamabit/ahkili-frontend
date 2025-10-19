@@ -35,24 +35,17 @@ const Navbar = () => {
     <nav className="bg-white/80 backdrop-blur-lg shadow-lg sticky top-0 z-50 border-b border-gray-100">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex items-center justify-between h-20">
-         {/* Logo with Animation */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <img
-                src="/logo/ahkili-01.png"
-                alt="Ahkili Logo"
-                className="w-12 h-12 rounded-full object-contain transition-transform duration-300 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Ahkili
-              </span>
-              <span className="text-xs text-gray-500 -mt-1">Mental Wellness</span>
-            </div>
-          </Link>
+        {/* Logo with Animation */}
+        <Link to="/" className="flex items-center justify-center group">
+          <div className="relative">
+            <img
+              src="/logo/ahkili-01.png"
+              alt="Ahkili Logo"
+              className="w-16 h-16 object-contain transition-transform duration-300 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
+        </Link>
 
 
           {/* Desktop Navigation */}
