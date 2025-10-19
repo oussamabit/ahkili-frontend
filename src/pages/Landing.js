@@ -11,13 +11,21 @@ const Landing = () => {
             <img src="/logo/ahkili-01.png" alt="Ahkili" className="h-12 w-auto" />
           </div>
           <div className="flex items-center space-x-4">
-            <button className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium">
+            <Link
+              to="/login"
+              className="px-5 py-2 text-[#ff7f50] border-2 border-[#ff7f50] rounded-full hover:bg-orange-50 transition font-medium"
+            >
               Login
-            </button>
-            <button className="px-5 py-2 bg-[#ff7f50] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium">
+            </Link>
+
+            <Link
+              to="/signup"
+              className="px-5 py-2 bg-[#ff7f50] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium"
+            >
               Get Started
-            </button>
+            </Link>
           </div>
+
         </div>
       </nav>
 
