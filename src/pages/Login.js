@@ -67,7 +67,7 @@ const Login = () => {
           <img 
             src="/logo/ahkili-01.png" 
             alt="Ahkili Logo" 
-            className="h-16 mx-auto mb-4"
+            className="h-20 md:h-28 lg:h-32 mx-auto mb-6"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
