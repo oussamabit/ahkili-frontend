@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, Send, ArrowLeft, Loader, Copy, Check, Sparkles } from 'lucide-react';
-import { getPost, getComments, createComment as createCommentAPI, toggleReaction } from '../services/api';
+import { getPost, getComments, createComment as createCommentAPI, toggleReaction, checkUserReaction } from '../services/api';
 import { useUserSync } from '../hooks/useUserSync';
 import { useToast } from '../context/ToastContext';
 import Comment from '../components/post/Comment';
@@ -39,8 +39,6 @@ const PostDetail = () => {
       
       const commentsData = await getComments(id);
       console.log('=== Comments data received:', commentsData);
-      console.log('=== Comments type:', typeof commentsData);
-      console.log('=== Is array?:', Array.isArray(commentsData));
       
       if (!postData || !postData.id) {
         throw new Error('Invalid post data returned');
@@ -52,8 +50,21 @@ const PostDetail = () => {
       
       setPost(postData);
       setComments(validComments);
-      setLikesCount(postData.reactions_count || postData.likes || 0);
-      setLiked(postData.user_has_reacted || false);
+      setLikesCount(postData.reactions_count || 0);
+      
+      // Check if user has reacted to this post
+      if (backendUser) {
+        try {
+          const reaction = await checkUserReaction(postData.id, backendUser.id);
+          console.log('=== User reaction:', reaction);
+          setLiked(reaction.has_reacted);
+        } catch (error) {
+          console.error('Error checking reaction:', error);
+          setLiked(false);
+        }
+      } else {
+        setLiked(false);
+      }
     } catch (error) {
       console.error('=== Error fetching post:', error);
       console.error('=== Error details:', error.response?.data || error.message);
@@ -64,19 +75,21 @@ const PostDetail = () => {
   };
 
   const handleLike = async () => {
-  if (!backendUser) return;
-  
-  setLoadingReaction(true);
-  try {
-    const result = await toggleReaction(parseInt(id), backendUser.id);
-    setLikesCount(result.reactions_count);
-    setLiked(result.user_has_reacted);
-  } catch (error) {
-    console.error('Error toggling like:', error);
-  } finally {
-    setLoadingReaction(false);
-  }
-};
+    if (!backendUser) return;
+    
+    setLoadingReaction(true);
+    try {
+      console.log('Toggling reaction for post:', id, 'user:', backendUser.id);
+      const result = await toggleReaction(parseInt(id), backendUser.id);
+      console.log('Toggle reaction result:', result);
+      setLikesCount(result.reactions_count);
+      setLiked(result.user_has_reacted);
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    } finally {
+      setLoadingReaction(false);
+    }
+  };
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -240,7 +253,7 @@ const PostDetail = () => {
           <div className="flex items-center gap-6 pt-6 border-t border-gray-200">
             <button 
               onClick={handleLike}
-              disabled={loadingReaction}
+              disabled={loadingReaction || !backendUser}
               className={`group flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 ${
                 liked 
                   ? 'text-red-600 bg-red-50' 

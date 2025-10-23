@@ -19,17 +19,19 @@ const PostCard = ({ post, onDelete }) => {
     const checkReaction = async () => {
       if (backendUser && post.id) {
         try {
+          console.log('Checking reaction for post:', post.id, 'user:', backendUser.id);
           const reaction = await checkUserReaction(post.id, backendUser.id);
+          console.log('Reaction response:', reaction);
           setLiked(reaction.has_reacted);
-          setLikesCount(post.reactions_count || post.likes || 0);
+          setLikesCount(post.reactions_count || 0);
         } catch (error) {
           console.error('Error checking reaction:', error);
           setLiked(false);
-          setLikesCount(post.reactions_count || post.likes || 0);
+          setLikesCount(post.reactions_count || 0);
         }
       } else {
         setLiked(false);
-        setLikesCount(post.reactions_count || post.likes || 0);
+        setLikesCount(post.reactions_count || 0);
       }
     };
 
@@ -53,7 +55,9 @@ const PostCard = ({ post, onDelete }) => {
 
     setLoadingReaction(true);
     try {
+      console.log('Toggling reaction for post:', post.id, 'user:', backendUser.id);
       const result = await toggleReaction(post.id, backendUser.id);
+      console.log('Toggle reaction result:', result);
       setLikesCount(result.reactions_count);
       setLiked(result.user_has_reacted);
     } catch (error) {
