@@ -64,19 +64,19 @@ const PostDetail = () => {
   };
 
   const handleLike = async () => {
-    if (!backendUser) return;
-    
-    setLoadingReaction(true);
-    try {
-      const result = await toggleReaction(parseInt(id), backendUser.id);
-      setLikesCount(result.reactions_count);
-      setLiked(result.user_has_reacted);
-    } catch (error) {
-      console.error('Error toggling like:', error);
-    } finally {
-      setLoadingReaction(false);
-    }
-  };
+  if (!backendUser) return;
+  
+  setLoadingReaction(true);
+  try {
+    const result = await toggleReaction(parseInt(id), backendUser.id);
+    setLikesCount(result.reactions_count);
+    setLiked(result.user_has_reacted);
+  } catch (error) {
+    console.error('Error toggling like:', error);
+  } finally {
+    setLoadingReaction(false);
+  }
+};
 
   const handleAddComment = async (e) => {
     e.preventDefault();

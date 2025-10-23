@@ -109,6 +109,11 @@ export const checkUserReaction = async (postId, userId) => {
   return response.data;
 };
 
+export const getUserReactionsForPosts = async (userId, postIds) => {
+  const response = await api.get(`/reactions/user/${userId}/posts?post_ids=${postIds.join(',')}`);
+  return response.data;
+};
+
 // ============= UPLOAD API =============
 export const uploadImage = async (file) => {
   const formData = new FormData();

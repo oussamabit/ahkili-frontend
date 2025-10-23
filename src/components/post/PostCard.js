@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag } from 'lucide-react';
 import { useUserSync } from '../../hooks/useUserSync';
-import { deletePost as deletePostAPI, toggleReaction } from '../../services/api';
+import { deletePost as deletePostAPI, toggleReaction, checkUserReaction } from '../../services/api';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
@@ -14,10 +14,27 @@ const PostCard = ({ post, onDelete }) => {
   const [loadingReaction, setLoadingReaction] = useState(false);
   const { backendUser } = useUserSync();
 
-  React.useEffect(() => {
-    setLikesCount(post.reactions_count || post.likes || 0);
-    setLiked(post.user_has_reacted || false);
-  }, [post]);
+  // Check if user has liked this post
+  useEffect(() => {
+    const checkReaction = async () => {
+      if (backendUser && post.id) {
+        try {
+          const reaction = await checkUserReaction(post.id, backendUser.id);
+          setLiked(reaction.has_reacted);
+          setLikesCount(post.reactions_count || post.likes || 0);
+        } catch (error) {
+          console.error('Error checking reaction:', error);
+          setLiked(false);
+          setLikesCount(post.reactions_count || post.likes || 0);
+        }
+      } else {
+        setLiked(false);
+        setLikesCount(post.reactions_count || post.likes || 0);
+      }
+    };
+
+    checkReaction();
+  }, [post, backendUser]);
 
   const getTimeAgo = (dateString) => {
     const date = new Date(dateString);
@@ -81,7 +98,7 @@ const PostCard = ({ post, onDelete }) => {
   const communityName = post.community?.name || 'General';
   const timeAgo = post.created_at ? getTimeAgo(post.created_at) : 'Recently';
   const isOwner = backendUser && post.user_id === backendUser.id;
-  const commentCount = post.comments?.length || 0;
+  const commentCount = post.comments_count || post.comments?.length || 0;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition">
@@ -151,7 +168,7 @@ const PostCard = ({ post, onDelete }) => {
       <div className="flex items-center space-x-6 pt-4 border-t">
         <button 
           onClick={handleLike}
-          disabled={loadingReaction}
+          disabled={loadingReaction || !backendUser}
           className={`flex items-center space-x-2 transition ${
             liked 
               ? 'text-red-600' 
