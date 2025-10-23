@@ -20,7 +20,7 @@ const Landing = () => {
             </Link>
 
             <Link
-              to="/login"
+              to="/signup"
               className="px-5 py-2 bg-[#ff7f50] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium"
             >
               Get Started
