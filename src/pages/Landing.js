@@ -1,5 +1,6 @@
 import React from 'react';
 import { Heart, Users, MessageCircle, Shield, Zap, ArrowRight, CheckCircle, Sparkles, Brain, Clock, Phone, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
   return (
@@ -19,7 +20,7 @@ const Landing = () => {
             </Link>
 
             <Link
-              to="/signup"
+              to="/login"
               className="px-5 py-2 bg-[#ff7f50] text-white rounded-full hover:shadow-lg hover:scale-105 transition font-medium"
             >
               Get Started
