@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate,Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Landing from './pages/Landing';
 import Home from './pages/Home';
 import Communities from './pages/Communities';
 import CommunityDetail from './pages/CommunityDetail';
 import Login from './pages/Login';
+import Signup from './pages/Signup'; // Add this import
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import Hotlines from './pages/Hotlines';
@@ -28,11 +29,12 @@ function App() {
         {currentUser && <Navbar />}
         <main className={currentUser ? "container mx-auto px-4 py-6 max-w-7xl" : ""}>
           <Routes>
-            {/* Landing page for non-logged-in users */}
+            {/* Landing page and auth pages for non-logged-in users */}
             {!currentUser ? (
               <>
                 <Route path="/" element={<Landing />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} /> {/* Add this route */}
                 <Route path="*" element={<Navigate to="/" replace />} />
               </>
             ) : (
