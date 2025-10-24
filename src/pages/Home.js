@@ -58,9 +58,12 @@ const Home = () => {
       if (newPostData.imageUrl) {
         postPayload.image_url = newPostData.imageUrl;
       }
-     
+      console.log('Sending to API:', postPayload);
+
       const createdPost = await createPostAPI(postPayload, backendUser.id);
       
+      console.log('Created post is_anonymous:', createdPost.is_anonymous);
+
       setPosts([createdPost, ...posts]);
       showSuccess('Post created successfully!');
     } catch (error) {

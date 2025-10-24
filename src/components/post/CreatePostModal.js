@@ -59,6 +59,14 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
         imageUrl = uploadResult.url;
       }
 
+      console.log('Submitting post data:', {
+        title: formData.title,
+        content: formData.content,
+        community: formData.community,
+        imageUrl: imageUrl,
+        isAnonymous: formData.isAnonymous
+      });
+
       // Submit post with image URL and anonymous flag
       await onSubmit({
         title: formData.title,

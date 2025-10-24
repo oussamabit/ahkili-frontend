@@ -38,6 +38,7 @@ export const getPost = async (postId) => {
 };
 
 export const createPost = async (postData, userId) => {
+  console.log('Creating post with data:', postData); // Add this to debug
   const response = await api.post(`/posts/?user_id=${userId}`, postData);
   return response.data;
 };
