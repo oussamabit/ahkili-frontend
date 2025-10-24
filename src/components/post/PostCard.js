@@ -153,12 +153,11 @@ const PostCard = ({ post, onDelete }) => {
 
       {/* Post Content */}
       <Link to={`/post/${post.id}`}>
-        <h2 className="text-xl font-bold text-gray-800 mb-2 hover:text-primary transition cursor-pointer">
+        <h2 className="text-xl font-bold text-gray-800 mb-2 hover:text-primary transition cursor-pointer" dir="auto">
           {post.title}
         </h2>
       </Link>
-      <p className="text-gray-600 mb-4 line-clamp-3">{post.content}</p>
-
+      <p className="text-gray-600 mb-4 line-clamp-3 whitespace-pre-line" dir="auto">{post.content}</p>
       {/* Post Image */}
       {(post.image_url || post.imageUrl) && (
         <img

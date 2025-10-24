@@ -230,8 +230,7 @@ const PostDetail = () => {
           </div>
 
           {/* Post Title */}
-          <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight">{post.title}</h1>
-
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight" dir="auto">{post.title}</h1>
           {/* Post Image */}
           {(post.image_url || post.imageUrl) && (
             <div className="mb-6 rounded-2xl overflow-hidden shadow-md">
@@ -244,7 +243,7 @@ const PostDetail = () => {
           )}
 
           {/* Post Content */}
-          <div className="text-gray-700 leading-relaxed mb-8 whitespace-pre-line text-lg">
+          <div className="text-gray-700 leading-relaxed mb-8 whitespace-pre-line text-lg" dir="auto">
             {post.content}
           </div>
 
