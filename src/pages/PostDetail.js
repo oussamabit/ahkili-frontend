@@ -182,8 +182,7 @@ const PostDetail = () => {
     );
   }
 
-  const authorName = post.author?.username || 'Anonymous';
-  const communityName = post.community?.name || 'General';
+  const authorName = post.is_anonymous ? 'Anonymous' : (post.author?.username || 'Anonymous');  const communityName = post.community?.name || 'General';
   const isDoctorVerified = post.author?.role === 'doctor' && post.author?.verified;
 
   return (

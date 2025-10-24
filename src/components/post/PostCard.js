@@ -99,8 +99,7 @@ const PostCard = ({ post, onDelete }) => {
     }
   };
 
-  const authorName = post.author?.username || 'Anonymous';
-  const communityName = post.community?.name || 'General';
+  const authorName = post.is_anonymous ? 'Anonymous' : (post.author?.username || 'Anonymous');  const communityName = post.community?.name || 'General';
   const timeAgo = post.created_at ? getTimeAgo(post.created_at) : 'Recently';
   const isOwner = backendUser && post.user_id === backendUser.id;
   const commentCount = post.comments_count || post.comments?.length || 0;

@@ -9,7 +9,8 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    community: defaultCommunity || 'Anxiety Support'
+    community: defaultCommunity || 'Anxiety Support',
+    isAnonymous: false
   });
   
   const [imageFile, setImageFile] = useState(null);
@@ -165,7 +166,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
             </div>
           )}
 
-          {/* Image Upload */}
+          {/* Image Upload - More Visible */}
           <div className="mb-6">
             <input
               type="file"
@@ -176,10 +177,38 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
             />
             <label
               htmlFor="image-upload"
-              className="flex items-center space-x-2 text-gray-600 hover:text-primary transition cursor-pointer"
+              className="flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 transition cursor-pointer"
             >
-              <ImageIcon className="w-5 h-5" />
-              <span>{imageFile ? t('post.changeImage') : t('post.addImage')}</span>
+              <ImageIcon className="w-5 h-5 text-primary" />
+              <span className="font-medium text-gray-700">
+                {imageFile ? t('post.changeImage') : t('post.addImage')}
+              </span>
+            </label>
+          </div>
+
+          {/* Anonymous Toggle */}
+          <div className="mb-6 bg-gray-50 rounded-lg p-4">
+            <label className="flex items-center justify-between cursor-pointer">
+              <div>
+                <p className="font-semibold text-gray-800">{t('post.postAnonymously')}</p>
+                <p className="text-sm text-gray-600">{t('post.anonymousDescription')}</p>
+              </div>
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  name="isAnonymous"
+                  checked={formData.isAnonymous}
+                  onChange={(e) => setFormData({ ...formData, isAnonymous: e.target.checked })}
+                  className="sr-only"
+                />
+                <div className={`w-14 h-8 rounded-full transition ${
+                  formData.isAnonymous ? 'bg-primary' : 'bg-gray-300'
+                }`}>
+                  <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition ${
+                    formData.isAnonymous ? 'translate-x-7 mt-1 ml-1' : 'translate-x-1 mt-1'
+                  }`}></div>
+                </div>
+              </div>
             </label>
           </div>
 
