@@ -203,13 +203,13 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
           </div>
 
           {/* Anonymous Toggle */}
-          <div className="mb-6 bg-gray-50 rounded-lg p-4">
-            <label className="flex items-center justify-between cursor-pointer">
-              <div>
-                <p className="font-semibold text-gray-800">{t('post.postAnonymously')}</p>
-                <p className="text-sm text-gray-600">{t('post.anonymousDescription')}</p>
+          <div className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4 border border-purple-200">
+            <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer gap-3">
+              <div className="flex-1">
+                <p className="font-bold text-gray-900 text-base mb-1">{t('post.postAnonymously')}</p>
+                <p className="text-sm text-gray-600 leading-relaxed">{t('post.anonymousDescription')}</p>
               </div>
-              <div className="relative">
+              <div className="relative flex-shrink-0">
                 <input
                   type="checkbox"
                   name="isAnonymous"
@@ -217,25 +217,40 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
                   onChange={(e) => setFormData({ ...formData, isAnonymous: e.target.checked })}
                   className="sr-only"
                 />
-                <div className={`w-14 h-8 rounded-full transition ${
-                  formData.isAnonymous ? 'bg-primary' : 'bg-gray-300'
+                <div className={`w-16 h-9 rounded-full transition-all duration-300 ease-in-out ${
+                  formData.isAnonymous ? 'bg-gradient-to-r from-purple-500 to-blue-500' : 'bg-gray-300'
                 }`}>
-                  <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition ${
-                    formData.isAnonymous ? 'translate-x-7 mt-1 ml-1' : 'translate-x-1 mt-1'
-                  }`}></div>
+                  <div className={`w-7 h-7 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out ${
+                    formData.isAnonymous ? 'translate-x-8' : 'translate-x-1'
+                  } mt-1`}></div>
                 </div>
               </div>
             </label>
           </div>
 
           {/* Guidelines */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <h4 className="font-semibold text-gray-800 mb-2">{t('post.guidelines')}</h4>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>• {t('post.guidelineRespect')}</li>
-              <li>• {t('post.guidelineNoHarm')}</li>
-              <li>• {t('post.guidelinePrivacy')}</li>
-              <li>• {t('post.guidelineCrisis')}</li>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border border-blue-200">
+            <h4 className="font-bold text-gray-900 mb-3 flex items-center">
+              <span className="text-blue-600 mr-2">ℹ️</span>
+              {t('post.guidelines')}
+            </h4>
+            <ul className="text-sm text-gray-700 space-y-2">
+              <li className="flex items-start">
+                <span className="text-green-600 mr-2 mt-0.5">✓</span>
+                <span>{t('post.guidelineRespect')}</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 mr-2 mt-0.5">✓</span>
+                <span>{t('post.guidelineNoHarm')}</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 mr-2 mt-0.5">✓</span>
+                <span>{t('post.guidelinePrivacy')}</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-red-600 mr-2 mt-0.5">⚠</span>
+                <span className="font-medium">{t('post.guidelineCrisis')}</span>
+              </li>
             </ul>
           </div>
 
