@@ -59,14 +59,22 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
         imageUrl = uploadResult.url;
       }
 
-      // Submit post with image URL
+      // Submit post with image URL and anonymous flag
       await onSubmit({
-        ...formData,
-        imageUrl
+        title: formData.title,
+        content: formData.content,
+        community: formData.community,
+        imageUrl: imageUrl,
+        isAnonymous: formData.isAnonymous  // Make sure this is included
       });
 
       // Reset form
-      setFormData({ title: '', content: '', community: defaultCommunity || 'Anxiety Support' });
+      setFormData({ 
+        title: '', 
+        content: '', 
+        community: defaultCommunity || 'Anxiety Support',
+        isAnonymous: false 
+      });
       setImageFile(null);
       setImagePreview(null);
       onClose();

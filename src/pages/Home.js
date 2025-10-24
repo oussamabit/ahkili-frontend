@@ -46,32 +46,25 @@ const Home = () => {
       return;
     }
 
-    console.log('Creating post with data:', newPostData);
-
+    
     try {
       const postPayload = {
         title: newPostData.title,
         content: newPostData.content,
         community_id: null,
+        is_anonymous: newPostData.isAnonymous || false,  // Add this line
       };
 
       if (newPostData.imageUrl) {
         postPayload.image_url = newPostData.imageUrl;
       }
-
-      console.log('Sending to API:', postPayload);
-
+     
       const createdPost = await createPostAPI(postPayload, backendUser.id);
-      
-      console.log('Created post response:', createdPost);
-      console.log('Created post image_url:', createdPost.image_url);
-      console.log('Created post full:', JSON.stringify(createdPost, null, 2));
       
       setPosts([createdPost, ...posts]);
       showSuccess('Post created successfully!');
     } catch (error) {
-      console.error('Error creating post:', error);
-      console.error('Error details:', error.response?.data);
+      
       showError('Failed to create post. Please try again.');
     }
   };
