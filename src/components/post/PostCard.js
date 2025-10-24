@@ -9,6 +9,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
 const PostCard = ({ post, onDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [loadingReaction, setLoadingReaction] = useState(false);
@@ -190,10 +191,69 @@ const PostCard = ({ post, onDelete }) => {
           </button>
         </Link>
 
-        <button className="flex items-center space-x-2 text-gray-600 hover:text-primary transition">
-          <Share2 className="w-5 h-5" />
-          <span className="text-sm">Share</span>
-        </button>
+        <div className="relative">
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      setShowShareMenu(!showShareMenu);
+    }}
+    className="flex items-center space-x-2 text-gray-600 hover:text-primary transition"
+  >
+    <Share2 className="w-5 h-5" />
+    <span className="text-sm">Share</span>
+  </button>
+
+  {showShareMenu && (
+    <div className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-lg shadow-xl z-20 border border-gray-100">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          const postUrl = `${window.location.origin}/post/${post.id}`;
+          navigator.clipboard.writeText(postUrl);
+          alert('Link copied!');
+          setShowShareMenu(false);
+        }}
+        className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 transition-colors rounded-t-lg"
+      >
+        <Share2 className="w-4 h-4" />
+        <span className="text-sm font-medium">Copy Link</span>
+      </button>
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          const postUrl = `${window.location.origin}/post/${post.id}`;
+          const text = `Check out this post: "${post.title}"`;
+          const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}&text=${encodeURIComponent(text)}`;
+          window.open(twitterUrl, '_blank');
+          setShowShareMenu(false);
+        }}
+        className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 transition-colors border-t"
+      >
+        <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 9 1.5 11-4.5a17.84 17.84 0 001-4c0-.5.5-1.5 1-2z"/>
+        </svg>
+        <span className="text-sm font-medium">Twitter</span>
+      </button>
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          const postUrl = `${window.location.origin}/post/${post.id}`;
+          const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`Check out: "${post.title}" ${postUrl}`)}`;
+          window.open(whatsappUrl, '_blank');
+          setShowShareMenu(false);
+        }}
+        className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 transition-colors border-t rounded-b-lg"
+      >
+        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.281-3.89 6.347-1.608 9.402a9.9 9.9 0 001.640 1.618l.105.061a9.9 9.9 0 005.116 1.536h.004c5.514 0 10-4.486 10-10s-4.486-10-10-10z"/>
+        </svg>
+        <span className="text-sm font-medium">WhatsApp</span>
+      </button>
+    </div>
+  )}
+</div>
       </div>
     </div>
   );
