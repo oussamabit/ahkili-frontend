@@ -36,6 +36,7 @@ const PostDetail = () => {
       
       const postData = await getPost(id);
       console.log('=== Post data received:', postData);
+      console.log('=== Post is_anonymous:', postData.is_anonymous);
       
       const commentsData = await getComments(id);
       console.log('=== Comments data received:', commentsData);

@@ -8,6 +8,8 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
 const PostCard = ({ post, onDelete }) => {
+  console.log('PostCard received post:', post);
+  console.log('Post is_anonymous value:', post.is_anonymous);
   const [showMenu, setShowMenu] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [liked, setLiked] = useState(false);
