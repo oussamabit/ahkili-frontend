@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Image as ImageIcon, Loader } from 'lucide-react';
-import { uploadImage } from '../../services/api';
+import { X, Image as ImageIcon, Video as VideoIcon, Loader } from 'lucide-react';
+import { uploadImage, uploadVideo } from '../../services/api';
 import { useTranslation } from 'react-i18next';
 
 const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
@@ -15,7 +15,10 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [mediaType, setMediaType] = useState(null); // 'image' or 'video'
 
   const communities = [
     'Anxiety Support',
@@ -36,14 +39,50 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Remove video if exists
+      handleRemoveVideo();
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
+      setMediaType('image');
+    }
+  };
+
+  const handleVideoSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (max 50MB)
+      if (file.size > 50 * 1024 * 1024) {
+        alert('Video file is too large. Maximum size is 50MB.');
+        return;
+      }
+      // Remove image if exists
+      handleRemoveImage();
+      setVideoFile(file);
+      setVideoPreview(URL.createObjectURL(file));
+      setMediaType('video');
     }
   };
 
   const handleRemoveImage = () => {
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
     setImageFile(null);
     setImagePreview(null);
+    if (mediaType === 'image') {
+      setMediaType(null);
+    }
+  };
+
+  const handleRemoveVideo = () => {
+    if (videoPreview) {
+      URL.revokeObjectURL(videoPreview);
+    }
+    setVideoFile(null);
+    setVideoPreview(null);
+    if (mediaType === 'video') {
+      setMediaType(null);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -52,6 +91,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
 
     try {
       let imageUrl = null;
+      let videoUrl = null;
 
       // Upload image if selected
       if (imageFile) {
@@ -59,21 +99,29 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
         imageUrl = uploadResult.url;
       }
 
+      // Upload video if selected
+      if (videoFile) {
+        const uploadResult = await uploadVideo(videoFile);
+        videoUrl = uploadResult.url;
+      }
+
       console.log('Submitting post data:', {
         title: formData.title,
         content: formData.content,
         community: formData.community,
         imageUrl: imageUrl,
+        videoUrl: videoUrl,
         isAnonymous: formData.isAnonymous
       });
 
-      // Submit post with image URL and anonymous flag
+      // Submit post with media URLs and anonymous flag
       await onSubmit({
         title: formData.title,
         content: formData.content,
         community: formData.community,
         imageUrl: imageUrl,
-        isAnonymous: formData.isAnonymous  // Make sure this is included
+        videoUrl: videoUrl,
+        isAnonymous: formData.isAnonymous
       });
 
       // Reset form
@@ -85,6 +133,9 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
       });
       setImageFile(null);
       setImagePreview(null);
+      setVideoFile(null);
+      setVideoPreview(null);
+      setMediaType(null);
       onClose();
     } catch (error) {
       console.error('Error creating post:', error);
@@ -171,35 +222,99 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
                 alt="Preview"
                 className="w-full max-h-96 object-contain rounded-lg border border-gray-200"
               />
-
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition"
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           )}
 
-          {/* Image Upload - More Visible */}
+          {/* Video Preview */}
+          {videoPreview && (
+            <div className="mb-4 relative">
+              <video
+                controls
+                className="w-full max-h-96 rounded-lg border border-gray-200"
+              >
+                <source src={videoPreview} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <button
+                type="button"
+                onClick={handleRemoveVideo}
+                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Media Upload Options */}
           <div className="mb-6">
-            <input
-              type="file"
-              id="image-upload"
-              accept="image/*"
-              onChange={handleImageSelect}
-              className="hidden"
-            />
-            <label
-              htmlFor="image-upload"
-              className="flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary hover:bg-primary/5 transition cursor-pointer"
-            >
-              <ImageIcon className="w-5 h-5 text-primary" />
-              <span className="font-medium text-gray-700">
-                {imageFile ? t('post.changeImage') : t('post.addImage')}
-              </span>
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              {t('post.addMedia') || 'Add Media (Optional)'}
             </label>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Image Upload */}
+              <div>
+                <input
+                  type="file"
+                  id="image-upload"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  disabled={videoFile !== null}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="image-upload"
+                  className={`flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed rounded-lg transition cursor-pointer ${
+                    videoFile 
+                      ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
+                      : imageFile
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-gray-300 hover:border-primary hover:bg-primary/5'
+                  }`}
+                >
+                  <ImageIcon className={`w-5 h-5 ${imageFile ? 'text-green-600' : 'text-primary'}`} />
+                  <span className={`font-medium text-sm ${imageFile ? 'text-green-700' : 'text-gray-700'}`}>
+                    {imageFile ? '✓ Image' : t('post.addImage') || 'Add Image'}
+                  </span>
+                </label>
+              </div>
+
+              {/* Video Upload */}
+              <div>
+                <input
+                  type="file"
+                  id="video-upload"
+                  accept="video/*"
+                  onChange={handleVideoSelect}
+                  disabled={imageFile !== null}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="video-upload"
+                  className={`flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed rounded-lg transition cursor-pointer ${
+                    imageFile 
+                      ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
+                      : videoFile
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-gray-300 hover:border-primary hover:bg-primary/5'
+                  }`}
+                >
+                  <VideoIcon className={`w-5 h-5 ${videoFile ? 'text-green-600' : 'text-primary'}`} />
+                  <span className={`font-medium text-sm ${videoFile ? 'text-green-700' : 'text-gray-700'}`}>
+                    {videoFile ? '✓ Video' : t('post.addVideo') || 'Add Video'}
+                  </span>
+                </label>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 mt-2 text-center">
+              {t('post.mediaNote') || 'You can add either an image or a video (max 50MB for videos)'}
+            </p>
           </div>
 
           {/* Anonymous Toggle */}

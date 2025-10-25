@@ -128,6 +128,18 @@ export const uploadImage = async (file) => {
   return response.data;
 };
 
+export const uploadVideo = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  const response = await api.post('/upload/video', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
 // ============= COMMENT REACTION API =============
 export const toggleCommentReaction = async (commentId, userId, reactionType = 'like') => {
   const response = await api.post(`/comment-reactions/comment/${commentId}?user_id=${userId}&reaction_type=${reactionType}`);

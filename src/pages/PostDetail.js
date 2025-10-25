@@ -243,6 +243,19 @@ const PostDetail = () => {
             </div>
           )}
 
+          {/* Post Video */}
+          {(post.video_url || post.videoUrl) && (
+            <div className="mb-6 rounded-2xl overflow-hidden shadow-md">
+              <video
+                controls
+                className="w-full h-auto max-h-96"
+              >
+                <source src={post.video_url || post.videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
+
           {/* Post Content */}
           <div className="text-gray-700 leading-relaxed mb-8 whitespace-pre-line text-lg" dir="auto">
             {post.content}

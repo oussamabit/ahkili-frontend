@@ -169,6 +169,17 @@ const PostCard = ({ post, onDelete }) => {
         />
       )}
 
+      {/* Post Video */}
+      {(post.video_url || post.videoUrl) && (
+        <video
+          controls
+          className="w-full max-h-96 rounded-lg mb-4 border border-gray-200"
+        >
+          <source src={post.video_url || post.videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
+
       {/* Post Actions */}
       <div className="flex items-center space-x-6 pt-4 border-t">
         <button 
