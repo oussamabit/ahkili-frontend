@@ -32,14 +32,11 @@ const PostDetail = () => {
 
   const fetchData = async () => {
     try {
-      console.log('=== Fetching post with ID:', id);
       
       const postData = await getPost(id);
-      console.log('=== Post data received:', postData);
-      console.log('=== Post is_anonymous:', postData.is_anonymous);
+
       
       const commentsData = await getComments(id);
-      console.log('=== Comments data received:', commentsData);
       
       if (!postData || !postData.id) {
         throw new Error('Invalid post data returned');
@@ -47,7 +44,6 @@ const PostDetail = () => {
       
       // Ensure comments is always an array
       const validComments = Array.isArray(commentsData) ? commentsData : [];
-      console.log('=== Valid comments:', validComments);
       
       setPost(postData);
       setComments(validComments);
@@ -57,7 +53,6 @@ const PostDetail = () => {
       if (backendUser) {
         try {
           const reaction = await checkUserReaction(postData.id, backendUser.id);
-          console.log('=== User reaction:', reaction);
           setLiked(reaction.has_reacted);
         } catch (error) {
           console.error('Error checking reaction:', error);
@@ -80,9 +75,7 @@ const PostDetail = () => {
     
     setLoadingReaction(true);
     try {
-      console.log('Toggling reaction for post:', id, 'user:', backendUser.id);
       const result = await toggleReaction(parseInt(id), backendUser.id);
-      console.log('Toggle reaction result:', result);
       setLikesCount(result.reactions_count);
       setLiked(result.user_has_reacted);
     } catch (error) {

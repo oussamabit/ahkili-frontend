@@ -46,23 +46,30 @@ const Home = () => {
       return;
     }
 
-    
     try {
       const postPayload = {
         title: newPostData.title,
         content: newPostData.content,
         community_id: null,
-        is_anonymous: newPostData.isAnonymous || false,  // Add this line
+        is_anonymous: newPostData.is_anonymous || false,  // Use snake_case
       };
 
-      if (newPostData.imageUrl) {
-        postPayload.image_url = newPostData.imageUrl;
+      // Add image if provided
+      if (newPostData.image_url) {
+        postPayload.image_url = newPostData.image_url;
       }
-      console.log('Sending to API:', postPayload);
+
+      // Add video if provided
+      if (newPostData.video_url) {
+        postPayload.video_url = newPostData.video_url;
+      }
+
+      
 
       const createdPost = await createPostAPI(postPayload, backendUser.id);
       
-      console.log('Created post is_anonymous:', createdPost.is_anonymous);
+      
+      console.log('Post has video_url:', createdPost.video_url);
 
       setPosts([createdPost, ...posts]);
       showSuccess('Post created successfully!');

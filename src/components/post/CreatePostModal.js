@@ -114,14 +114,15 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
         isAnonymous: formData.isAnonymous
       });
 
+      
       // Submit post with media URLs and anonymous flag
       await onSubmit({
         title: formData.title,
         content: formData.content,
         community: formData.community,
-        imageUrl: imageUrl,
-        videoUrl: videoUrl,
-        isAnonymous: formData.isAnonymous
+        image_url: imageUrl,
+        video_url: videoUrl,
+        is_anonymous: formData.isAnonymous
       });
 
       // Reset form
