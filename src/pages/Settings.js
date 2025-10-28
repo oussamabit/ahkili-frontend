@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Globe, Bell, Lock, Trash2, Check } from 'lucide-react';
+import { ArrowLeft, Globe, Bell, Lock, Trash2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
+import { auth } from '../firebase/config'; // Import Firebase auth
 import * as api from '../services/api';
 
 const Settings = () => {
@@ -29,22 +30,66 @@ const Settings = () => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Get user ID from localStorage if currentUser is not available
     const getUserId = async () => {
+      console.log('🔍 Checking for user...');
+      console.log('currentUser from context:', currentUser);
+      
+      // Method 1: From Auth Context
       if (currentUser?.id) {
+        console.log('✅ Found user ID from context:', currentUser.id);
         setUserId(currentUser.id);
-      } else {
-        // Try to get from localStorage
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          try {
-            const user = JSON.parse(storedUser);
+        return;
+      }
+
+      // Method 2: From localStorage 'user'
+      const storedUser = localStorage.getItem('user');
+      console.log('Stored user in localStorage:', storedUser);
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          if (user.id) {
+            console.log('✅ Found user ID from localStorage:', user.id);
             setUserId(user.id);
-          } catch (error) {
-            console.error('Error parsing stored user:', error);
+            return;
           }
+        } catch (error) {
+          console.error('Error parsing stored user:', error);
         }
       }
+
+      // Method 3: From Firebase and fetch from backend
+      const firebaseUser = auth.currentUser;
+      console.log('Firebase user:', firebaseUser);
+      if (firebaseUser) {
+        try {
+          // Fetch user from backend using Firebase UID
+          const response = await api.get(`/users/firebase/${firebaseUser.uid}`);
+          console.log('✅ Found user from Firebase UID:', response.data);
+          setUserId(response.data.id);
+          // Store in localStorage for future use
+          localStorage.setItem('user', JSON.stringify(response.data));
+          return;
+        } catch (error) {
+          console.error('Error fetching user from Firebase UID:', error);
+        }
+      }
+
+      // Method 4: From localStorage 'currentUser'
+      const currentUserStored = localStorage.getItem('currentUser');
+      if (currentUserStored) {
+        try {
+          const user = JSON.parse(currentUserStored);
+          if (user.id) {
+            console.log('✅ Found user ID from currentUser localStorage:', user.id);
+            setUserId(user.id);
+            return;
+          }
+        } catch (error) {
+          console.error('Error parsing currentUser:', error);
+        }
+      }
+
+      console.log('❌ No user ID found anywhere');
     };
 
     getUserId();
@@ -52,7 +97,10 @@ const Settings = () => {
 
   useEffect(() => {
     if (userId) {
+      console.log('📥 Fetching preferences for user:', userId);
       fetchNotificationPreferences();
+    } else {
+      setLoading(false);
     }
   }, [userId]);
 
@@ -63,7 +111,10 @@ const Settings = () => {
     }
     
     try {
+      console.log(`🔵 Fetching preferences from: /notification-preferences/${userId}`);
       const response = await api.get(`/notification-preferences/${userId}`);
+      console.log('✅ Preferences loaded:', response.data);
+      
       setSettings(prev => ({
         ...prev,
         emailNotifications: response.data.email_notifications,
@@ -74,9 +125,10 @@ const Settings = () => {
         newPosts: response.data.new_posts
       }));
     } catch (error) {
-      console.error('Error fetching preferences:', error);
-      // If 404, preferences don't exist yet - will be created on first save
-      if (error.response?.status !== 404) {
+      console.error('❌ Error fetching preferences:', error);
+      if (error.response?.status === 404) {
+        console.log('ℹ️ No preferences found yet - will create on first save');
+      } else {
         showError('Failed to load notification preferences');
       }
     } finally {
@@ -88,7 +140,6 @@ const Settings = () => {
     i18n.changeLanguage(lang);
     setSettings({ ...settings, language: lang });
     
-    // Apply RTL for Arabic
     if (lang === 'ar') {
       document.documentElement.dir = 'rtl';
       document.documentElement.lang = 'ar';
@@ -97,7 +148,6 @@ const Settings = () => {
       document.documentElement.lang = lang;
     }
 
-    // Save to localStorage immediately
     localStorage.setItem('language', lang);
   };
 
@@ -105,7 +155,6 @@ const Settings = () => {
     const newSettings = { ...settings, [key]: !settings[key] };
     setSettings(newSettings);
     
-    // Auto-save notification preferences
     const notificationKeys = [
       'emailNotifications', 
       'pushNotifications', 
@@ -118,53 +167,46 @@ const Settings = () => {
     if (notificationKeys.includes(key)) {
       await saveNotificationPreferences(newSettings);
     } else {
-      // Save other settings to localStorage
       localStorage.setItem('userSettings', JSON.stringify(newSettings));
     }
   };
 
   const saveNotificationPreferences = async (settingsToSave = settings) => {
+    console.log('💾 Attempting to save preferences...');
+    console.log('User ID:', userId);
+    
     if (!userId) {
-      console.error('No user ID available');
+      console.error('❌ No user ID available');
+      showError('Please log in to save settings');
       return false;
     }
 
     setSaving(true);
     try {
-      await api.put(`/notification-preferences/${userId}`, {
+      const payload = {
         email_notifications: settingsToSave.emailNotifications,
         push_notifications: settingsToSave.pushNotifications,
         comment_reactions: settingsToSave.commentReactions,
         comment_replies: settingsToSave.commentReplies,
         post_reactions: settingsToSave.postReactions,
         new_posts: settingsToSave.newPosts
-      });
-
+      };
+      
+      console.log(`🔵 Saving to: /notification-preferences/${userId}`);
+      console.log('Payload:', payload);
+      
+      const response = await api.put(`/notification-preferences/${userId}`, payload);
+      console.log('✅ Preferences saved:', response.data);
+      
       showSuccess('Preferences saved');
       return true;
     } catch (error) {
-      console.error('Error saving settings:', error);
+      console.error('❌ Error saving settings:', error);
+      console.error('Error response:', error.response);
       showError('Failed to save preferences');
       return false;
     } finally {
       setSaving(false);
-    }
-  };
-
-  const handleSave = async () => {
-    if (!userId) {
-      showError('Please log in to save settings');
-      return;
-    }
-
-    // Save notification preferences to backend
-    const success = await saveNotificationPreferences();
-    
-    // Save other settings to localStorage
-    localStorage.setItem('userSettings', JSON.stringify(settings));
-    
-    if (success) {
-      showSuccess(t('settings.saved'));
     }
   };
 
@@ -179,8 +221,31 @@ const Settings = () => {
     );
   }
 
+  if (!userId) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+          <p className="text-yellow-800 mb-4">Please log in to access settings</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-green-600"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6">
+      {/* Debug Info - Remove this in production */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <p className="text-sm text-blue-800">
+          <strong>Debug:</strong> User ID = {userId}
+        </p>
+      </div>
+
       {/* Header */}
       <button 
         onClick={() => navigate('/profile')}
