@@ -1,27 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Save, Globe, Sun, Moon, Bell, Lock, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Globe, Bell, Lock, Trash2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 
 const Settings = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const { showSuccess } = useToast();
+  const { showSuccess, showError } = useToast();
+  const { currentUser } = useAuth();
   
   const [settings, setSettings] = useState({
     language: i18n.language || 'en',
-    theme: localStorage.getItem('theme') || 'light',
     emailNotifications: true,
     pushNotifications: false,
+    commentReactions: true,
+    commentReplies: true,
+    postReactions: true,
+    newPosts: false,
     publicProfile: true,
     showEmail: false
   });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Apply theme on mount
-    document.documentElement.classList.toggle('dark', settings.theme === 'dark');
-  }, [settings.theme]);
+    fetchNotificationPreferences();
+  }, []);
+
+  const fetchNotificationPreferences = async () => {
+    if (!currentUser?.id) return;
+    
+    try {
+      const response = await api.get(`/notification-preferences/${currentUser.id}`);
+      setSettings(prev => ({
+        ...prev,
+        emailNotifications: response.data.email_notifications,
+        pushNotifications: response.data.push_notifications,
+        commentReactions: response.data.comment_reactions,
+        commentReplies: response.data.comment_replies,
+        postReactions: response.data.post_reactions,
+        newPosts: response.data.new_posts
+      }));
+    } catch (error) {
+      console.error('Error fetching preferences:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang);
@@ -37,21 +65,43 @@ const Settings = () => {
     }
   };
 
-  const handleThemeChange = (theme) => {
-    setSettings({ ...settings, theme });
-    localStorage.setItem('theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  };
-
   const handleToggle = (key) => {
     setSettings({ ...settings, [key]: !settings[key] });
   };
 
-  const handleSave = () => {
-    // Save settings to localStorage
-    localStorage.setItem('userSettings', JSON.stringify(settings));
-    showSuccess(t('settings.saved'));
+  const handleSave = async () => {
+    if (!currentUser?.id) {
+      showError('Please log in to save settings');
+      return;
+    }
+
+    try {
+      // Save notification preferences to backend
+      await api.put(`/notification-preferences/${currentUser.id}`, {
+        email_notifications: settings.emailNotifications,
+        push_notifications: settings.pushNotifications,
+        comment_reactions: settings.commentReactions,
+        comment_replies: settings.commentReplies,
+        post_reactions: settings.postReactions,
+        new_posts: settings.newPosts
+      });
+
+      // Save other settings to localStorage
+      localStorage.setItem('userSettings', JSON.stringify(settings));
+      showSuccess(t('settings.saved'));
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      showError('Failed to save settings');
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center py-8">Loading settings...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -112,44 +162,6 @@ const Settings = () => {
         </div>
       </div>
 
-      {/* Theme Settings */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className="flex items-center space-x-3 mb-4">
-          {settings.theme === 'light' ? (
-            <Sun className="w-6 h-6 text-primary" />
-          ) : (
-            <Moon className="w-6 h-6 text-primary" />
-          )}
-          <h2 className="text-xl font-bold text-gray-800">{t('settings.theme')}</h2>
-        </div>
-        
-        <div className="flex space-x-3">
-          <button
-            onClick={() => handleThemeChange('light')}
-            className={`flex-1 p-4 border-2 rounded-lg transition ${
-              settings.theme === 'light'
-                ? 'border-primary bg-green-50'
-                : 'border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <Sun className="w-6 h-6 mx-auto mb-2" />
-            <div className="font-semibold">{t('settings.light')}</div>
-          </button>
-
-          <button
-            onClick={() => handleThemeChange('dark')}
-            className={`flex-1 p-4 border-2 rounded-lg transition ${
-              settings.theme === 'dark'
-                ? 'border-primary bg-green-50'
-                : 'border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <Moon className="w-6 h-6 mx-auto mb-2" />
-            <div className="font-semibold">{t('settings.dark')}</div>
-          </button>
-        </div>
-      </div>
-
       {/* Notifications */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center space-x-3 mb-4">
@@ -159,7 +171,10 @@ const Settings = () => {
         
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-gray-700">{t('settings.emailNotif')}</span>
+            <div>
+              <span className="text-gray-700 font-medium">{t('settings.emailNotif')}</span>
+              <p className="text-sm text-gray-500">Receive notifications via email</p>
+            </div>
             <button
               onClick={() => handleToggle('emailNotifications')}
               className={`relative w-12 h-6 rounded-full transition ${
@@ -173,7 +188,10 @@ const Settings = () => {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-gray-700">{t('settings.pushNotif')}</span>
+            <div>
+              <span className="text-gray-700 font-medium">{t('settings.pushNotif')}</span>
+              <p className="text-sm text-gray-500">Receive push notifications</p>
+            </div>
             <button
               onClick={() => handleToggle('pushNotifications')}
               className={`relative w-12 h-6 rounded-full transition ${
@@ -184,6 +202,68 @@ const Settings = () => {
                 settings.pushNotifications ? 'translate-x-7' : 'translate-x-1'
               }`} />
             </button>
+          </div>
+
+          <div className="border-t pt-4 mt-4">
+            <p className="text-sm font-semibold text-gray-700 mb-3">Notification Types</p>
+            
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">Comment Reactions</span>
+                <button
+                  onClick={() => handleToggle('commentReactions')}
+                  className={`relative w-12 h-6 rounded-full transition ${
+                    settings.commentReactions ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                >
+                  <div className={`absolute w-4 h-4 bg-white rounded-full top-1 transition-transform ${
+                    settings.commentReactions ? 'translate-x-7' : 'translate-x-1'
+                  }`} />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">Comment Replies</span>
+                <button
+                  onClick={() => handleToggle('commentReplies')}
+                  className={`relative w-12 h-6 rounded-full transition ${
+                    settings.commentReplies ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                >
+                  <div className={`absolute w-4 h-4 bg-white rounded-full top-1 transition-transform ${
+                    settings.commentReplies ? 'translate-x-7' : 'translate-x-1'
+                  }`} />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">Post Reactions</span>
+                <button
+                  onClick={() => handleToggle('postReactions')}
+                  className={`relative w-12 h-6 rounded-full transition ${
+                    settings.postReactions ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                >
+                  <div className={`absolute w-4 h-4 bg-white rounded-full top-1 transition-transform ${
+                    settings.postReactions ? 'translate-x-7' : 'translate-x-1'
+                  }`} />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700">New Posts in Followed Communities</span>
+                <button
+                  onClick={() => handleToggle('newPosts')}
+                  className={`relative w-12 h-6 rounded-full transition ${
+                    settings.newPosts ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                >
+                  <div className={`absolute w-4 h-4 bg-white rounded-full top-1 transition-transform ${
+                    settings.newPosts ? 'translate-x-7' : 'translate-x-1'
+                  }`} />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -243,6 +323,7 @@ const Settings = () => {
         </div>
       </div>
 
+     
       {/* Save Button */}
       <button
         onClick={handleSave}

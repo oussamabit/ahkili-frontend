@@ -152,5 +152,62 @@ export const getCommentReactions = async (commentId, userId) => {
   return response.data;
 };
 
+// ============= NOTIFICATION PREFERENCE API =============
+export const getNotificationPreferences = async (userId) => {
+  const response = await api.get(`/notification/notification-preferences/${userId}`);
+  return response.data;
+};
+
+export const updateNotificationPreferences = async (userId, preferences) => {
+  const response = await api.put(`/notification/notification-preferences/${userId}`, preferences);
+  return response.data;
+};
+
+// ============= NOTIFICATION API =============
+export const getNotifications = async (userId, skip = 0, limit = 50) => {
+  const response = await api.get(`/notification/notifications/${userId}?skip=${skip}&limit=${limit}`);
+  return response.data;
+};
+
+export const getUnreadNotificationsCount = async (userId) => {
+  const response = await api.get(`/notification/notifications/${userId}/unread/count`);
+  return response.data;
+};
+
+export const markNotificationAsRead = async (notificationId, userId) => {
+  const response = await api.put(`/notification/notifications/${notificationId}/read?user_id=${userId}`);
+  return response.data;
+};
+
+export const markAllNotificationsAsRead = async (userId) => {
+  const response = await api.put(`/notification/notifications/${userId}/read-all`);
+  return response.data;
+};
+
+export const deleteNotification = async (notificationId, userId) => {
+  const response = await api.delete(`/notification/notifications/${notificationId}?user_id=${userId}`);
+  return response.data;
+};
+
+// ============= COMMUNITY FOLLOWER API =============
+export const followCommunity = async (communityId, userId) => {
+  const response = await api.post(`/notification/communities/${communityId}/follow?user_id=${userId}`);
+  return response.data;
+};
+
+export const unfollowCommunity = async (communityId, userId) => {
+  const response = await api.delete(`/notification/communities/${communityId}/follow?user_id=${userId}`);
+  return response.data;
+};
+
+export const isFollowingCommunity = async (communityId, userId) => {
+  const response = await api.get(`/notification/communities/${communityId}/follow/check?user_id=${userId}`);
+  return response.data;
+};
+
+export const getCommunityFollowers = async (communityId) => {
+  const response = await api.get(`/notification/communities/${communityId}/followers`);
+  return response.data;
+};
 
 export default api;

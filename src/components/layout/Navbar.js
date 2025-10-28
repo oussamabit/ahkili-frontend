@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Users, Phone, User, Heart, Search as SearchIcon, Settings as SettingsIcon, Shield, Menu, X } from 'lucide-react';
+import { Home, Users, Phone, User, Heart, Search as SearchIcon, Settings as SettingsIcon, Shield, Menu, X, Bell } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { useUserSync } from '../../hooks/useUserSync';
+import * as api from '../../services/api';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
@@ -11,6 +12,25 @@ const Navbar = () => {
   const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      fetchUnreadCount();
+      // Poll every 30 seconds
+      const interval = setInterval(fetchUnreadCount, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [currentUser]);
+
+  const fetchUnreadCount = async () => {
+    try {
+      const data = await api.getUnreadNotificationsCount(currentUser.id);
+      setUnreadCount(data.count);
+    } catch (error) {
+      console.error('Error fetching unread count:', error);
+    }
+  };
 
   const NavLink = ({ to, icon: Icon, label, special = false }) => (
     <Link 
@@ -32,7 +52,7 @@ const Navbar = () => {
     </Link>
   );
 
-  const BottomNavItem = ({ to, icon: Icon, label, special = false, center = false }) => (
+  const BottomNavItem = ({ to, icon: Icon, label, special = false, center = false, showBadge = false, badgeCount = 0 }) => (
     <Link 
       to={to}
       className={`flex flex-col items-center justify-center transition-all duration-300 ${
@@ -41,7 +61,7 @@ const Navbar = () => {
           : 'flex-1'
       }`}
     >
-      <div className={`${
+      <div className={`relative ${
         center 
           ? 'w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-xl shadow-red-500/50 flex items-center justify-center transform hover:scale-110 transition-transform duration-300' 
           : 'p-2'
@@ -51,6 +71,11 @@ const Navbar = () => {
             ? 'w-8 h-8 text-white' 
             : 'w-6 h-6 text-gray-600 hover:text-primary transition-colors'
         } ${special && !center ? 'animate-pulse' : ''}`} />
+        {showBadge && badgeCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+            {badgeCount > 9 ? '9+' : badgeCount}
+          </span>
+        )}
       </div>
       <span className={`${
         center ? 'hidden' : 'text-xs mt-1 text-gray-600'
@@ -63,17 +88,17 @@ const Navbar = () => {
       <nav className="bg-white/80 backdrop-blur-lg shadow-lg sticky top-0 z-50 border-b border-gray-100">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex items-center justify-between h-20">
-          {/* Logo with Animation */}
-          <Link to="/" className="flex items-center justify-center group">
-            <div className="relative">
-              <img
-                src="/logo/ahkili-01.png"
-                alt="Ahkili Logo"
-                className="w-24 h-24 object-contain transition-transform duration-300 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-primary/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-          </Link>
+            {/* Logo with Animation */}
+            <Link to="/" className="flex items-center justify-center group">
+              <div className="relative">
+                <img
+                  src="/logo/ahkili-01.png"
+                  alt="Ahkili Logo"
+                  className="w-24 h-24 object-contain transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-primary/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-2">
@@ -98,6 +123,16 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center gap-3">
               {currentUser ? (
                 <>
+                  {/* Notifications Bell */}
+                  <Link to="/notifications" className="relative p-3 rounded-xl hover:bg-gray-100 transition-all duration-300 group">
+                    <Bell className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform duration-300" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
+                  </Link>
+
                   <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-primary/5 to-transparent rounded-xl">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                     <span className="text-gray-700 font-medium text-sm max-w-[150px] truncate">
@@ -147,7 +182,13 @@ const Navbar = () => {
           <BottomNavItem to="/" icon={Home} label={t('nav.home')} />
           <BottomNavItem to="/communities" icon={Users} label={t('nav.communities')} />
           <BottomNavItem to="/hotlines" icon={Phone} label="" center={true} special={true} />
-          <BottomNavItem to="/search" icon={SearchIcon} label={t('nav.search')} />
+          <BottomNavItem 
+            to="/notifications" 
+            icon={Bell} 
+            label={t('nav.notifications')} 
+            showBadge={true}
+            badgeCount={unreadCount}
+          />
           <button 
             onClick={() => setMoreMenuOpen(!moreMenuOpen)}
             className="flex flex-col items-center justify-center flex-1"
@@ -182,6 +223,20 @@ const Navbar = () => {
                 >
                   <SettingsIcon className="w-5 h-5 text-gray-600" />
                   <span className="font-medium text-gray-700">Settings</span>
+                </Link>
+
+                <Link 
+                  to="/notifications"
+                  onClick={() => setMoreMenuOpen(false)}
+                  className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 relative"
+                >
+                  <Bell className="w-5 h-5 text-gray-600" />
+                  <span className="font-medium text-gray-700">Notifications</span>
+                  {unreadCount > 0 && (
+                    <span className="absolute right-6 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
                 </Link>
 
                 {currentUser && backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
