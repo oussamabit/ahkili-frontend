@@ -4,8 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Globe, Bell, Lock, Trash2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
-import { auth } from '../services/firebase'; // Import Firebase auth
-import * as api from '../services/api';
+import { auth } from '../services/firebase';
+import { 
+  getNotificationPreferences, 
+  updateNotificationPreferences,
+  getUserByFirebaseUid 
+} from '../services/api';  // ✅ Import only the functions you need
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -62,12 +66,11 @@ const Settings = () => {
       console.log('Firebase user:', firebaseUser);
       if (firebaseUser) {
         try {
-          // Fetch user from backend using Firebase UID
-          const response = await api.get(`/users/firebase/${firebaseUser.uid}`);
-          console.log('✅ Found user from Firebase UID:', response.data);
-          setUserId(response.data.id);
-          // Store in localStorage for future use
-          localStorage.setItem('user', JSON.stringify(response.data));
+          // ✅ Use the exported function instead of api.get
+          const userData = await getUserByFirebaseUid(firebaseUser.uid);
+          console.log('✅ Found user from Firebase UID:', userData);
+          setUserId(userData.id);
+          localStorage.setItem('user', JSON.stringify(userData));
           return;
         } catch (error) {
           console.error('Error fetching user from Firebase UID:', error);
@@ -97,7 +100,7 @@ const Settings = () => {
 
   useEffect(() => {
     if (userId) {
-      console.log('📥 Fetching preferences for user:', userId);
+      console.log('🔥 Fetching preferences for user:', userId);
       fetchNotificationPreferences();
     } else {
       setLoading(false);
@@ -111,18 +114,19 @@ const Settings = () => {
     }
     
     try {
-      console.log(`🔵 Fetching preferences from: /notification-preferences/${userId}`);
-      const response = await api.get(`/notification-preferences/${userId}`);
-      console.log('✅ Preferences loaded:', response.data);
+      console.log(`🔵 Fetching preferences for user: ${userId}`);
+      // ✅ Use the exported function
+      const preferences = await getNotificationPreferences(userId);
+      console.log('✅ Preferences loaded:', preferences);
       
       setSettings(prev => ({
         ...prev,
-        emailNotifications: response.data.email_notifications,
-        pushNotifications: response.data.push_notifications,
-        commentReactions: response.data.comment_reactions,
-        commentReplies: response.data.comment_replies,
-        postReactions: response.data.post_reactions,
-        newPosts: response.data.new_posts
+        emailNotifications: preferences.email_notifications,
+        pushNotifications: preferences.push_notifications,
+        commentReactions: preferences.comment_reactions,
+        commentReplies: preferences.comment_replies,
+        postReactions: preferences.post_reactions,
+        newPosts: preferences.new_posts
       }));
     } catch (error) {
       console.error('❌ Error fetching preferences:', error);
@@ -192,11 +196,12 @@ const Settings = () => {
         new_posts: settingsToSave.newPosts
       };
       
-      console.log(`🔵 Saving to: /notification-preferences/${userId}`);
+      console.log(`🔵 Saving preferences for user: ${userId}`);
       console.log('Payload:', payload);
       
-      const response = await api.put(`/notification-preferences/${userId}`, payload);
-      console.log('✅ Preferences saved:', response.data);
+      // ✅ Use the exported function
+      const result = await updateNotificationPreferences(userId, payload);
+      console.log('✅ Preferences saved:', result);
       
       showSuccess('Preferences saved');
       return true;
