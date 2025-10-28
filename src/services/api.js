@@ -152,17 +152,6 @@ export const getCommentReactions = async (commentId, userId) => {
   return response.data;
 };
 
-// ============= NOTIFICATION PREFERENCE API =============
-export const getNotificationPreferences = async (userId) => {
-  const response = await api.get(`/notification/notification-preferences/${userId}`);
-  return response.data;
-};
-
-export const updateNotificationPreferences = async (userId, preferences) => {
-  const response = await api.put(`/notification/notification-preferences/${userId}`, preferences);
-  return response.data;
-};
-
 // ============= NOTIFICATION API =============
 export const getNotifications = async (userId, skip = 0, limit = 50) => {
   const response = await api.get(`/notification/notifications/${userId}?skip=${skip}&limit=${limit}`);
@@ -209,5 +198,20 @@ export const getCommunityFollowers = async (communityId) => {
   const response = await api.get(`/notification/communities/${communityId}/followers`);
   return response.data;
 };
+
+// Add these functions to the end of your api.js file, before the export default
+
+// ============= NOTIFICATION PREFERENCE API (ADD THIS SECTION) =============
+export const getNotificationPreferences = async (userId) => {
+  const response = await api.get(`/notification/notification-preferences/${userId}`);
+  return response.data;
+};
+
+export const updateNotificationPreferences = async (userId, preferences) => {
+  const response = await api.put(`/notification/notification-preferences/${userId}`, preferences);
+  return response.data;
+};
+
+
 
 export default api;
