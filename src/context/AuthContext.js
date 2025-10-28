@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { getUserByFirebaseUid } from '../services/api';
 import { 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -45,14 +46,33 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Listen for auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setLoading(false);
-    });
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      try {
+        // Fetch the database user using Firebase UID
+        const dbUser = await getUserByFirebaseUid(user.uid);
+        // Combine Firebase user with database user data
+        setCurrentUser({
+          ...user,
+          id: dbUser.id,
+          username: dbUser.username,
+          email: dbUser.email,
+          role: dbUser.role,
+          verified: dbUser.verified
+        });
+      } catch (error) {
+        console.error('Error fetching user from database:', error);
+        setCurrentUser(user); // Fallback to just Firebase user
+      }
+    } else {
+      setCurrentUser(null);
+    }
+    setLoading(false);
+  });
 
-    return unsubscribe;
-  }, []);
+  return unsubscribe;
+}, []);
 
   const value = {
     currentUser,
