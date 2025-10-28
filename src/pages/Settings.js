@@ -31,9 +31,12 @@ const Settings = () => {
   }, []);
 
   const fetchNotificationPreferences = async () => {
-    if (!currentUser?.id) return;
-    
-    try {
+  if (!currentUser?.id) {
+    setLoading(false);
+    return;
+  }
+  
+  try {
       const response = await api.get(`/notification-preferences/${currentUser.id}`);
       setSettings(prev => ({
         ...prev,
@@ -46,6 +49,12 @@ const Settings = () => {
       }));
     } catch (error) {
       console.error('Error fetching preferences:', error);
+      // If preferences don't exist yet, that's okay - use defaults
+      if (error.response && error.response.status === 404) {
+        console.log('No preferences found, using defaults');
+      } else {
+        showError('Failed to load notification preferences');
+      }
     } finally {
       setLoading(false);
     }
