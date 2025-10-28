@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Globe, Bell, Lock, Trash2 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
-import { auth } from '../firebase/config'; // Import Firebase auth
+import { auth } from '../services/firebase'; // Import Firebase auth
 import * as api from '../services/api';
 
 const Settings = () => {
