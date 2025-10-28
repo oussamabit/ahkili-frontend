@@ -24,9 +24,7 @@ const Home = () => {
     setError(null);
     try {
       const data = await getPosts();
-      console.log('Fetched posts:', data);
-      console.log('First post image_url:', data[0]?.image_url);
-      console.log('First post full data:', JSON.stringify(data[0], null, 2));
+      
       setPosts(data);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -69,7 +67,7 @@ const Home = () => {
       const createdPost = await createPostAPI(postPayload, backendUser.id);
       
       
-      console.log('Post has video_url:', createdPost.video_url);
+      
 
       setPosts([createdPost, ...posts]);
       showSuccess('Post created successfully!');

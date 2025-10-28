@@ -38,9 +38,9 @@ export const getPost = async (postId) => {
 };
 
 export const createPost = async (postData, userId) => {
-  console.log('🔵 API: Creating post:', postData); 
+ 
   const response = await api.post(`/posts/?user_id=${userId}`, postData);
-  console.log('🟢 API: Post created:', response.data);
+ 
   return response.data;
 };
 
