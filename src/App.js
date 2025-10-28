@@ -8,7 +8,7 @@ import CommunityDetail from './pages/CommunityDetail';
 import Login from './pages/Login';
 import Signup from './pages/Signup'; // Add this import
 import Profile from './pages/Profile';
-import notifications from './pages/Notifications';
+import Notifications from './pages/Notifications';
 import EditProfile from './pages/EditProfile';
 import Hotlines from './pages/Hotlines';
 import PostDetail from './pages/PostDetail';
@@ -53,7 +53,7 @@ function App() {
                 <Route path="/hotlines" element={<Hotlines />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/doctor-verification" element={<DoctorVerification />} />
-                <Route path="/notifications" element={<notifications />} />
+                <Route path="/notifications" element={<Notifications />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </>
             )}
