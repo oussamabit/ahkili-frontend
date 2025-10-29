@@ -9,7 +9,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    community: defaultCommunity || 'Anxiety Support',
+    communityId: null,  
     isAnonymous: false
   });
   
@@ -129,7 +129,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
       setFormData({ 
         title: '', 
         content: '', 
-        community: defaultCommunity || 'Anxiety Support',
+        communityId: null,  
         isAnonymous: false 
       });
       setImageFile(null);

@@ -212,6 +212,20 @@ export const updateNotificationPreferences = async (userId, preferences) => {
   return response.data;
 };
 
+// ============= COMMUNITY MEMBER API =============
+export const joinCommunity = async (communityId, userId) => {
+  const response = await api.post(`/communities/${communityId}/join?user_id=${userId}`);
+  return response.data;
+};
 
+export const leaveCommunity = async (communityId, userId) => {
+  const response = await api.delete(`/communities/${communityId}/leave?user_id=${userId}`);
+  return response.data;
+};
+
+export const checkCommunityMembership = async (communityId, userId) => {
+  const response = await api.get(`/communities/${communityId}/check-membership?user_id=${userId}`);
+  return response.data;
+};
 
 export default api;

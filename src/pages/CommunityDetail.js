@@ -3,7 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Users, Plus, Shield } from 'lucide-react';
 import PostCard from '../components/post/PostCard';
 import CreatePostModal from '../components/post/CreatePostModal';
-import { getCommunity, getPosts, createPost as createPostAPI } from '../services/api';
+import { 
+  getCommunity, 
+  getPosts, 
+  createPost as createPostAPI, 
+  checkCommunityMembership, 
+  joinCommunity, 
+  leaveCommunity 
+} from '../services/api';
 import { useUserSync } from '../hooks/useUserSync';
 import { useToast } from '../context/ToastContext';
 import { Link } from 'react-router-dom';
@@ -15,6 +22,8 @@ const CommunityDetail = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [joiningLoading, setJoiningLoading] = useState(false);
   const { backendUser } = useUserSync();
   const { showSuccess, showError } = useToast();
 
@@ -37,6 +46,20 @@ const CommunityDetail = () => {
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    const checkMembership = async () => {
+      if (backendUser) {
+        try {
+          const result = await checkCommunityMembership(id, backendUser.id);
+          setIsMember(result.is_member);
+        } catch (error) {
+          console.error('Error checking membership:', error);
+        }
+      }
+    };
+    checkMembership();
+  }, [id, backendUser]);
+
   const handleCreatePost = async (newPostData) => {
     if (!backendUser) {
       showSuccess('Please wait, syncing user data...');
@@ -54,9 +77,36 @@ const CommunityDetail = () => {
       );
 
       setPosts([createdPost, ...posts]);
+      setIsModalOpen(false);
+      showSuccess('Post created successfully!');
     } catch (error) {
       console.error('Error creating post:', error);
       showError('Failed to create post. Please try again.');
+    }
+  };
+
+  const handleJoinLeave = async () => {
+    if (!backendUser) {
+      showError('Please log in first');
+      return;
+    }
+    
+    setJoiningLoading(true);
+    try {
+      if (isMember) {
+        await leaveCommunity(id, backendUser.id);
+        showSuccess('Left community');
+        setIsMember(false);
+      } else {
+        await joinCommunity(id, backendUser.id);
+        showSuccess('Joined community!');
+        setIsMember(true);
+      }
+    } catch (error) {
+      console.error('Error updating membership:', error);
+      showError('Failed. Try again.');
+    } finally {
+      setJoiningLoading(false);
     }
   };
 
@@ -106,8 +156,16 @@ const CommunityDetail = () => {
             </div>
           </div>
           <div className="flex flex-col space-y-2">
-            <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold">
-              Join
+            <button 
+              onClick={handleJoinLeave}
+              disabled={joiningLoading}
+              className={`px-6 py-2 rounded-lg transition font-semibold ${
+                isMember 
+                  ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  : 'bg-primary text-white hover:bg-green-600'
+              } ${joiningLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {joiningLoading ? 'Loading...' : (isMember ? 'Leave' : 'Join')}
             </button>
             {backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
               <Link to={`/community/${id}/moderators`}>
