@@ -164,22 +164,26 @@ const PostCard = ({ post, onDelete }) => {
       <p className="text-gray-600 mb-4 line-clamp-3 whitespace-pre-line" dir="auto">{post.content}</p>
       {/* Post Image */}
       {(post.image_url || post.imageUrl) && (
-        <img
-          src={post.image_url || post.imageUrl}
-          alt={post.title}
-          className="w-full max-h-96 object-contain rounded-lg mb-4 border border-gray-200"
-        />
+        <div className="bg-green-50 p-4 rounded-lg mb-4">
+          <img
+            src={post.image_url || post.imageUrl}
+            alt={post.title}
+            className="w-full max-h-96 object-contain rounded-lg border border-green-100"
+          />
+        </div>
       )}
 
       {/* Post Video */}
       {(post.video_url || post.videoUrl) && (
-        <video
-          controls
-          className="w-full max-h-96 rounded-lg mb-4 border border-gray-200"
-        >
-          <source src={post.video_url || post.videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <div className="bg-green-50 p-4 rounded-lg mb-4">
+          <video
+            controls
+            className="w-full max-h-96 rounded-lg border border-green-100"
+          >
+            <source src={post.video_url || post.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       )}
 
       {/* Post Actions */}

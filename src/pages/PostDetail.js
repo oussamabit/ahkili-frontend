@@ -234,28 +234,28 @@ const PostDetail = () => {
           {/* Post Title */}
           <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight" dir="auto">{post.title}</h1>
           {/* Post Image */}
-          {(post.image_url || post.imageUrl) && (
-            <div className="mb-6 rounded-2xl overflow-hidden shadow-md">
-              <img 
-                src={post.image_url || post.imageUrl} 
-                alt={post.title}
-                className="w-full h-auto max-h-96 object-cover"
-              />
-            </div>
-          )}
+      {(post.image_url || post.imageUrl) && (
+        <div className="bg-green-50 p-4 rounded-lg mb-4">
+          <img
+            src={post.image_url || post.imageUrl}
+            alt={post.title}
+            className="w-full max-h-96 object-contain rounded-lg border border-green-100"
+          />
+        </div>
+      )}
 
-          {/* Post Video */}
-          {(post.video_url || post.videoUrl) && (
-            <div className="mb-6 rounded-2xl overflow-hidden shadow-md">
-              <video
-                controls
-                className="w-full h-auto max-h-96"
-              >
-                <source src={post.video_url || post.videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          )}
+      {/* Post Video */}
+      {(post.video_url || post.videoUrl) && (
+        <div className="bg-green-50 p-4 rounded-lg mb-4">
+          <video
+            controls
+            className="w-full max-h-96 rounded-lg border border-green-100"
+          >
+            <source src={post.video_url || post.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      )}
 
           {/* Post Content */}
           <div className="text-gray-700 leading-relaxed mb-8 whitespace-pre-line text-lg" dir="auto">
