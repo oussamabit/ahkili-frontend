@@ -24,6 +24,7 @@ const CommunityDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [joiningLoading, setJoiningLoading] = useState(false);
+  const [memberCount, setMemberCount] = useState(0);  // ✅ Added member count state
   const { backendUser } = useUserSync();
   const { showSuccess, showError } = useToast();
 
@@ -36,6 +37,7 @@ const CommunityDetail = () => {
         ]);
         setCommunity(communityData);
         setPosts(postsData);
+        setMemberCount(communityData.members || 0);  // ✅ Initialize member count
       } catch (error) {
         console.error('Error fetching community:', error);
       } finally {
@@ -97,10 +99,12 @@ const CommunityDetail = () => {
         await leaveCommunity(id, backendUser.id);
         showSuccess('Left community');
         setIsMember(false);
+        setMemberCount(prev => prev - 1);  // ✅ Decrease member count
       } else {
         await joinCommunity(id, backendUser.id);
         showSuccess('Joined community!');
         setIsMember(true);
+        setMemberCount(prev => prev + 1);  // ✅ Increase member count
       }
     } catch (error) {
       console.error('Error updating membership:', error);
@@ -151,7 +155,7 @@ const CommunityDetail = () => {
               <h1 className="text-3xl font-bold text-gray-800">{community.name}</h1>
               <p className="text-gray-600 mt-1">{community.description}</p>
               <p className="text-sm text-gray-500 mt-2">
-                {posts.length} posts
+                {memberCount} members • {posts.length} posts  {/* ✅ Updated to use memberCount */}
               </p>
             </div>
           </div>

@@ -9,7 +9,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    communityId: null,  
+    communityId: 1,  // ✅ Changed from community to communityId with default value
     isAnonymous: false
   });
   
@@ -19,15 +19,6 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [videoPreview, setVideoPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [mediaType, setMediaType] = useState(null); // 'image' or 'video'
-
-  const communities = [
-    'Anxiety Support',
-    'Depression Support',
-    'Mindfulness & Meditation',
-    'PTSD Recovery',
-    'Self-Care & Wellness',
-    'Stress Management'
-  ];
 
   const handleChange = (e) => {
     setFormData({
@@ -108,7 +99,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
       console.log('Submitting post data:', {
         title: formData.title,
         content: formData.content,
-        community: formData.community,
+        community_id: formData.communityId,
         imageUrl: imageUrl,
         videoUrl: videoUrl,
         isAnonymous: formData.isAnonymous
@@ -119,7 +110,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
       await onSubmit({
         title: formData.title,
         content: formData.content,
-        community: formData.community,
+        community_id: formData.communityId,  // ✅ Changed from community to community_id
         image_url: imageUrl,
         video_url: videoUrl,
         is_anonymous: formData.isAnonymous
@@ -129,7 +120,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
       setFormData({ 
         title: '', 
         content: '', 
-        communityId: null,  
+        communityId: 1,  // ✅ Changed from community to communityId
         isAnonymous: false 
       });
       setImageFile(null);
@@ -170,16 +161,17 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
               {t('post.chooseComm')}
             </label>
             <select
-              name="community"
-              value={formData.community}
-              onChange={handleChange}
+              name="communityId"  // ✅ Changed from "community"
+              value={formData.communityId}  // ✅ Changed from formData.community
+              onChange={(e) => setFormData({...formData, communityId: parseInt(e.target.value)})}  // ✅ Parse as int
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             >
-              {communities.map(community => (
-                <option key={community} value={community}>
-                  {community}
-                </option>
-              ))}
+              <option value={1}>Anxiety Support</option>
+              <option value={2}>Depression Support</option>
+              <option value={3}>Mindfulness & Meditation</option>
+              <option value={4}>PTSD Recovery</option>
+              <option value={5}>Self-Care & Wellness</option>
+              <option value={6}>Stress Management</option>
             </select>
           </div>
 
