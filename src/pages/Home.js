@@ -48,8 +48,8 @@ const Home = () => {
       const postPayload = {
         title: newPostData.title,
         content: newPostData.content,
-        community_id: null,
-        is_anonymous: newPostData.is_anonymous || false,  // Use snake_case
+        community_id: newPostData.community_id,
+        is_anonymous: newPostData.is_anonymous || false,  
       };
 
       // Add image if provided
