@@ -25,6 +25,15 @@ export const getUser = async (userId) => {
   return response.data;
 };
 
+export const getUserProfile = async (userId) => {
+  const response = await api.get(`/users/${userId}/profile`);
+  return response.data;
+};
+
+export const updateUserProfile = async (userId, profileData) => {
+  const response = await api.put(`/users/${userId}/profile`, profileData);
+  return response.data;
+};
 // ============= POST API =============
 export const getPosts = async (communityId = null) => {
   const params = communityId ? { community_id: communityId } : {};
