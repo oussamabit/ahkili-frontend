@@ -205,11 +205,19 @@ const PostDetail = () => {
           {/* Post Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md">
-              {authorName.charAt(0).toUpperCase()}
+              {communityName.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <p className="font-bold text-gray-800 text-lg">{authorName}</p>
+                <p className="text-gray-800 text-lg">
+                  <span className="font-bold hover:underline cursor-pointer">{communityName}</span>
+                  {!post.is_anonymous && (
+                    <>
+                      <span className="text-gray-400 mx-1">/</span>
+                      <span className="font-medium text-gray-600">{authorName}</span>
+                    </>
+                  )}
+                </p>
                 {isDoctorVerified && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-blue-500/20 to-primary/20 text-blue-800 text-xs rounded-full font-bold border border-blue-200">
                     <Sparkles className="w-3 h-3" />
@@ -218,7 +226,7 @@ const PostDetail = () => {
                 )}
               </div>
               <p className="text-sm text-gray-500 font-medium">
-                {communityName} • {getTimeAgo(post.created_at)}
+                {getTimeAgo(post.created_at)}
               </p>
             </div>
           </div>

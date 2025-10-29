@@ -106,11 +106,19 @@ const PostCard = ({ post, onDelete }) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-            {authorName.charAt(0).toUpperCase()}
+            {communityName.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="font-semibold text-gray-800">{authorName}</p>
-            <p className="text-xs text-gray-500">{communityName} • {timeAgo}</p>
+            <p className="text-sm text-gray-800">
+              <span className="font-bold hover:underline cursor-pointer">{communityName}</span>
+              {!post.is_anonymous && (
+                <>
+                  <span className="text-gray-400 mx-1">/</span>
+                  <span className="text-gray-600">{authorName}</span>
+                </>
+              )}
+            </p>
+            <p className="text-xs text-gray-500">{timeAgo}</p>
           </div>
         </div>
         
