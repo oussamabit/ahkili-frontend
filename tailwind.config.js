@@ -9,7 +9,12 @@ module.exports = {
         primary: '#10b981',    // Green for mental health/growth
         secondary: '#6366f1',  // Indigo
         accent: '#f59e0b',     // Amber for warmth
-      }
+      },
+      fontFamily: {
+        'arabic': ['Tajawal', 'sans-serif'],
+        'latin': ['Nunito', 'sans-serif'],
+        'sans': ['Nunito', 'sans-serif'], // Default
+      },
     },
   },
   plugins: [],
