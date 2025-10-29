@@ -24,21 +24,43 @@
     "deleted": "Post deleted successfully!",
     "createPost": "Create Post",
     "title": "Title",
+    "titlePlaceholder": "What's on your mind?",
     "content": "Content",
+    "contentPlaceholder": "Share your thoughts, experiences, or ask for support...",
     "chooseComm": "Choose Community",
     "addImage": "Add Image",
     "changeImage": "Change Image",
+    "addVideo": "Add Video",
+    "addMedia": "Add Media (Optional)",
+    "mediaNote": "You can add either an image or a video (max 50MB for videos)",
     "post": "Post",
     "cancel": "Cancel",
-    "posting": "Posting..."
+    "posting": "Posting...",
+    "postAnonymously": "Post Anonymously",
+    "anonymousDescription": "Your identity will be hidden. Others will see you as 'Anonymous User'",
+    "guidelines": "Community Guidelines",
+    "guidelineRespect": "Be respectful and supportive",
+    "guidelineNoHarm": "No harmful or triggering content",
+    "guidelinePrivacy": "Protect your privacy - avoid sharing personal information",
+    "guidelineCrisis": "Seek professional help in crisis situations",
+    "reply": "Reply",
+    "replies": "replies",
+    "showReplies": "Show Replies",
+    "hideReplies": "Hide Replies",
+    "replyTo": "Reply to",
+    "writeReply": "Write a reply...",
+    "dislike": "Dislike"
   },
   "community": {
     "title": "Communities",
     "subtitle": "Find your support community. Join, share, and grow together.",
     "members": "members",
+    "posts": "posts",
     "viewCommunity": "View Community",
     "join": "Join",
-    "joined": "Joined"
+    "joined": "Joined",
+    "backToCommunities": "Back to Communities",
+    "shareThoughts": "Share your thoughts in"
   },
   "profile": {
     "title": "Profile",
@@ -47,7 +69,9 @@
     "communities": "Communities",
     "saved": "Saved",
     "noPosts": "No posts yet",
-    "noSaved": "No saved posts yet"
+    "noSaved": "No saved posts yet",
+    "joined": "Joined",
+    "helpfulVotes": "Helpful Votes"
   },
   "settings": {
     "title": "Settings",
@@ -88,6 +112,7 @@
     "tryAgain": "Try Again",
     "save": "Save",
     "back": "Back",
-    "justNow": "Just now"
+    "justNow": "Just now",
+    "send": "Send"
   }
 }

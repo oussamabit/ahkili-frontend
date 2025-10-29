@@ -9,7 +9,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    communityId: 1,  // ✅ Changed from community to communityId with default value
+    communityId: 1,
     isAnonymous: false
   });
   
@@ -18,7 +18,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const [videoFile, setVideoFile] = useState(null);
   const [videoPreview, setVideoPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [mediaType, setMediaType] = useState(null); // 'image' or 'video'
+  const [mediaType, setMediaType] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -30,7 +30,6 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const handleImageSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Remove video if exists
       handleRemoveVideo();
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
@@ -41,12 +40,10 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   const handleVideoSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Check file size (max 50MB)
       if (file.size > 50 * 1024 * 1024) {
         alert('Video file is too large. Maximum size is 50MB.');
         return;
       }
-      // Remove image if exists
       handleRemoveImage();
       setVideoFile(file);
       setVideoPreview(URL.createObjectURL(file));
@@ -84,43 +81,29 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
       let imageUrl = null;
       let videoUrl = null;
 
-      // Upload image if selected
       if (imageFile) {
         const uploadResult = await uploadImage(imageFile);
         imageUrl = uploadResult.url;
       }
 
-      // Upload video if selected
       if (videoFile) {
         const uploadResult = await uploadVideo(videoFile);
         videoUrl = uploadResult.url;
       }
 
-      console.log('Submitting post data:', {
-        title: formData.title,
-        content: formData.content,
-        community_id: formData.communityId,
-        imageUrl: imageUrl,
-        videoUrl: videoUrl,
-        isAnonymous: formData.isAnonymous
-      });
-
-      
-      // Submit post with media URLs and anonymous flag
       await onSubmit({
         title: formData.title,
         content: formData.content,
-        community_id: formData.communityId,  // ✅ Changed from community to community_id
+        community_id: formData.communityId,
         image_url: imageUrl,
         video_url: videoUrl,
         is_anonymous: formData.isAnonymous
       });
 
-      // Reset form
       setFormData({ 
         title: '', 
         content: '', 
-        communityId: 1,  // ✅ Changed from community to communityId
+        communityId: 1,
         isAnonymous: false 
       });
       setImageFile(null);
@@ -161,9 +144,9 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
               {t('post.chooseComm')}
             </label>
             <select
-              name="communityId"  // ✅ Changed from "community"
-              value={formData.communityId}  // ✅ Changed from formData.community
-              onChange={(e) => setFormData({...formData, communityId: parseInt(e.target.value)})}  // ✅ Parse as int
+              name="communityId"
+              value={formData.communityId}
+              onChange={(e) => setFormData({...formData, communityId: parseInt(e.target.value)})}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             >
               <option value={1}>Anxiety Support</option>
@@ -248,7 +231,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
           {/* Media Upload Options */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-gray-700 mb-3">
-              {t('post.addMedia') || 'Add Media (Optional)'}
+              {t('post.addMedia')}
             </label>
             <div className="grid grid-cols-2 gap-3">
               {/* Image Upload */}
@@ -273,7 +256,7 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
                 >
                   <ImageIcon className={`w-5 h-5 ${imageFile ? 'text-green-600' : 'text-primary'}`} />
                   <span className={`font-medium text-sm ${imageFile ? 'text-green-700' : 'text-gray-700'}`}>
-                    {imageFile ? '✓ Image' : t('post.addImage') || 'Add Image'}
+                    {imageFile ? '✓ Image' : t('post.addImage')}
                   </span>
                 </label>
               </div>
@@ -300,24 +283,29 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
                 >
                   <VideoIcon className={`w-5 h-5 ${videoFile ? 'text-green-600' : 'text-primary'}`} />
                   <span className={`font-medium text-sm ${videoFile ? 'text-green-700' : 'text-gray-700'}`}>
-                    {videoFile ? '✓ Video' : t('post.addVideo') || 'Add Video'}
+                    {videoFile ? '✓ Video' : t('post.addVideo')}
                   </span>
                 </label>
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-2 text-center">
-              {t('post.mediaNote') || 'You can add either an image or a video (max 50MB for videos)'}
+              {t('post.mediaNote')}
             </p>
           </div>
 
-          {/* Anonymous Toggle */}
-          <div className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4 border border-purple-200">
-            <label className="flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer gap-3">
-              <div className="flex-1">
-                <p className="font-bold text-gray-900 text-base mb-1">{t('post.postAnonymously')}</p>
-                <p className="text-sm text-gray-600 leading-relaxed">{t('post.anonymousDescription')}</p>
+          {/* Anonymous Toggle - IMPROVED DESIGN */}
+          <div className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-5 border-2 border-purple-200 shadow-sm">
+            <label className="flex items-center justify-between cursor-pointer">
+              <div className="flex-1 pr-4">
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="text-xl">🕶️</span>
+                  <p className="font-bold text-gray-900 text-lg">{t('post.postAnonymously')}</p>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {t('post.anonymousDescription')}
+                </p>
               </div>
-              <div className="relative flex-shrink-0">
+              <div className="flex-shrink-0">
                 <input
                   type="checkbox"
                   name="isAnonymous"
@@ -325,39 +313,45 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
                   onChange={(e) => setFormData({ ...formData, isAnonymous: e.target.checked })}
                   className="sr-only"
                 />
-                <div className={`w-16 h-9 rounded-full transition-all duration-300 ease-in-out ${
-                  formData.isAnonymous ? 'bg-gradient-to-r from-purple-500 to-blue-500' : 'bg-gray-300'
+                <div className={`relative w-14 h-8 rounded-full transition-all duration-300 ease-in-out ${
+                  formData.isAnonymous 
+                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 shadow-lg shadow-purple-300' 
+                    : 'bg-gray-300'
                 }`}>
-                  <div className={`w-7 h-7 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out ${
-                    formData.isAnonymous ? 'translate-x-8' : 'translate-x-1'
-                  } mt-1`}></div>
+                  <div className={`absolute w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out top-1 ${
+                    formData.isAnonymous ? 'translate-x-7' : 'translate-x-1'
+                  }`}>
+                    {formData.isAnonymous && (
+                      <span className="flex items-center justify-center text-purple-600 text-xs font-bold">✓</span>
+                    )}
+                  </div>
                 </div>
               </div>
             </label>
           </div>
 
-          {/* Guidelines */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border border-blue-200">
-            <h4 className="font-bold text-gray-900 mb-3 flex items-center">
-              <span className="text-blue-600 mr-2">ℹ️</span>
+          {/* Guidelines - IMPROVED DESIGN */}
+          <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-xl p-5 mb-6 border-2 border-blue-200 shadow-sm">
+            <h4 className="font-bold text-gray-900 mb-4 flex items-center text-base">
+              <span className="text-2xl mr-2">ℹ️</span>
               {t('post.guidelines')}
             </h4>
-            <ul className="text-sm text-gray-700 space-y-2">
+            <ul className="space-y-3">
               <li className="flex items-start">
-                <span className="text-green-600 mr-2 mt-0.5">✓</span>
-                <span>{t('post.guidelineRespect')}</span>
+                <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
+                <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelineRespect')}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-green-600 mr-2 mt-0.5">✓</span>
-                <span>{t('post.guidelineNoHarm')}</span>
+                <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
+                <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelineNoHarm')}</span>
               </li>
               <li className="flex items-start">
-                <span className="text-green-600 mr-2 mt-0.5">✓</span>
-                <span>{t('post.guidelinePrivacy')}</span>
+                <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
+                <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelinePrivacy')}</span>
               </li>
-              <li className="flex items-start">
-                <span className="text-red-600 mr-2 mt-0.5">⚠</span>
-                <span className="font-medium">{t('post.guidelineCrisis')}</span>
+              <li className="flex items-start bg-red-50 rounded-lg p-3 border border-red-200">
+                <span className="text-red-600 text-lg mr-3 mt-0.5 flex-shrink-0">⚠</span>
+                <span className="text-sm text-red-900 leading-relaxed font-semibold">{t('post.guidelineCrisis')}</span>
               </li>
             </ul>
           </div>
