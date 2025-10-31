@@ -1,6 +1,7 @@
+// components/layout/Navbar.js (Updated)
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Users, Phone, User, Heart, Search as SearchIcon, Settings as SettingsIcon, Shield, Menu, X, Bell } from 'lucide-react';
+import { Home, Phone, Search as SearchIcon, Bell, User, Menu, X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { useUserSync } from '../../hooks/useUserSync';
@@ -11,13 +12,11 @@ const Navbar = () => {
   const { backendUser } = useUserSync();
   const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     if (currentUser?.id) {
       fetchUnreadCount();
-      // Poll every 30 seconds
       const interval = setInterval(fetchUnreadCount, 30000);
       return () => clearInterval(interval);
     }
@@ -88,8 +87,8 @@ const Navbar = () => {
       <nav className="bg-white/80 backdrop-blur-lg shadow-lg sticky top-0 z-50 border-b border-gray-100">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex items-center justify-between h-20">
-            {/* Logo with Animation */}
-            <Link to="/" className="flex items-center justify-center group">
+            {/* Logo - Hidden on desktop when sidebar is present */}
+            <Link to="/" className="flex items-center justify-center group lg:hidden">
               <div className="relative">
                 <img
                   src="/logo/ahkili-01.png"
@@ -100,65 +99,26 @@ const Navbar = () => {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-2">
+            {/* Desktop Navigation - Simplified */}
+            <div className="hidden lg:flex items-center gap-2 flex-1">
               <NavLink to="/" icon={Home} label={t('nav.home')} />
-              <NavLink to="/communities" icon={Users} label={t('nav.communities')} />
               <NavLink to="/search" icon={SearchIcon} label={t('nav.search')} />
-              
-              {currentUser && backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
-                <Link 
-                  to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-all duration-300 group"
-                >
-                  <Shield className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                  <span className="font-semibold">Admin</span>
-                </Link>
-              )}
-              
               <NavLink to="/hotlines" icon={Phone} label={t('nav.hotlines')} special={true} />
             </div>
 
-            {/* User Section */}
+            {/* Right Section */}
             <div className="hidden lg:flex items-center gap-3">
-              {currentUser ? (
-                <>
-                  {/* Notifications Bell */}
-                  <Link to="/notifications" className="relative p-3 rounded-xl hover:bg-gray-100 transition-all duration-300 group">
-                    <Bell className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform duration-300" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                        {unreadCount > 9 ? '9+' : unreadCount}
-                      </span>
-                    )}
-                  </Link>
+              {/* Notifications Bell */}
+              <Link to="/notifications" className="relative p-3 rounded-xl hover:bg-gray-100 transition-all duration-300 group">
+                <Bell className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform duration-300" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </Link>
 
-                  <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-primary/5 to-transparent rounded-xl">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-gray-700 font-medium text-sm max-w-[150px] truncate">
-                      {currentUser.displayName || currentUser.email}
-                    </span>
-                  </div>
-                  <Link to="/settings">
-                    <button className="p-3 rounded-xl hover:bg-gray-100 transition-all duration-300 group">
-                      <SettingsIcon className="w-5 h-5 text-gray-700 group-hover:rotate-90 transition-transform duration-300" />
-                    </button>
-                  </Link>
-                  <button
-                    onClick={logout}
-                    className="px-5 py-2.5 text-red-600 border-2 border-red-200 rounded-xl hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300 font-medium"
-                  >
-                    {t('nav.logout')}
-                  </button>
-                </>
-              ) : (
-                <Link 
-                  to="/login"
-                  className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-medium"
-                >
-                  {t('nav.login')}
-                </Link>
-              )}
+              {/* Profile */}
               <Link 
                 to="/profile"
                 className="p-3 rounded-xl bg-primary/5 hover:bg-primary/10 transition-all duration-300 group"
@@ -176,11 +136,11 @@ const Navbar = () => {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       </nav>
 
-      {/* Mobile Bottom Navigation Bar - TikTok Style */}
+      {/* Mobile Bottom Navigation Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 shadow-2xl z-50 pb-safe">
         <div className="flex items-center justify-around h-20 px-2 relative">
           <BottomNavItem to="/" icon={Home} label={t('nav.home')} />
-          <BottomNavItem to="/communities" icon={Users} label={t('nav.communities')} />
+          <BottomNavItem to="/search" icon={SearchIcon} label={t('nav.search')} />
           <BottomNavItem to="/hotlines" icon={Phone} label="" center={true} special={true} />
           <BottomNavItem 
             to="/notifications" 
@@ -189,100 +149,8 @@ const Navbar = () => {
             showBadge={true}
             badgeCount={unreadCount}
           />
-          <button 
-            onClick={() => setMoreMenuOpen(!moreMenuOpen)}
-            className="flex flex-col items-center justify-center flex-1"
-          >
-            <Menu className="w-6 h-6 text-gray-600" />
-            <span className="text-xs mt-1 text-gray-600">More</span>
-          </button>
+          <BottomNavItem to="/profile" icon={User} label={t('nav.profile')} />
         </div>
-
-        {/* More Menu Popup */}
-        {moreMenuOpen && (
-          <>
-            <div 
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm -z-10"
-              onClick={() => setMoreMenuOpen(false)}
-            />
-            <div className="absolute bottom-full right-0 left-0 mb-2 mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
-              <div className="flex flex-col">
-                <Link 
-                  to="/profile"
-                  onClick={() => setMoreMenuOpen(false)}
-                  className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100"
-                >
-                  <User className="w-5 h-5 text-primary" />
-                  <span className="font-medium text-gray-700">Profile</span>
-                </Link>
-                
-                <Link 
-                  to="/settings"
-                  onClick={() => setMoreMenuOpen(false)}
-                  className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100"
-                >
-                  <SettingsIcon className="w-5 h-5 text-gray-600" />
-                  <span className="font-medium text-gray-700">Settings</span>
-                </Link>
-
-                <Link 
-                  to="/notifications"
-                  onClick={() => setMoreMenuOpen(false)}
-                  className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 relative"
-                >
-                  <Bell className="w-5 h-5 text-gray-600" />
-                  <span className="font-medium text-gray-700">Notifications</span>
-                  {unreadCount > 0 && (
-                    <span className="absolute right-6 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </Link>
-
-                {currentUser && backendUser && (backendUser.role === 'admin' || backendUser.role === 'moderator') && (
-                  <Link 
-                    to="/admin"
-                    onClick={() => setMoreMenuOpen(false)}
-                    className="flex items-center gap-3 px-6 py-4 hover:bg-purple-50 transition-colors border-b border-gray-100"
-                  >
-                    <Shield className="w-5 h-5 text-purple-600" />
-                    <span className="font-semibold text-purple-600">Admin Panel</span>
-                  </Link>
-                )}
-
-                {currentUser ? (
-                  <>
-                    <div className="flex items-center gap-3 px-6 py-3 bg-primary/5 border-b border-gray-100">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                      <span className="text-sm text-gray-700 font-medium truncate">
-                        {currentUser.displayName || currentUser.email}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        logout();
-                        setMoreMenuOpen(false);
-                      }}
-                      className="flex items-center gap-3 px-6 py-4 hover:bg-red-50 transition-colors text-red-600"
-                    >
-                      <X className="w-5 h-5" />
-                      <span className="font-medium">{t('nav.logout')}</span>
-                    </button>
-                  </>
-                ) : (
-                  <Link 
-                    to="/login"
-                    onClick={() => setMoreMenuOpen(false)}
-                    className="flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-primary to-primary/80 text-white font-medium"
-                  >
-                    <User className="w-5 h-5" />
-                    <span>{t('nav.login')}</span>
-                  </Link>
-                )}
-              </div>
-            </div>
-          </>
-        )}
       </div>
     </>
   );
