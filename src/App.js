@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import Communities from './pages/Communities';
 import CommunityDetail from './pages/CommunityDetail';
 import CreateCommunity from './pages/CreateCommunity';
-import CreatePost from './components/post/CreatePostModal';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
@@ -57,7 +56,6 @@ function App() {
                     <Route path="/communities" element={<Communities />} />
                     <Route path="/community/:id" element={<CommunityDetail />} />
                     <Route path="/create-community" element={<CreateCommunity />} />
-                    <Route path="/create-post" element={<CreatePost />} />
                     <Route path="/community/:id/moderators" element={<CommunityModeration />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/post/:id" element={<PostDetail />} />

@@ -13,6 +13,7 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { backendUser } = useUserSync();
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -30,6 +31,14 @@ const Home = () => {
 
   useEffect(() => {
     fetchPosts();
+
+    // Listen for post creation events from sidebar
+    const handlePostCreated = () => {
+      fetchPosts();
+    };
+
+    window.addEventListener('postCreated', handlePostCreated);
+    return () => window.removeEventListener('postCreated', handlePostCreated);
   }, []);
 
   const handleDeletePost = (postId) => {
@@ -38,13 +47,13 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Decorative Background */}
+      {/* Decorative Background Elements */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
         <div className="absolute top-10 right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-40 left-20 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      {/* Header */}
+      {/* Header Section */}
       <div className="relative mb-8">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-blue-500/10 to-primary/10 rounded-3xl blur-2xl" />
         <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-gray-100">
@@ -77,7 +86,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Loading */}
+      {/* Loading State */}
       {loading && (
         <div className="space-y-6">
           <PostSkeleton />
@@ -86,7 +95,7 @@ const Home = () => {
         </div>
       )}
 
-      {/* Error */}
+      {/* Error State */}
       {error && !loading && (
         <div className="transform transition-all duration-300 hover:scale-[1.02]">
           <ErrorMessage message={error} onRetry={fetchPosts} />
@@ -97,11 +106,13 @@ const Home = () => {
       {!loading && !error && (
         <div className="space-y-6">
           {posts.length === 0 ? (
-            <EmptyState
-              icon={MessageCircle}
-              title="No posts yet"
-              message="Be the first to share your thoughts with the community!"
-            />
+            <div className="transform transition-all duration-300">
+              <EmptyState
+                icon={MessageCircle}
+                title="No posts yet"
+                message="Be the first to share your thoughts with the community!"
+              />
+            </div>
           ) : (
             posts.map((post, index) => (
               <div 
