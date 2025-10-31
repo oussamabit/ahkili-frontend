@@ -1,4 +1,3 @@
-// App.js (Updated with Sidebar)
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
@@ -8,6 +7,7 @@ import Home from './pages/Home';
 import Communities from './pages/Communities';
 import CommunityDetail from './pages/CommunityDetail';
 import CreateCommunity from './pages/CreateCommunity';
+import CreatePost from './components/post/CreatePostModal';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
@@ -32,7 +32,6 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         {!currentUser ? (
-          // Landing and Auth Pages (No Navbar/Sidebar)
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
@@ -40,28 +39,25 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         ) : (
-          // Authenticated Layout with Navbar and Sidebar
           <div className="flex h-screen overflow-hidden">
-            {/* Sidebar - Desktop Only */}
             <Sidebar 
               currentUser={currentUser} 
               backendUser={backendUser}
               onLogout={logout}
             />
             
-            {/* Main Content Area */}
             <div className="flex-1 flex flex-col overflow-hidden">
-              {/* Navbar */}
               <Navbar />
               
-              {/* Page Content */}
-              <main className="flex-1 overflow-y-auto">
+              {/* Added pb-24 for mobile bottom nav spacing */}
+              <main className="flex-1 overflow-y-auto pb-24 lg:pb-6">
                 <div className="container mx-auto px-4 py-6 max-w-7xl">
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/communities" element={<Communities />} />
                     <Route path="/community/:id" element={<CommunityDetail />} />
                     <Route path="/create-community" element={<CreateCommunity />} />
+                    <Route path="/create-post" element={<CreatePost />} />
                     <Route path="/community/:id/moderators" element={<CommunityModeration />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/post/:id" element={<PostDetail />} />

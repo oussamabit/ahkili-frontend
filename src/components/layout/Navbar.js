@@ -1,7 +1,6 @@
-// components/layout/Navbar.js (Updated)
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Phone, Search as SearchIcon, Bell, User, Menu, X } from 'lucide-react';
+import { Home, Phone, Search, Bell, User, MoreHorizontal, Users, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { useUserSync } from '../../hooks/useUserSync';
@@ -11,7 +10,7 @@ const Navbar = () => {
   const { currentUser, logout } = useAuth();
   const { backendUser } = useUserSync();
   const { t } = useTranslation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
@@ -34,7 +33,6 @@ const Navbar = () => {
   const NavLink = ({ to, icon: Icon, label, special = false }) => (
     <Link 
       to={to}
-      onClick={() => setMobileMenuOpen(false)}
       className={`group relative flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
         special 
           ? 'text-red-500 hover:text-red-600 hover:bg-red-50' 
@@ -51,13 +49,11 @@ const Navbar = () => {
     </Link>
   );
 
-  const BottomNavItem = ({ to, icon: Icon, label, special = false, center = false, showBadge = false, badgeCount = 0 }) => (
+  const BottomNavItem = ({ to, icon: Icon, label, center = false }) => (
     <Link 
       to={to}
       className={`flex flex-col items-center justify-center transition-all duration-300 ${
-        center 
-          ? 'relative -top-4' 
-          : 'flex-1'
+        center ? 'relative -top-4' : 'flex-1'
       }`}
     >
       <div className={`relative ${
@@ -69,16 +65,9 @@ const Navbar = () => {
           center 
             ? 'w-8 h-8 text-white' 
             : 'w-6 h-6 text-gray-600 hover:text-primary transition-colors'
-        } ${special && !center ? 'animate-pulse' : ''}`} />
-        {showBadge && badgeCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-            {badgeCount > 9 ? '9+' : badgeCount}
-          </span>
-        )}
+        }`} />
       </div>
-      <span className={`${
-        center ? 'hidden' : 'text-xs mt-1 text-gray-600'
-      }`}>{label}</span>
+      <span className={`${center ? 'hidden' : 'text-xs mt-1 text-gray-600'}`}>{label}</span>
     </Link>
   );
 
@@ -87,28 +76,27 @@ const Navbar = () => {
       <nav className="bg-white/80 backdrop-blur-lg shadow-lg sticky top-0 z-50 border-b border-gray-100">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex items-center justify-between h-20">
-            {/* Logo - Hidden on desktop when sidebar is present */}
+            {/* Logo - Mobile Only */}
             <Link to="/" className="flex items-center justify-center group lg:hidden">
               <div className="relative">
                 <img
                   src="/logo/ahkili-01.png"
-                  alt="Ahkili Logo"
+                  alt="Ahkili"
                   className="w-24 h-24 object-contain transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-primary/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </Link>
 
-            {/* Desktop Navigation - Simplified */}
-            <div className="hidden lg:flex items-center gap-2 flex-1">
+            {/* Desktop Navigation - CENTERED */}
+            <div className="hidden lg:flex items-center gap-2 flex-1 justify-center">
               <NavLink to="/" icon={Home} label={t('nav.home')} />
-              <NavLink to="/search" icon={SearchIcon} label={t('nav.search')} />
+              <NavLink to="/search" icon={Search} label={t('nav.search')} />
               <NavLink to="/hotlines" icon={Phone} label={t('nav.hotlines')} special={true} />
             </div>
 
-            {/* Right Section */}
+            {/* Right Section - Desktop */}
             <div className="hidden lg:flex items-center gap-3">
-              {/* Notifications Bell */}
               <Link to="/notifications" className="relative p-3 rounded-xl hover:bg-gray-100 transition-all duration-300 group">
                 <Bell className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform duration-300" />
                 {unreadCount > 0 && (
@@ -118,7 +106,6 @@ const Navbar = () => {
                 )}
               </Link>
 
-              {/* Profile */}
               <Link 
                 to="/profile"
                 className="p-3 rounded-xl bg-primary/5 hover:bg-primary/10 transition-all duration-300 group"
@@ -127,28 +114,66 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Mobile - Only Logo visible */}
-            <div className="lg:hidden w-10" />
+            {/* Mobile - More Menu with Dropdown */}
+            <div className="lg:hidden relative">
+              <button
+                onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                className="relative p-3 rounded-xl hover:bg-gray-100 transition-all duration-300"
+              >
+                <MoreHorizontal className="w-6 h-6 text-gray-700" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                )}
+              </button>
+
+              {/* Dropdown Menu */}
+              {moreMenuOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40"
+                    onClick={() => setMoreMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 py-2 z-50">
+                    <Link
+                      to="/notifications"
+                      onClick={() => setMoreMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="relative">
+                        <Bell className="w-5 h-5 text-gray-700" />
+                        {unreadCount > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center text-[10px]">
+                            {unreadCount > 9 ? '9+' : unreadCount}
+                          </span>
+                        )}
+                      </div>
+                      <span className="font-medium text-gray-700">Notifications</span>
+                    </Link>
+                    <Link
+                      to="/settings"
+                      onClick={() => setMoreMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                    >
+                      <Settings className="w-5 h-5 text-gray-700" />
+                      <span className="font-medium text-gray-700">Settings</span>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Decorative Element */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       </nav>
 
-      {/* Mobile Bottom Navigation Bar */}
+      {/* Mobile Bottom Navigation - NEW: Communities added */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 shadow-2xl z-50 pb-safe">
         <div className="flex items-center justify-around h-20 px-2 relative">
           <BottomNavItem to="/" icon={Home} label={t('nav.home')} />
-          <BottomNavItem to="/search" icon={SearchIcon} label={t('nav.search')} />
-          <BottomNavItem to="/hotlines" icon={Phone} label="" center={true} special={true} />
-          <BottomNavItem 
-            to="/notifications" 
-            icon={Bell} 
-            label={t('nav.notifications')} 
-            showBadge={true}
-            badgeCount={unreadCount}
-          />
+          <BottomNavItem to="/search" icon={Search} label={t('nav.search')} />
+          <BottomNavItem to="/hotlines" icon={Phone} label="" center={true} />
+          <BottomNavItem to="/communities" icon={Users} label={t('nav.communities')} />
           <BottomNavItem to="/profile" icon={User} label={t('nav.profile')} />
         </div>
       </div>

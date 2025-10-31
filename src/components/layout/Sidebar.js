@@ -1,4 +1,3 @@
-// components/layout/Sidebar.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -69,8 +68,10 @@ const Sidebar = ({ currentUser, backendUser, onLogout }) => {
           ${collapsed ? 'justify-center' : ''}
         `}
       >
+        {/* BIGGER icons when collapsed */}
         <Icon className={`
-          w-5 h-5 transition-transform duration-300 group-hover:scale-110
+          transition-transform duration-300 group-hover:scale-110
+          ${collapsed ? 'w-6 h-6' : 'w-5 h-5'}
           ${item.special ? 'text-primary' : ''}
         `} />
         {!collapsed && (
@@ -92,19 +93,17 @@ const Sidebar = ({ currentUser, backendUser, onLogout }) => {
       hidden lg:flex flex-col bg-white border-r border-gray-200 transition-all duration-300 h-screen sticky top-0
       ${collapsed ? 'w-20' : 'w-64'}
     `}>
-      {/* Header */}
+      {/* Header - JUST LOGO, NO TEXT */}
       <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          {!collapsed && (
-            <Link to="/" className="flex items-center gap-2">
-              <img
-                src="/logo/ahkili-01.png"
-                alt="Ahkili"
-                className="w-10 h-10 object-contain"
-              />
-              <span className="font-bold text-xl text-gray-800">Ahkili</span>
-            </Link>
-          )}
+        <div className={`flex items-center ${collapsed ? 'flex-col gap-2' : 'justify-between'}`}>
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo/ahkili-01.png"
+              alt="Ahkili"
+              className="w-10 h-10 object-contain"
+            />
+          </Link>
+          
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -139,7 +138,7 @@ const Sidebar = ({ currentUser, backendUser, onLogout }) => {
         </div>
       )}
 
-      {/* Navigation Items */}
+      {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-4 space-y-1">
         <div className="space-y-1">
           {navigationItems.filter(item => item.show).map((item, index) => (
@@ -147,10 +146,9 @@ const Sidebar = ({ currentUser, backendUser, onLogout }) => {
           ))}
         </div>
 
-        {/* Divider */}
         <div className="my-4 border-t border-gray-200" />
 
-        {/* Action Items */}
+        {/* Actions - NOW includes Create Post */}
         <div className="space-y-1">
           {!collapsed && (
             <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -163,7 +161,7 @@ const Sidebar = ({ currentUser, backendUser, onLogout }) => {
         </div>
       </nav>
 
-      {/* Bottom Items */}
+      {/* Bottom */}
       <div className="p-4 border-t border-gray-200 space-y-1">
         {bottomItems.filter(item => item.show).map((item, index) => (
           <NavItem key={index} item={item} />
@@ -177,7 +175,7 @@ const Sidebar = ({ currentUser, backendUser, onLogout }) => {
             ${collapsed ? 'justify-center' : ''}
           `}
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className={`${collapsed ? 'w-6 h-6' : 'w-5 h-5'}`} />
           {!collapsed && <span className="font-medium">Logout</span>}
         </button>
       </div>

@@ -1,30 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import PostCard from '../components/post/PostCard';
-import CreatePostModal from '../components/post/CreatePostModal';
-import { Plus, MessageCircle, Sparkles, TrendingUp } from 'lucide-react';
-import { getPosts, createPost as createPostAPI } from '../services/api';
+import { MessageCircle, Sparkles, TrendingUp } from 'lucide-react';
+import { getPosts } from '../services/api';
 import { useUserSync } from '../hooks/useUserSync';
 import { PostSkeleton } from '../components/common/SkeletonLoader';
 import ErrorMessage from '../components/common/ErrorMessage';
 import EmptyState from '../components/common/EmptyState';
-import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const { t } = useTranslation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { backendUser } = useUserSync();
-  const { showSuccess, showError } = useToast();
 
   const fetchPosts = async () => {
     setLoading(true);
     setError(null);
     try {
       const data = await getPosts();
-      
       setPosts(data);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -38,58 +32,19 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  const handleCreatePost = async (newPostData) => {
-    if (!backendUser) {
-      alert('Please wait, syncing user data...');
-      return;
-    }
-
-    try {
-      const postPayload = {
-        title: newPostData.title,
-        content: newPostData.content,
-        community_id: newPostData.community_id,
-        is_anonymous: newPostData.is_anonymous || false,  
-      };
-
-      // Add image if provided
-      if (newPostData.image_url) {
-        postPayload.image_url = newPostData.image_url;
-      }
-
-      // Add video if provided
-      if (newPostData.video_url) {
-        postPayload.video_url = newPostData.video_url;
-      }
-
-      
-
-      const createdPost = await createPostAPI(postPayload, backendUser.id);
-      
-      
-      
-
-      setPosts([createdPost, ...posts]);
-      showSuccess('Post created successfully!');
-    } catch (error) {
-      
-      showError('Failed to create post. Please try again.');
-    }
-  };
-
   const handleDeletePost = (postId) => {
     setPosts(posts.filter(post => post.id !== postId));
   };
 
   return (
     <div className="min-h-screen">
-      {/* Decorative Background Elements */}
+      {/* Decorative Background */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
         <div className="absolute top-10 right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-40 left-20 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      {/* Header Section */}
+      {/* Header */}
       <div className="relative mb-8">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-blue-500/10 to-primary/10 rounded-3xl blur-2xl" />
         <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-lg border border-gray-100">
@@ -122,30 +77,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Create Post Card */}
-      <div 
-        onClick={() => setIsModalOpen(true)}
-        className="group relative mb-8 cursor-pointer"
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
-        <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 flex-1">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <MessageCircle className="w-6 h-6 text-primary" />
-              </div>
-              <span className="text-gray-500 text-lg group-hover:text-gray-700 transition-colors">
-                {t('home.createPost')}
-              </span>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:rotate-90 transition-all duration-300">
-              <Plus className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Loading State */}
+      {/* Loading */}
       {loading && (
         <div className="space-y-6">
           <PostSkeleton />
@@ -154,7 +86,7 @@ const Home = () => {
         </div>
       )}
 
-      {/* Error State */}
+      {/* Error */}
       {error && !loading && (
         <div className="transform transition-all duration-300 hover:scale-[1.02]">
           <ErrorMessage message={error} onRetry={fetchPosts} />
@@ -165,25 +97,11 @@ const Home = () => {
       {!loading && !error && (
         <div className="space-y-6">
           {posts.length === 0 ? (
-            <div className="transform transition-all duration-300">
-              <EmptyState
-                icon={MessageCircle}
-                title="No posts yet"
-                message="Be the first to share your thoughts with the community!"
-                action={
-                  <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="group px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-white rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 font-semibold relative overflow-hidden"
-                  >
-                    <span className="relative z-10 flex items-center gap-2">
-                      <Plus className="w-5 h-5" />
-                      Create First Post
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </button>
-                }
-              />
-            </div>
+            <EmptyState
+              icon={MessageCircle}
+              title="No posts yet"
+              message="Be the first to share your thoughts with the community!"
+            />
           ) : (
             posts.map((post, index) => (
               <div 
@@ -201,22 +119,6 @@ const Home = () => {
           )}
         </div>
       )}
-
-      {/* Create Post Modal */}
-      <CreatePostModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleCreatePost}
-      />
-
-      {/* Floating Action Button (Mobile) */}
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="md:hidden fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-primary to-primary/80 text-white rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center z-40 group"
-      >
-        <Plus className="w-7 h-7 group-hover:rotate-90 transition-transform duration-300" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-      </button>
 
       <style jsx>{`
         @keyframes fadeInUp {

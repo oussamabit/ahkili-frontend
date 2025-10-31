@@ -95,54 +95,57 @@ const Profile = () => {
         {/* Profile Content */}
         <div className="px-6 pb-6">
           {/* Profile Picture - Overlapping cover */}
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-20 relative">
-            <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-4 sm:mb-0">
-              {/* Avatar */}
-              <div className="relative">
-                {profilePicture ? (
-                  <img 
-                    src={profilePicture} 
-                    alt={displayName}
-                    className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl"
-                  />
-                ) : (
-                  <div className="w-32 h-32 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white text-4xl font-bold border-4 border-white shadow-xl">
-                    {displayName.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                {profileData.verified && (
-                  <div className="absolute bottom-1 right-1 w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center border-3 border-white shadow-lg">
-                    <Award className="w-5 h-5 text-white" />
-                  </div>
-                )}
+          <div className="relative -mt-16 mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              {/* Left side: Avatar + User Info */}
+              <div className="flex flex-col sm:flex-row items-start gap-4">
+                {/* Avatar */}
+                <div className="relative flex-shrink-0">
+                  {profilePicture ? (
+                    <img 
+                      src={profilePicture} 
+                      alt={displayName}
+                      className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white text-4xl font-bold border-4 border-white shadow-xl">
+                      {displayName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  {profileData.verified && (
+                    <div className="absolute bottom-1 right-1 w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center border-3 border-white shadow-lg">
+                      <Award className="w-5 h-5 text-white" />
+                    </div>
+                  )}
+                </div>
+
+                {/* User Info - Aligned with top of avatar */}
+                <div className="flex flex-col justify-center pt-2">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-1">{displayName}</h1>
+                  <p className="text-gray-600 text-sm flex items-center gap-1.5">
+                    <Mail className="w-4 h-4" />
+                    {profileData.email}
+                  </p>
+                </div>
               </div>
 
-              {/* User Info - Mobile view below avatar */}
-              <div className="sm:mb-4">
-                <h1 className="text-2xl font-bold text-gray-800">{displayName}</h1>
-                <p className="text-gray-600 text-sm flex items-center gap-1.5 mt-1">
-                  <Mail className="w-4 h-4" />
-                  {profileData.email}
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-2 mb-4 sm:mb-0">
-              <Link to="/profile/edit">
-                <button className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all font-semibold">
-                  <Edit2 className="w-4 h-4" />
-                  <span>Edit Profile</span>
-                </button>
-              </Link>
-              {profileData.role !== 'doctor' && (
-                <Link to="/doctor-verification">
-                  <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all font-semibold">
-                    <Award className="w-4 h-4" />
-                    <span className="hidden sm:inline">Verify</span>
+              {/* Right side: Action Buttons */}
+              <div className="flex gap-2 pt-2 flex-shrink-0">
+                <Link to="/profile/edit">
+                  <button className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-all font-semibold">
+                    <Edit2 className="w-4 h-4" />
+                    <span>Edit Profile</span>
                   </button>
                 </Link>
-              )}
+                {profileData.role !== 'doctor' && (
+                  <Link to="/doctor-verification">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all font-semibold">
+                      <Award className="w-4 h-4" />
+                      <span className="hidden sm:inline">Verify</span>
+                    </button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
 
