@@ -32,24 +32,19 @@ const PostDetail = () => {
 
   const fetchData = async () => {
     try {
-      
       const postData = await getPost(id);
-
-      
       const commentsData = await getComments(id);
       
       if (!postData || !postData.id) {
         throw new Error('Invalid post data returned');
       }
       
-      // Ensure comments is always an array
       const validComments = Array.isArray(commentsData) ? commentsData : [];
       
       setPost(postData);
       setComments(validComments);
       setLikesCount(postData.reactions_count || 0);
       
-      // Check if user has reacted to this post
       if (backendUser) {
         try {
           const reaction = await checkUserReaction(postData.id, backendUser.id);
@@ -176,15 +171,20 @@ const PostDetail = () => {
     );
   }
 
-  const authorName = post.is_anonymous ? 'Anonymous' : (post.author?.username || 'Anonymous');  const communityName = post.community?.name || 'General';
+  const authorName = post.is_anonymous ? 'Anonymous' : (post.author?.username || 'Anonymous');
+  const communityName = post.community?.name || 'General';
   const isDoctorVerified = post.author?.role === 'doctor' && post.author?.verified;
 
   return (
     <div className="max-w-4xl mx-auto min-h-screen">
       {/* Decorative Background */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-40 left-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+        <div className={`absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl animate-pulse ${
+          isDoctorVerified ? 'bg-[#ff7f50]/5' : 'bg-primary/5'
+        }`} />
+        <div className={`absolute bottom-40 left-10 w-80 h-80 rounded-full blur-3xl animate-pulse ${
+          isDoctorVerified ? 'bg-[#ff9966]/5' : 'bg-blue-500/5'
+        }`} style={{ animationDelay: '1.5s' }} />
       </div>
 
       {/* Back Button */}
@@ -200,11 +200,30 @@ const PostDetail = () => {
 
       {/* Post Detail Card */}
       <div className="relative mb-8">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-3xl blur-xl" />
-        <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-8 border border-gray-100">
+        {isDoctorVerified && (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#ff7f50]/10 via-[#ff9966]/5 to-[#ffb380]/10 rounded-3xl blur-xl" />
+        )}
+        {!isDoctorVerified && (
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-3xl blur-xl" />
+        )}
+        
+        <div className={`relative backdrop-blur-sm rounded-3xl shadow-lg p-8 border ${
+          isDoctorVerified 
+            ? 'bg-gradient-to-br from-orange-50/90 via-white/90 to-coral-50/90 border-[#ff7f50]/30' 
+            : 'bg-white/80 border-gray-100'
+        }`}>
+          {/* Doctor Post Top Accent */}
+          {isDoctorVerified && (
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ff7f50] via-[#ff9966] to-[#ffb380] rounded-t-3xl" />
+          )}
+
           {/* Post Header */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md">
+            <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ${
+              isDoctorVerified 
+                ? 'bg-gradient-to-br from-[#ff7f50] to-[#ff9966]' 
+                : 'bg-gradient-to-br from-primary to-primary/80'
+            }`}>
               {communityName.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
@@ -219,7 +238,7 @@ const PostDetail = () => {
                   )}
                 </p>
                 {isDoctorVerified && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-blue-500/20 to-primary/20 text-blue-800 text-xs rounded-full font-bold border border-blue-200">
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-[#ff7f50]/20 to-[#ff9966]/20 text-[#ff5722] text-xs rounded-full font-bold border border-[#ff7f50]/40">
                     <Sparkles className="w-3 h-3" />
                     Verified Doctor
                   </span>
@@ -233,29 +252,42 @@ const PostDetail = () => {
 
           {/* Post Title */}
           <h1 className="text-3xl font-bold text-gray-800 mb-6 leading-tight" dir="auto">{post.title}</h1>
-          {/* Post Image */}
-      {(post.image_url || post.imageUrl) && (
-        <div className="bg-green-50 p-4 rounded-lg mb-4">
-          <img
-            src={post.image_url || post.imageUrl}
-            alt={post.title}
-            className="w-full max-h-96 object-contain rounded-lg border border-green-100"
-          />
-        </div>
-      )}
 
-      {/* Post Video */}
-      {(post.video_url || post.videoUrl) && (
-        <div className="bg-green-50 p-4 rounded-lg mb-4">
-          <video
-            controls
-            className="w-full max-h-96 rounded-lg border border-green-100"
-          >
-            <source src={post.video_url || post.videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      )}
+          {/* Post Image */}
+          {(post.image_url || post.imageUrl) && (
+            <div className={`p-4 rounded-lg mb-4 ${
+              isDoctorVerified 
+                ? 'bg-gradient-to-br from-[#ff7f50]/10 to-[#ffb380]/10 border border-[#ff7f50]/20' 
+                : 'bg-green-50'
+            }`}>
+              <img
+                src={post.image_url || post.imageUrl}
+                alt={post.title}
+                className={`w-full max-h-96 object-contain rounded-lg border ${
+                  isDoctorVerified ? 'border-[#ff7f50]/30' : 'border-green-100'
+                }`}
+              />
+            </div>
+          )}
+
+          {/* Post Video */}
+          {(post.video_url || post.videoUrl) && (
+            <div className={`p-4 rounded-lg mb-4 ${
+              isDoctorVerified 
+                ? 'bg-gradient-to-br from-[#ff7f50]/10 to-[#ffb380]/10 border border-[#ff7f50]/20' 
+                : 'bg-green-50'
+            }`}>
+              <video
+                controls
+                className={`w-full max-h-96 rounded-lg border ${
+                  isDoctorVerified ? 'border-[#ff7f50]/30' : 'border-green-100'
+                }`}
+              >
+                <source src={post.video_url || post.videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
 
           {/* Post Content */}
           <div className="text-gray-700 leading-relaxed mb-8 whitespace-pre-line text-lg" dir="auto">
