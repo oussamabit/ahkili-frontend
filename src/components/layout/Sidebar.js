@@ -11,9 +11,9 @@ import {
   ChevronRight,
   Briefcase
 } from 'lucide-react';
-import CreatePostModal from '../components/post/CreatePostModal';
-import { createPost as createPostAPI } from '../services/api';
-import { useToast } from '../context/ToastContext';
+import CreatePostModal from '../../components/post/CreatePostModal';
+import { createPost as createPostAPI } from '../../services/api';
+import { useToast } from '../../context/ToastContext';
 
 const Sidebar = ({ currentUser, backendUser, onLogout }) => {
   const [collapsed, setCollapsed] = useState(false);
