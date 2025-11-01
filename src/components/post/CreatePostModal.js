@@ -123,265 +123,267 @@ const CreatePostModal = ({ isOpen, onClose, onSubmit, defaultCommunity }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+      <div className="bg-white rounded-2xl w-full max-w-2xl my-8 shadow-2xl">
+        {/* Header - Sticky */}
+        <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10 rounded-t-2xl">
           <h2 className="text-2xl font-bold text-gray-800">{t('post.createPost')}</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition"
+            className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6">
-          {/* Community Selector */}
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              {t('post.chooseComm')}
-            </label>
-            <select
-              name="communityId"
-              value={formData.communityId}
-              onChange={(e) => setFormData({...formData, communityId: parseInt(e.target.value)})}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-            >
-              <option value={1}>Anxiety Support</option>
-              <option value={2}>Depression Support</option>
-              <option value={3}>Mindfulness & Meditation</option>
-              <option value={4}>PTSD Recovery</option>
-              <option value={5}>Self-Care & Wellness</option>
-              <option value={6}>Stress Management</option>
-            </select>
-          </div>
+        {/* Form - Scrollable Content */}
+        <div className="max-h-[calc(90vh-100px)] overflow-y-auto">
+          <form onSubmit={handleSubmit} className="p-6 space-y-5">
+            {/* Community Selector */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t('post.chooseComm')}
+              </label>
+              <select
+                name="communityId"
+                value={formData.communityId}
+                onChange={(e) => setFormData({...formData, communityId: parseInt(e.target.value)})}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              >
+                <option value={1}>Anxiety Support</option>
+                <option value={2}>Depression Support</option>
+                <option value={3}>Mindfulness & Meditation</option>
+                <option value={4}>PTSD Recovery</option>
+                <option value={5}>Self-Care & Wellness</option>
+                <option value={6}>Stress Management</option>
+              </select>
+            </div>
 
-          {/* Title */}
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              {t('post.title')}
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder={t('post.titlePlaceholder')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
-          </div>
-
-          {/* Content */}
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              {t('post.content')}
-            </label>
-            <textarea
-              name="content"
-              value={formData.content}
-              onChange={handleChange}
-              placeholder={t('post.contentPlaceholder')}
-              rows="8"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-              required
-            />
-          </div>
-
-          {/* Image Preview */}
-          {imagePreview && (
-            <div className="mb-4 relative">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-full max-h-96 object-contain rounded-lg border border-gray-200"
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t('post.title')}
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder={t('post.titlePlaceholder')}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                required
               />
-              <button
-                type="button"
-                onClick={handleRemoveImage}
-                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
-              >
-                <X className="w-4 h-4" />
-              </button>
             </div>
-          )}
 
-          {/* Video Preview */}
-          {videoPreview && (
-            <div className="mb-4 relative">
-              <video
-                controls
-                className="w-full max-h-96 rounded-lg border border-gray-200"
-              >
-                <source src={videoPreview} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <button
-                type="button"
-                onClick={handleRemoveVideo}
-                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
-              >
-                <X className="w-4 h-4" />
-              </button>
+            {/* Content */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                {t('post.content')}
+              </label>
+              <textarea
+                name="content"
+                value={formData.content}
+                onChange={handleChange}
+                placeholder={t('post.contentPlaceholder')}
+                rows="6"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent resize-none transition-all"
+                required
+              />
             </div>
-          )}
 
-          {/* Media Upload Options */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
-              {t('post.addMedia')}
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              {/* Image Upload */}
-              <div>
-                <input
-                  type="file"
-                  id="image-upload"
-                  accept="image/*"
-                  onChange={handleImageSelect}
-                  disabled={videoFile !== null}
-                  className="hidden"
+            {/* Image Preview */}
+            {imagePreview && (
+              <div className="relative">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full max-h-80 object-contain rounded-xl border-2 border-gray-200"
                 />
-                <label
-                  htmlFor="image-upload"
-                  className={`flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed rounded-lg transition cursor-pointer ${
-                    videoFile 
-                      ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
-                      : imageFile
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-300 hover:border-primary hover:bg-primary/5'
-                  }`}
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
                 >
-                  <ImageIcon className={`w-5 h-5 ${imageFile ? 'text-green-600' : 'text-primary'}`} />
-                  <span className={`font-medium text-sm ${imageFile ? 'text-green-700' : 'text-gray-700'}`}>
-                    {imageFile ? '✓ Image' : t('post.addImage')}
-                  </span>
-                </label>
+                  <X className="w-4 h-4" />
+                </button>
               </div>
+            )}
 
-              {/* Video Upload */}
-              <div>
-                <input
-                  type="file"
-                  id="video-upload"
-                  accept="video/*"
-                  onChange={handleVideoSelect}
-                  disabled={imageFile !== null}
-                  className="hidden"
-                />
-                <label
-                  htmlFor="video-upload"
-                  className={`flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed rounded-lg transition cursor-pointer ${
-                    imageFile 
-                      ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
-                      : videoFile
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-300 hover:border-primary hover:bg-primary/5'
-                  }`}
+            {/* Video Preview */}
+            {videoPreview && (
+              <div className="relative">
+                <video
+                  controls
+                  className="w-full max-h-80 rounded-xl border-2 border-gray-200"
                 >
-                  <VideoIcon className={`w-5 h-5 ${videoFile ? 'text-green-600' : 'text-primary'}`} />
-                  <span className={`font-medium text-sm ${videoFile ? 'text-green-700' : 'text-gray-700'}`}>
-                    {videoFile ? '✓ Video' : t('post.addVideo')}
-                  </span>
-                </label>
+                  <source src={videoPreview} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <button
+                  type="button"
+                  onClick={handleRemoveVideo}
+                  className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
-            </div>
-            <p className="text-xs text-gray-500 mt-2 text-center">
-              {t('post.mediaNote')}
-            </p>
-          </div>
+            )}
 
-          {/* Anonymous Toggle - IMPROVED DESIGN */}
-          <div className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-5 border-2 border-purple-200 shadow-sm">
-            <label className="flex items-center justify-between cursor-pointer">
-              <div className="flex-1 pr-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <span className="text-xl">🕶️</span>
-                  <p className="font-bold text-gray-900 text-lg">{t('post.postAnonymously')}</p>
+            {/* Media Upload Options */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-3">
+                {t('post.addMedia')}
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {/* Image Upload */}
+                <div>
+                  <input
+                    type="file"
+                    id="image-upload"
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                    disabled={videoFile !== null}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className={`flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed rounded-xl transition cursor-pointer ${
+                      videoFile 
+                        ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
+                        : imageFile
+                        ? 'border-green-500 bg-green-50'
+                        : 'border-gray-300 hover:border-primary hover:bg-primary/5'
+                    }`}
+                  >
+                    <ImageIcon className={`w-5 h-5 ${imageFile ? 'text-green-600' : 'text-primary'}`} />
+                    <span className={`font-medium text-sm ${imageFile ? 'text-green-700' : 'text-gray-700'}`}>
+                      {imageFile ? '✓ Image' : t('post.addImage')}
+                    </span>
+                  </label>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {t('post.anonymousDescription')}
-                </p>
+
+                {/* Video Upload */}
+                <div>
+                  <input
+                    type="file"
+                    id="video-upload"
+                    accept="video/*"
+                    onChange={handleVideoSelect}
+                    disabled={imageFile !== null}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="video-upload"
+                    className={`flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed rounded-xl transition cursor-pointer ${
+                      imageFile 
+                        ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed' 
+                        : videoFile
+                        ? 'border-green-500 bg-green-50'
+                        : 'border-gray-300 hover:border-primary hover:bg-primary/5'
+                    }`}
+                  >
+                    <VideoIcon className={`w-5 h-5 ${videoFile ? 'text-green-600' : 'text-primary'}`} />
+                    <span className={`font-medium text-sm ${videoFile ? 'text-green-700' : 'text-gray-700'}`}>
+                      {videoFile ? '✓ Video' : t('post.addVideo')}
+                    </span>
+                  </label>
+                </div>
               </div>
-              <div className="flex-shrink-0">
-                <input
-                  type="checkbox"
-                  name="isAnonymous"
-                  checked={formData.isAnonymous}
-                  onChange={(e) => setFormData({ ...formData, isAnonymous: e.target.checked })}
-                  className="sr-only"
-                />
-                <div className={`relative w-14 h-8 rounded-full transition-all duration-300 ease-in-out ${
-                  formData.isAnonymous 
-                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 shadow-lg shadow-purple-300' 
-                    : 'bg-gray-300'
-                }`}>
-                  <div className={`absolute w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out top-1 ${
-                    formData.isAnonymous ? 'translate-x-7' : 'translate-x-1'
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                {t('post.mediaNote')}
+              </p>
+            </div>
+
+            {/* Anonymous Toggle */}
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-5 border-2 border-purple-200 shadow-sm">
+              <label className="flex items-center justify-between cursor-pointer">
+                <div className="flex-1 pr-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="text-xl">🕶️</span>
+                    <p className="font-bold text-gray-900 text-lg">{t('post.postAnonymously')}</p>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {t('post.anonymousDescription')}
+                  </p>
+                </div>
+                <div className="flex-shrink-0">
+                  <input
+                    type="checkbox"
+                    name="isAnonymous"
+                    checked={formData.isAnonymous}
+                    onChange={(e) => setFormData({ ...formData, isAnonymous: e.target.checked })}
+                    className="sr-only"
+                  />
+                  <div className={`relative w-14 h-8 rounded-full transition-all duration-300 ease-in-out ${
+                    formData.isAnonymous 
+                      ? 'bg-gradient-to-r from-purple-500 to-blue-500 shadow-lg shadow-purple-300' 
+                      : 'bg-gray-300'
                   }`}>
-                    {formData.isAnonymous && (
-                      <span className="flex items-center justify-center text-purple-600 text-xs font-bold">✓</span>
-                    )}
+                    <div className={`absolute w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out top-1 ${
+                      formData.isAnonymous ? 'translate-x-7' : 'translate-x-1'
+                    }`}>
+                      {formData.isAnonymous && (
+                        <span className="flex items-center justify-center text-purple-600 text-xs font-bold">✓</span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </label>
-          </div>
+              </label>
+            </div>
 
-          {/* Guidelines - IMPROVED DESIGN */}
-          <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-xl p-5 mb-6 border-2 border-blue-200 shadow-sm">
-            <h4 className="font-bold text-gray-900 mb-4 flex items-center text-base">
-              <span className="text-2xl mr-2">ℹ️</span>
-              {t('post.guidelines')}
-            </h4>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
-                <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelineRespect')}</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
-                <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelineNoHarm')}</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
-                <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelinePrivacy')}</span>
-              </li>
-              <li className="flex items-start bg-red-50 rounded-lg p-3 border border-red-200">
-                <span className="text-red-600 text-lg mr-3 mt-0.5 flex-shrink-0">⚠</span>
-                <span className="text-sm text-red-900 leading-relaxed font-semibold">{t('post.guidelineCrisis')}</span>
-              </li>
-            </ul>
-          </div>
+            {/* Guidelines */}
+            <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-xl p-5 border-2 border-blue-200 shadow-sm">
+              <h4 className="font-bold text-gray-900 mb-4 flex items-center text-base">
+                <span className="text-2xl mr-2">ℹ️</span>
+                {t('post.guidelines')}
+              </h4>
+              <ul className="space-y-3">
+                <li className="flex items-start">
+                  <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
+                  <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelineRespect')}</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
+                  <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelineNoHarm')}</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 text-lg mr-3 mt-0.5 flex-shrink-0">✓</span>
+                  <span className="text-sm text-gray-700 leading-relaxed">{t('post.guidelinePrivacy')}</span>
+                </li>
+                <li className="flex items-start bg-red-50 rounded-lg p-3 border border-red-200">
+                  <span className="text-red-600 text-lg mr-3 mt-0.5 flex-shrink-0">⚠</span>
+                  <span className="text-sm text-red-900 leading-relaxed font-semibold">{t('post.guidelineCrisis')}</span>
+                </li>
+              </ul>
+            </div>
 
-          {/* Actions */}
-          <div className="flex space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={uploading}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold disabled:opacity-50"
-            >
-              {t('post.cancel')}
-            </button>
-            <button
-              type="submit"
-              disabled={uploading}
-              className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-green-600 transition font-semibold disabled:opacity-50 flex items-center justify-center space-x-2"
-            >
-              {uploading ? (
-                <>
-                  <Loader className="w-5 h-5 animate-spin" />
-                  <span>{t('post.posting')}</span>
-                </>
-              ) : (
-                <span>{t('post.post')}</span>
-              )}
-            </button>
-          </div>
-        </form>
+            {/* Actions */}
+            <div className="flex space-x-3 pt-2">
+              <button
+                type="button"
+                onClick={onClose}
+                disabled={uploading}
+                className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-semibold disabled:opacity-50"
+              >
+                {t('post.cancel')}
+              </button>
+              <button
+                type="submit"
+                disabled={uploading}
+                className="flex-1 px-6 py-3 bg-primary text-white rounded-xl hover:bg-green-600 transition-all font-semibold disabled:opacity-50 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+              >
+                {uploading ? (
+                  <>
+                    <Loader className="w-5 h-5 animate-spin" />
+                    <span>{t('post.posting')}</span>
+                  </>
+                ) : (
+                  <span>{t('post.post')}</span>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
