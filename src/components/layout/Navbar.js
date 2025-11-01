@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, Phone, Search, Bell, User, MoreHorizontal, Users, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ const Navbar = () => {
   const { currentUser, logout } = useAuth();
   const { backendUser } = useUserSync();
   const { t } = useTranslation();
+  const location = useLocation();
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -30,46 +31,63 @@ const Navbar = () => {
     }
   };
 
-  const NavLink = ({ to, icon: Icon, label, special = false }) => (
-    <Link 
-      to={to}
-      className={`group relative flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-        special 
-          ? 'text-red-500 hover:text-red-600 hover:bg-red-50' 
-          : 'text-gray-700 hover:text-primary hover:bg-primary/5'
-      }`}
-    >
-      <Icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${
-        special ? 'animate-pulse' : ''
-      }`} />
-      <span className="font-medium">{label}</span>
-      <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 ${
-        special ? 'bg-red-500' : 'bg-primary'
-      } transition-all duration-300 group-hover:w-3/4`} />
-    </Link>
-  );
-
-  const BottomNavItem = ({ to, icon: Icon, label, center = false }) => (
-    <Link 
-      to={to}
-      className={`flex flex-col items-center justify-center transition-all duration-300 ${
-        center ? 'relative -top-4' : 'flex-1'
-      }`}
-    >
-      <div className={`relative ${
-        center 
-          ? 'w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-xl shadow-red-500/50 flex items-center justify-center transform hover:scale-110 transition-transform duration-300' 
-          : 'p-2'
-      }`}>
-        <Icon className={`${
-          center 
-            ? 'w-8 h-8 text-white' 
-            : 'w-6 h-6 text-gray-600 hover:text-primary transition-colors'
+  const NavLink = ({ to, icon: Icon, label, special = false }) => {
+    const isActive = location.pathname === to;
+    
+    return (
+      <Link 
+        to={to}
+        className={`group relative flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+          special 
+            ? 'text-red-500 hover:text-red-600 hover:bg-red-50' 
+            : isActive
+            ? 'text-primary bg-primary/10'
+            : 'text-gray-700 hover:text-primary hover:bg-primary/5'
+        }`}
+      >
+        <Icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${
+          special ? 'animate-pulse' : ''
         }`} />
-      </div>
-      <span className={`${center ? 'hidden' : 'text-xs mt-1 text-gray-600'}`}>{label}</span>
-    </Link>
-  );
+        <span className="font-medium">{label}</span>
+        {isActive && !special && (
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-0.5 bg-primary" />
+        )}
+        {!isActive && (
+          <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 ${
+            special ? 'bg-red-500' : 'bg-primary'
+          } transition-all duration-300 group-hover:w-3/4`} />
+        )}
+      </Link>
+    );
+  };
+
+  const BottomNavItem = ({ to, icon: Icon, label, center = false }) => {
+    const isActive = location.pathname === to;
+    
+    return (
+      <Link 
+        to={to}
+        className={`flex flex-col items-center justify-center transition-all duration-300 ${
+          center ? 'relative -top-4' : 'flex-1'
+        }`}
+      >
+        <div className={`relative ${
+          center 
+            ? 'w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-600 shadow-xl shadow-red-500/50 flex items-center justify-center transform hover:scale-110 transition-transform duration-300' 
+            : 'p-2'
+        }`}>
+          <Icon className={`${
+            center 
+              ? 'w-8 h-8 text-white' 
+              : isActive
+              ? 'w-6 h-6 text-primary'
+              : 'w-6 h-6 text-gray-600 hover:text-primary transition-colors'
+          }`} />
+        </div>
+        <span className={`${center ? 'hidden' : isActive ? 'text-xs mt-1 text-primary font-semibold' : 'text-xs mt-1 text-gray-600'}`}>{label}</span>
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -82,7 +100,7 @@ const Navbar = () => {
                 <img
                   src="/logo/ahkili-01.png"
                   alt="Ahkili"
-                  className="w-24 h-24 object-contain transition-transform duration-300 group-hover:scale-110"
+                  className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-primary/30 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
@@ -167,7 +185,7 @@ const Navbar = () => {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       </nav>
 
-      {/* Mobile Bottom Navigation - NEW: Communities added */}
+      {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 shadow-2xl z-50 pb-safe">
         <div className="flex items-center justify-around h-20 px-2 relative">
           <BottomNavItem to="/" icon={Home} label={t('nav.home')} />
