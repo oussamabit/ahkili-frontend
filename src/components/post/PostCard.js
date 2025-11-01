@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag, Sparkles } from 'lucide-react';
+import { Heart, MessageCircle, Share2, MoreVertical, Trash2, Flag } from 'lucide-react';
 import { useUserSync } from '../../hooks/useUserSync';
 import { deletePost as deletePostAPI, toggleReaction, checkUserReaction } from '../../services/api';
 import axios from 'axios';
@@ -107,12 +107,12 @@ const PostCard = ({ post, onDelete }) => {
   return (
     <div className={`relative rounded-lg shadow-md p-6 mb-4 hover:shadow-lg transition ${
       isDoctorPost 
-        ? 'bg-gradient-to-br from-orange-50 via-white to-coral-50 border-2 border-orange-200' 
-        : 'bg-white'
+        ? 'bg-white border-2 border-blue-100' 
+        : 'bg-white border border-gray-100'
     }`}>
       {/* Doctor Post Accent Line */}
       {isDoctorPost && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ff7f50] via-[#ff9966] to-[#ffb380] rounded-t-lg" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 rounded-t-lg" />
       )}
 
       {/* Post Header */}
@@ -120,7 +120,7 @@ const PostCard = ({ post, onDelete }) => {
         <div className="flex items-center space-x-3">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
             isDoctorPost 
-              ? 'bg-gradient-to-br from-[#ff7f50] to-[#ff9966]' 
+              ? 'bg-gradient-to-br from-blue-500 to-blue-600' 
               : 'bg-primary'
           }`}>
             {communityName.charAt(0).toUpperCase()}
@@ -137,8 +137,10 @@ const PostCard = ({ post, onDelete }) => {
                 )}
               </p>
               {isDoctorPost && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-[#ff7f50]/20 to-[#ff9966]/20 text-[#ff5722] text-xs rounded-full font-bold border border-[#ff7f50]/30">
-                  <Sparkles className="w-3 h-3" />
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-full font-semibold border border-blue-200">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
                   Verified Doctor
                 </span>
               )}
@@ -192,33 +194,29 @@ const PostCard = ({ post, onDelete }) => {
 
       {/* Post Image */}
       {(post.image_url || post.imageUrl) && (
-        <div className={`p-4 rounded-lg mb-4 ${
+        <div className={`rounded-lg mb-4 overflow-hidden ${
           isDoctorPost 
-            ? 'bg-gradient-to-br from-[#ff7f50]/10 to-[#ffb380]/10 border border-[#ff7f50]/20' 
-            : 'bg-green-50'
+            ? 'bg-blue-50 border border-blue-100' 
+            : 'bg-gray-50 border border-gray-100'
         }`}>
           <img
             src={post.image_url || post.imageUrl}
             alt={post.title}
-            className={`w-full max-h-96 object-contain rounded-lg border ${
-              isDoctorPost ? 'border-[#ff7f50]/30' : 'border-green-100'
-            }`}
+            className="w-full max-h-96 object-contain"
           />
         </div>
       )}
 
       {/* Post Video */}
       {(post.video_url || post.videoUrl) && (
-        <div className={`p-4 rounded-lg mb-4 ${
+        <div className={`rounded-lg mb-4 overflow-hidden ${
           isDoctorPost 
-            ? 'bg-gradient-to-br from-[#ff7f50]/10 to-[#ffb380]/10 border border-[#ff7f50]/20' 
-            : 'bg-green-50'
+            ? 'bg-blue-50 border border-blue-100' 
+            : 'bg-gray-50 border border-gray-100'
         }`}>
           <video
             controls
-            className={`w-full max-h-96 rounded-lg border ${
-              isDoctorPost ? 'border-[#ff7f50]/30' : 'border-green-100'
-            }`}
+            className="w-full max-h-96"
           >
             <source src={post.video_url || post.videoUrl} type="video/mp4" />
             Your browser does not support the video tag.

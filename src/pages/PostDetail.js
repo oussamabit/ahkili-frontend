@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Heart, MessageCircle, Share2, Send, ArrowLeft, Loader, Copy, Check, Sparkles } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Send, ArrowLeft, Loader, Copy, Check } from 'lucide-react';
 import { getPost, getComments, createComment as createCommentAPI, toggleReaction, checkUserReaction } from '../services/api';
 import { useUserSync } from '../hooks/useUserSync';
 import { useToast } from '../context/ToastContext';
@@ -180,10 +180,10 @@ const PostDetail = () => {
       {/* Decorative Background */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
         <div className={`absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl animate-pulse ${
-          isDoctorVerified ? 'bg-[#ff7f50]/5' : 'bg-primary/5'
+          isDoctorVerified ? 'bg-blue-500/5' : 'bg-primary/5'
         }`} />
         <div className={`absolute bottom-40 left-10 w-80 h-80 rounded-full blur-3xl animate-pulse ${
-          isDoctorVerified ? 'bg-[#ff9966]/5' : 'bg-blue-500/5'
+          isDoctorVerified ? 'bg-blue-400/5' : 'bg-blue-500/5'
         }`} style={{ animationDelay: '1.5s' }} />
       </div>
 
@@ -201,7 +201,7 @@ const PostDetail = () => {
       {/* Post Detail Card */}
       <div className="relative mb-8">
         {isDoctorVerified && (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#ff7f50]/10 via-[#ff9966]/5 to-[#ffb380]/10 rounded-3xl blur-xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-blue-400/5 to-blue-300/5 rounded-3xl blur-xl" />
         )}
         {!isDoctorVerified && (
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-3xl blur-xl" />
@@ -209,19 +209,19 @@ const PostDetail = () => {
         
         <div className={`relative backdrop-blur-sm rounded-3xl shadow-lg p-8 border ${
           isDoctorVerified 
-            ? 'bg-gradient-to-br from-orange-50/90 via-white/90 to-coral-50/90 border-[#ff7f50]/30' 
+            ? 'bg-white border-blue-100' 
             : 'bg-white/80 border-gray-100'
         }`}>
           {/* Doctor Post Top Accent */}
           {isDoctorVerified && (
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ff7f50] via-[#ff9966] to-[#ffb380] rounded-t-3xl" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 rounded-t-3xl" />
           )}
 
           {/* Post Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md ${
               isDoctorVerified 
-                ? 'bg-gradient-to-br from-[#ff7f50] to-[#ff9966]' 
+                ? 'bg-gradient-to-br from-blue-500 to-blue-600' 
                 : 'bg-gradient-to-br from-primary to-primary/80'
             }`}>
               {communityName.charAt(0).toUpperCase()}
@@ -238,8 +238,10 @@ const PostDetail = () => {
                   )}
                 </p>
                 {isDoctorVerified && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-[#ff7f50]/20 to-[#ff9966]/20 text-[#ff5722] text-xs rounded-full font-bold border border-[#ff7f50]/40">
-                    <Sparkles className="w-3 h-3" />
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-600 text-xs rounded-full font-semibold border border-blue-200">
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
                     Verified Doctor
                   </span>
                 )}
@@ -255,33 +257,29 @@ const PostDetail = () => {
 
           {/* Post Image */}
           {(post.image_url || post.imageUrl) && (
-            <div className={`p-4 rounded-lg mb-4 ${
+            <div className={`rounded-lg mb-4 overflow-hidden ${
               isDoctorVerified 
-                ? 'bg-gradient-to-br from-[#ff7f50]/10 to-[#ffb380]/10 border border-[#ff7f50]/20' 
-                : 'bg-green-50'
+                ? 'bg-blue-50 border border-blue-100' 
+                : 'bg-gray-50 border border-gray-100'
             }`}>
               <img
                 src={post.image_url || post.imageUrl}
                 alt={post.title}
-                className={`w-full max-h-96 object-contain rounded-lg border ${
-                  isDoctorVerified ? 'border-[#ff7f50]/30' : 'border-green-100'
-                }`}
+                className="w-full max-h-96 object-contain"
               />
             </div>
           )}
 
           {/* Post Video */}
           {(post.video_url || post.videoUrl) && (
-            <div className={`p-4 rounded-lg mb-4 ${
+            <div className={`rounded-lg mb-4 overflow-hidden ${
               isDoctorVerified 
-                ? 'bg-gradient-to-br from-[#ff7f50]/10 to-[#ffb380]/10 border border-[#ff7f50]/20' 
-                : 'bg-green-50'
+                ? 'bg-blue-50 border border-blue-100' 
+                : 'bg-gray-50 border border-gray-100'
             }`}>
               <video
                 controls
-                className={`w-full max-h-96 rounded-lg border ${
-                  isDoctorVerified ? 'border-[#ff7f50]/30' : 'border-green-100'
-                }`}
+                className="w-full max-h-96"
               >
                 <source src={post.video_url || post.videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
