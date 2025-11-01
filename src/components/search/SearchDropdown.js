@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, Loader, X } from 'lucide-react';
-import { searchPosts, searchCommunities } from '../services/api';
+import { searchPosts, searchCommunities } from '../../services/api';
 
 const SearchDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
