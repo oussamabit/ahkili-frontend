@@ -22,60 +22,75 @@ import Settings from './pages/Settings';
 import InstallPrompt from './components/common/InstallPrompt';
 import { useAuth } from './context/AuthContext';
 import { useUserSync } from './hooks/useUserSync';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// ADD THIS before the App component
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   const { currentUser, logout } = useAuth();
   const { backendUser } = useUserSync();
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        {!currentUser ? (
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        ) : (
-          <div className="flex h-screen overflow-hidden">
-            <Sidebar 
-              currentUser={currentUser} 
-              backendUser={backendUser}
-              onLogout={logout}
-            />
-            
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <Navbar />
+    // WRAP your Router with QueryClientProvider
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <div className="min-h-screen bg-gray-50">
+          {!currentUser ? (
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          ) : (
+            <div className="flex h-screen overflow-hidden">
+              <Sidebar 
+                currentUser={currentUser} 
+                backendUser={backendUser}
+                onLogout={logout}
+              />
               
-              {/* Added pb-24 for mobile bottom nav spacing */}
-              <main className="flex-1 overflow-y-auto pb-24 lg:pb-6">
-                <div className="container mx-auto px-4 py-6 max-w-7xl">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/communities" element={<Communities />} />
-                    <Route path="/community/:id" element={<CommunityDetail />} />
-                    <Route path="/create-community" element={<CreateCommunity />} />
-                    <Route path="/community/:id/moderators" element={<CommunityModeration />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/post/:id" element={<PostDetail />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/profile/edit" element={<EditProfile />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/hotlines" element={<Hotlines />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/doctor-verification" element={<DoctorVerification />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </div>
-              </main>
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <Navbar />
+                
+                {/* Added pb-24 for mobile bottom nav spacing */}
+                <main className="flex-1 overflow-y-auto pb-24 lg:pb-6">
+                  <div className="container mx-auto px-4 py-6 max-w-7xl">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/communities" element={<Communities />} />
+                      <Route path="/community/:id" element={<CommunityDetail />} />
+                      <Route path="/create-community" element={<CreateCommunity />} />
+                      <Route path="/community/:id/moderators" element={<CommunityModeration />} />
+                      <Route path="/search" element={<Search />} />
+                      <Route path="/post/:id" element={<PostDetail />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/profile/edit" element={<EditProfile />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/hotlines" element={<Hotlines />} />
+                      <Route path="/admin" element={<AdminDashboard />} />
+                      <Route path="/doctor-verification" element={<DoctorVerification />} />
+                      <Route path="/notifications" element={<Notifications />} />
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                  </div>
+                </main>
+              </div>
             </div>
-          </div>
-        )}
-        {currentUser && <InstallPrompt />}
-      </div>
-    </Router>
+          )}
+          {currentUser && <InstallPrompt />}
+        </div>
+      </Router>
+    </QueryClientProvider>
   );
 }
 
